@@ -112,12 +112,12 @@ bool MovementComponent::isState(State state) const
 		break;
 
 	case MOVING_LEFT:
-		if (speed.x < 0.f && std::abs(speed.x) > std::abs(speed.y))
+		if (speed.x < 0.f && std::abs(speed.x) >= std::abs(speed.y))
 			return true;
 		break;
 
 	case MOVING_RIGHT:
-		if (speed.x > 0.f && std::abs(speed.x) > std::abs(speed.y))
+		if (speed.x > 0.f && std::abs(speed.x) >= std::abs(speed.y))
 			return true;
 		break;
 
