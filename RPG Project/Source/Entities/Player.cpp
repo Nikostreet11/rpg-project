@@ -16,8 +16,50 @@ Player::Player(sf::Vector2f position, std::shared_ptr<sf::Texture> textureSheet)
 	setPosition(position);
 
 	createMovement(300.f, 15.f, 5.f);
-	createAnimationComponent(textureSheet);
 
+	createAnimationComponent(textureSheet);
+	initAnimations();
+
+	createHitboxComponent(
+			sprite,
+			sf::Vector2f(20, 10),
+			sf::Vector2f(104, 124));
+}
+
+Player::~Player()
+{
+}
+
+// Functions
+void Player::update(const float& dt)
+{
+	movementComponent->update(dt);
+
+	if (movementComponent->isState(MovementComponent::IDLE))
+		animationComponent->play("IDLE", dt);
+
+	else if (movementComponent->isState(MovementComponent::MOVING_LEFT))
+		animationComponent->play("WALK_LEFT", dt);
+
+	else if (movementComponent->isState(MovementComponent::MOVING_RIGHT))
+		animationComponent->play("WALK_RIGHT", dt);
+
+	else if (movementComponent->isState(MovementComponent::MOVING_UP))
+		animationComponent->play("WALK_UP", dt);
+
+	else if (movementComponent->isState(MovementComponent::MOVING_DOWN))
+		animationComponent->play("WALK_DOWN", dt);
+
+	hitboxComponent->update();
+}
+
+// Initialization functions
+void Player::initVariables()
+{
+}
+
+void Player::initAnimations()
+{
 	std::vector<sf::IntRect> rectVector = {
 			sf::IntRect(0, 0, 36, 36),
 			sf::IntRect(324, 0, 36, 36),
@@ -50,34 +92,3 @@ Player::Player(sf::Vector2f position, std::shared_ptr<sf::Texture> textureSheet)
 	};
 	animationComponent->addAnimation("WALK_DOWN", 0.2f, rectVector);
 }
-
-Player::~Player()
-{
-}
-
-// Functions
-void Player::update(const float& dt)
-{
-	movementComponent->update(dt);
-
-	if (movementComponent->isState(MovementComponent::IDLE))
-		animationComponent->play("IDLE", dt);
-
-	else if (movementComponent->isState(MovementComponent::MOVING_LEFT))
-		animationComponent->play("WALK_LEFT", dt);
-
-	else if (movementComponent->isState(MovementComponent::MOVING_RIGHT))
-		animationComponent->play("WALK_RIGHT", dt);
-
-	else if (movementComponent->isState(MovementComponent::MOVING_UP))
-		animationComponent->play("WALK_UP", dt);
-
-	else if (movementComponent->isState(MovementComponent::MOVING_DOWN))
-		animationComponent->play("WALK_DOWN", dt);
-}
-
-// Initialization functions
-void Player::initVariables()
-{
-}
-

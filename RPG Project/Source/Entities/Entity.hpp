@@ -29,6 +29,10 @@ public:
 			float deceleration);
 	void createAnimationComponent(
 			std::shared_ptr<sf::Texture> textureSheet);
+	void createHitboxComponent(
+			sf::Sprite& sprite,
+			sf::Vector2f offset,
+			sf::Vector2f size);
 
 	// Functions
 	virtual void setPosition(const sf::Vector2f& position);

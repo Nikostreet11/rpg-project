@@ -24,6 +24,7 @@ public:
 private:
 	// Initialization functions
 	void initVariables();
+	void initAnimations();
 
 	// Variables
 };
