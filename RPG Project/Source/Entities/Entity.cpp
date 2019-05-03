@@ -69,6 +69,7 @@ void Entity::initVariables()
 {
 	movementComponent = nullptr;
 	animationComponent = nullptr;
+	hitboxComponent = nullptr;
 }
 
 void Entity::createAnimationComponent(

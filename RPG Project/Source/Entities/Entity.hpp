@@ -10,6 +10,7 @@
 
 #include "../Components/AnimationComponent.hpp"
 #include "../Components/MovementComponent.hpp"
+#include "../Components/HitboxComponent.hpp"
 
 class Entity
 {
@@ -43,6 +44,7 @@ protected:
 	// Variables
 	sf::Sprite sprite;
 
+	std::unique_ptr<HitboxComponent> hitboxComponent;
 	std::unique_ptr<MovementComponent> movementComponent;
 	std::unique_ptr<AnimationComponent> animationComponent;
 };
