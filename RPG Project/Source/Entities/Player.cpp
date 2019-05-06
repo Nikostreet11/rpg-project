@@ -91,4 +91,12 @@ void Player::initAnimations()
 			sf::IntRect(0, 0, 36, 36)
 	};
 	animationComponent->addAnimation("WALK_DOWN", 0.2f, rectVector);
+
+	rectVector = {
+			sf::IntRect(648, 0, 36, 36),
+			sf::IntRect(684, 0, 36, 36)
+	};
+	animationComponent->addAnimation("WAVE", 0.5f, rectVector);
+
+
 }
