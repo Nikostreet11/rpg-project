@@ -92,11 +92,6 @@ void MovementComponent::update(const float& dt)
 }
 
 // Getters / Setters
-const sf::Vector2f& MovementComponent::getSpeed() const
-{
-	return speed;
-}
-
 bool MovementComponent::isState(State state) const
 {
 	switch (state)
@@ -135,5 +130,14 @@ bool MovementComponent::isState(State state) const
 	return false;
 }
 
+const sf::Vector2f& MovementComponent::getSpeed() const
+{
+	return speed;
+}
+
+float MovementComponent::getMaxSpeed() const
+{
+	return maxSpeed;
+}
 // Initialization functions
 

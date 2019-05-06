@@ -46,6 +46,8 @@ public:
 			);
 
 	void play(const std::string key, const float& dt);
+	void play(const std::string key, const float& dt,
+			const float modifier, const float modifierMax);
 
 private:
 	class Animation
@@ -64,6 +66,8 @@ private:
 
 		// Functions
 		void play(const float& dt);
+		void play(const float& dt,
+				const float modifier, const float modifierMax);
 		void reset();
 
 		// Variables

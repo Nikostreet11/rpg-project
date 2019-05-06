@@ -52,6 +52,17 @@ void AnimationComponent::play(const std::string key, const float& dt)
 	animations[key]->play(dt);
 }
 
+void AnimationComponent::play(const std::string key, const float& dt,
+		const float modifier, const float modifierMax)
+{
+	if (animations[key] != lastAnimation)
+	{
+		animations[key]->reset();
+		lastAnimation = animations[key];
+	}
+	animations[key]->play(dt, modifier, modifierMax);
+}
+
 // Animation
 
 // Constructor / Destructor
@@ -82,7 +93,32 @@ AnimationComponent::Animation::~Animation()
 void AnimationComponent::Animation::play(const float& dt)
 {
 	// Update timer
-	timer += 1.f * dt;
+	timer += dt;
+	if (timer > animationTimer)
+	{
+		// Reset timer
+		timer = 0.f;
+
+		// Animate
+		if (currentRect < rectVector.size() - 1)
+		{
+			currentRect++;
+		}
+		// Reset
+		else
+		{
+			currentRect = 0;
+		}
+
+		sprite.setTextureRect(rectVector[currentRect]);
+	}
+}
+
+void AnimationComponent::Animation::play(const float& dt,
+		const float modifier, const float modifierMax)
+{
+	// Update timer
+	timer += std::abs(modifier / modifierMax) * dt;
 	if (timer > animationTimer)
 	{
 		// Reset timer

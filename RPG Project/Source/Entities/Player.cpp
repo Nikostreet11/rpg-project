@@ -15,7 +15,7 @@ Player::Player(sf::Vector2f position, std::shared_ptr<sf::Texture> textureSheet)
 	setTexture(textureSheet);
 	setPosition(position);
 
-	createMovement(300.f, 15.f, 5.f);
+	createMovement(350.f, 15.f, 5.f);
 
 	createAnimationComponent(textureSheet);
 	initAnimations();
@@ -39,16 +39,24 @@ void Player::update(const float& dt)
 		animationComponent->play("IDLE", dt);
 
 	else if (movementComponent->isState(MovementComponent::MOVING_LEFT))
-		animationComponent->play("WALK_LEFT", dt);
+		animationComponent->play("WALK_LEFT", dt,
+				movementComponent->getSpeed().x,
+				movementComponent->getMaxSpeed());
 
 	else if (movementComponent->isState(MovementComponent::MOVING_RIGHT))
-		animationComponent->play("WALK_RIGHT", dt);
+		animationComponent->play("WALK_RIGHT", dt,
+				movementComponent->getSpeed().x,
+				movementComponent->getMaxSpeed());
 
 	else if (movementComponent->isState(MovementComponent::MOVING_UP))
-		animationComponent->play("WALK_UP", dt);
+		animationComponent->play("WALK_UP", dt,
+				movementComponent->getSpeed().y,
+				movementComponent->getMaxSpeed());
 
 	else if (movementComponent->isState(MovementComponent::MOVING_DOWN))
-		animationComponent->play("WALK_DOWN", dt);
+		animationComponent->play("WALK_DOWN", dt,
+				movementComponent->getSpeed().y,
+				movementComponent->getMaxSpeed());
 
 	hitboxComponent->update();
 }
