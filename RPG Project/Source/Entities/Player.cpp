@@ -39,24 +39,24 @@ void Player::update(const float& dt)
 		animationComponent->play("IDLE", dt);
 
 	else if (movementComponent->isState(MovementComponent::MOVING_LEFT))
-		animationComponent->play("WALK_LEFT", dt,
-				movementComponent->getSpeed().x,
-				movementComponent->getMaxSpeed());
+		animationComponent->play("WALK_LEFT", dt, std::abs(
+				movementComponent->getSpeed().x /
+				movementComponent->getMaxSpeed()));
 
 	else if (movementComponent->isState(MovementComponent::MOVING_RIGHT))
-		animationComponent->play("WALK_RIGHT", dt,
-				movementComponent->getSpeed().x,
-				movementComponent->getMaxSpeed());
+		animationComponent->play("WALK_RIGHT", dt, std::abs(
+				movementComponent->getSpeed().x /
+				movementComponent->getMaxSpeed()));
 
 	else if (movementComponent->isState(MovementComponent::MOVING_UP))
-		animationComponent->play("WALK_UP", dt,
-				movementComponent->getSpeed().y,
-				movementComponent->getMaxSpeed());
+		animationComponent->play("WALK_UP", dt, std::abs(
+				movementComponent->getSpeed().y /
+				movementComponent->getMaxSpeed()));
 
 	else if (movementComponent->isState(MovementComponent::MOVING_DOWN))
-		animationComponent->play("WALK_DOWN", dt,
-				movementComponent->getSpeed().y,
-				movementComponent->getMaxSpeed());
+		animationComponent->play("WALK_DOWN", dt, std::abs(
+				movementComponent->getSpeed().y /
+				movementComponent->getMaxSpeed()));
 
 	hitboxComponent->update();
 }

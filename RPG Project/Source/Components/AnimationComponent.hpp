@@ -45,9 +45,10 @@ public:
 			std::vector<sf::IntRect>& rectVector
 			);
 
-	void play(const std::string key, const float& dt);
 	void play(const std::string key, const float& dt,
-			const float modifier, const float modifierMax);
+			const bool priority = false);
+	void play(const std::string key, const float& dt,
+			const float modifier, const bool priority = false);
 
 private:
 	class Animation
@@ -66,8 +67,7 @@ private:
 
 		// Functions
 		void play(const float& dt);
-		void play(const float& dt,
-				const float modifier, const float modifierMax);
+		void play(const float& dt, float modifier);
 		void reset();
 
 		// Variables
@@ -88,6 +88,7 @@ private:
 	std::shared_ptr<sf::Texture> textureSheet;
 	std::map<std::string, std::shared_ptr<Animation>> animations;
 	std::shared_ptr<Animation> lastAnimation;
+	std::shared_ptr<Animation> priorityAnimation;
 };
 
 #endif /* COMPONENTS_ANIMATIONCOMPONENT_HPP_ */

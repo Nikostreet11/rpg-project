@@ -18,6 +18,7 @@ sprite(sprite),
 textureSheet(textureSheet)
 {
 	lastAnimation = nullptr;
+	priorityAnimation = nullptr;
 }
 
 AnimationComponent::~AnimationComponent()
@@ -42,7 +43,8 @@ void AnimationComponent::addAnimation(
 			);
 }
 
-void AnimationComponent::play(const std::string key, const float& dt)
+void AnimationComponent::play(const std::string key, const float& dt,
+		const bool priority)
 {
 	if (animations[key] != lastAnimation)
 	{
@@ -53,14 +55,14 @@ void AnimationComponent::play(const std::string key, const float& dt)
 }
 
 void AnimationComponent::play(const std::string key, const float& dt,
-		const float modifier, const float modifierMax)
+		const float modifier, const bool priority)
 {
 	if (animations[key] != lastAnimation)
 	{
 		animations[key]->reset();
 		lastAnimation = animations[key];
 	}
-	animations[key]->play(dt, modifier, modifierMax);
+	animations[key]->play(dt, modifier);
 }
 
 // Animation
@@ -114,11 +116,14 @@ void AnimationComponent::Animation::play(const float& dt)
 	}
 }
 
-void AnimationComponent::Animation::play(const float& dt,
-		const float modifier, const float modifierMax)
+void AnimationComponent::Animation::play(const float& dt, float modifier)
 {
+	// Set a minimum value for the modifier
+	if (modifier < 0.5f)
+		modifier = 0.5f;
+
 	// Update timer
-	timer += std::abs(modifier / modifierMax) * dt;
+	timer += dt * modifier;
 	if (timer > animationTimer)
 	{
 		// Reset timer
