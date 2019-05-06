@@ -46,23 +46,82 @@ void AnimationComponent::addAnimation(
 void AnimationComponent::play(const std::string key, const float& dt,
 		const bool priority)
 {
-	if (animations[key] != lastAnimation)
-	{
-		animations[key]->reset();
-		lastAnimation = animations[key];
+	if (priorityAnimation)
+	{// There is a priority animation playing
+		if (priorityAnimation == animations[key])
+		{// This is the priority animation => Animate
+			animations[key]->play(dt);
+
+			if (animations[key]->isDone())
+			{// The animation has finished => Unlock the priority
+				priorityAnimation = nullptr;
+			}
+		}
+		else
+		{// This is another animation => Do nothing
+		}
 	}
-	animations[key]->play(dt);
+	else
+	{// There isn't a priority animation playing
+		if (priority)
+		{// This is a priority animation => Lock the priority
+			priorityAnimation = animations[key];
+		}
+
+		if (animations[key] != lastAnimation)
+		{// This animation is different from the last one
+			animations[key]->reset();
+			lastAnimation = animations[key];
+		}
+		animations[key]->play(dt);
+	}
 }
 
 void AnimationComponent::play(const std::string key, const float& dt,
 		const float modifier, const bool priority)
 {
-	if (animations[key] != lastAnimation)
-	{
-		animations[key]->reset();
-		lastAnimation = animations[key];
+	if (priorityAnimation)
+	{// There is a priority animation playing
+		if (priorityAnimation == animations[key])
+		{// This is the priority animation => Animate
+			animations[key]->play(dt, modifier);
+
+			if (animations[key]->isDone())
+			{// The animation has finished => Unlock the priority
+				priorityAnimation = nullptr;
+			}
+		}
+		else
+		{// This is another animation => Do nothing
+		}
 	}
-	animations[key]->play(dt, modifier);
+	else
+	{// There isn't a priority animation playing
+		if (priority)
+		{// This is a priority animation => Lock the priority
+			priorityAnimation = animations[key];
+		}
+
+		if (animations[key] != lastAnimation)
+		{// This animation is different from the last one
+			animations[key]->reset();
+			lastAnimation = animations[key];
+		}
+		animations[key]->play(dt, modifier);
+	}
+}
+
+void AnimationComponent::playPriorityAnimation(const float& dt)
+{
+	if (priorityAnimation)
+	{
+		priorityAnimation->play(dt);
+
+		if (priorityAnimation->isDone())
+		{// The animation has finished => Unlock the priority
+			priorityAnimation = nullptr;
+		}
+	}
 }
 
 // Animation
@@ -84,7 +143,10 @@ rectVector(rectVector)
 //size(size)
 {
 	timer = 0;
+	done = false;
 	currentRect = 0;
+
+	this->sprite.setTexture(*textureSheet, true);
 }
 
 AnimationComponent::Animation::~Animation()
@@ -94,6 +156,8 @@ AnimationComponent::Animation::~Animation()
 // Functions
 void AnimationComponent::Animation::play(const float& dt)
 {
+	done = false;
+
 	// Update timer
 	timer += dt;
 	if (timer > animationTimer)
@@ -110,6 +174,7 @@ void AnimationComponent::Animation::play(const float& dt)
 		else
 		{
 			currentRect = 0;
+			done = true;
 		}
 
 		sprite.setTextureRect(rectVector[currentRect]);
@@ -118,6 +183,8 @@ void AnimationComponent::Animation::play(const float& dt)
 
 void AnimationComponent::Animation::play(const float& dt, float modifier)
 {
+	done = false;
+
 	// Set a minimum value for the modifier
 	if (modifier < 0.5f)
 		modifier = 0.5f;
@@ -138,6 +205,7 @@ void AnimationComponent::Animation::play(const float& dt, float modifier)
 		else
 		{
 			currentRect = 0;
+			done = true;
 		}
 
 		sprite.setTextureRect(rectVector[currentRect]);
@@ -149,6 +217,10 @@ void AnimationComponent::Animation::reset()
 	timer = 0.f;
 	currentRect = 0;
 
-	this->sprite.setTexture(*textureSheet, true);
 	sprite.setTextureRect(rectVector[0]);
+}
+
+bool AnimationComponent::Animation::isDone() const
+{
+	return done;
 }

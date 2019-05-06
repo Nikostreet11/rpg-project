@@ -33,6 +33,9 @@ Player::~Player()
 // Functions
 void Player::update(const float& dt)
 {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+		animationComponent->play("SPIN", dt, true);
+
 	movementComponent->update(dt);
 
 	if (movementComponent->isState(MovementComponent::IDLE))
@@ -57,6 +60,8 @@ void Player::update(const float& dt)
 		animationComponent->play("WALK_DOWN", dt, std::abs(
 				movementComponent->getSpeed().y /
 				movementComponent->getMaxSpeed()));
+
+	animationComponent->playPriorityAnimation(dt);
 
 	hitboxComponent->update();
 }
@@ -106,5 +111,20 @@ void Player::initAnimations()
 	};
 	animationComponent->addAnimation("WAVE", 0.5f, rectVector);
 
-
+	rectVector = {	// 0 5 2 7 0 5 2 7 11 11 11 11 9 9
+			sf::IntRect(0, 0, 36, 36),
+			sf::IntRect(180, 0, 36, 36),
+			sf::IntRect(72, 0, 36, 36),
+			sf::IntRect(252, 0, 36, 36),
+			sf::IntRect(0, 0, 36, 36),
+			sf::IntRect(180, 0, 36, 36),
+			sf::IntRect(72, 0, 36, 36),
+			sf::IntRect(252, 0, 36, 36),
+			sf::IntRect(396, 0, 36, 36),
+			sf::IntRect(396, 0, 36, 36),
+			sf::IntRect(396, 0, 36, 36),
+			sf::IntRect(288, 0, 36, 36),
+			sf::IntRect(288, 0, 36, 36)
+	};
+	animationComponent->addAnimation("SPIN", 0.2f, rectVector);
 }

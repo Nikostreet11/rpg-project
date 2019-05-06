@@ -49,6 +49,7 @@ public:
 			const bool priority = false);
 	void play(const std::string key, const float& dt,
 			const float modifier, const bool priority = false);
+	void playPriorityAnimation(const float& dt);
 
 private:
 	class Animation
@@ -70,11 +71,15 @@ private:
 		void play(const float& dt, float modifier);
 		void reset();
 
+		// Getters / Setters
+		bool isDone() const;
+
 		// Variables
 		sf::Sprite& sprite;
 		std::shared_ptr<sf::Texture> textureSheet;
 		float animationTimer;
 		float timer;
+		bool done;
 		/*sf::Vector2i size;
 		sf::IntRect startRect;
 		sf::IntRect currentRect;
