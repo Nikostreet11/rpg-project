@@ -10,6 +10,8 @@
 
 #include "State.hpp"
 
+#include "../GUI/PauseMenu.hpp"
+
 class GameState :
 		public State
 {
@@ -38,8 +40,9 @@ private:
 	void initTextures();
 	void initPlayers();
 
-	// Variables
+	// Resources
 	std::unique_ptr<Player> player;
+	PauseMenu pauseMenu;
 };
 
 #endif /* STATES_GAMESTATE_HPP_ */

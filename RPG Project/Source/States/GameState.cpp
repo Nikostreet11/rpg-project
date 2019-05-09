@@ -13,7 +13,8 @@ GameState::GameState(
 		std::shared_ptr<sf::RenderWindow> window,
 		std::shared_ptr<std::map<std::string, int>> supportedKeys,
 		std::shared_ptr<std::stack<std::unique_ptr<State>>> states) :
-State(window, supportedKeys, states)
+State(window, supportedKeys, states),
+pauseMenu(window)
 {
 	initKeybinds();
 	initTextures();
@@ -33,24 +34,42 @@ void GameState::endState()
 
 void GameState::update(const float& dt)
 {
-	updateInput(dt);
-	updateMousePositions();
+	if (!paused)
+	{
+		// Unpaused update
+		updateInput(dt);
+		updateMousePositions();
 
-	player->update(dt);
+		player->update(dt);
+	}
+	else
+	{
+		// Paused update
+		pauseMenu.update(dt);
+	}
 }
 
 void GameState::updateInput(const float& dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_LEFT"))))
 		player->move(-1, 0, dt);
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_RIGHT"))))
 		player->move(1, 0, dt);
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_UP"))))
 		player->move(0, -1, dt);
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_DOWN"))))
 		player->move(0, 1, dt);
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE"))))
-		endState();
+	{
+		if (!paused)
+			pauseState();
+		/*else
+			unpauseState();*/
+	}
 }
 
 void GameState::render(std::shared_ptr<sf::RenderTarget> target)
@@ -59,6 +78,12 @@ void GameState::render(std::shared_ptr<sf::RenderTarget> target)
 		target = window;
 
 	player->render(target);
+
+	if (paused)
+	{
+		// Pause menu render
+		pauseMenu.render(window);
+	}
 }
 
 // Getters / Setters
