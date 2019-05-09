@@ -33,37 +33,41 @@ Player::~Player()
 // Functions
 void Player::update(const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-		animationComponent->play("SPIN", dt, true);
-
 	movementComponent->update(dt);
+
+	updateAnimations(dt);
+
+	hitboxComponent->update();
+}
+
+void Player::updateAnimations(const float& dt)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) ||
+			!animationComponent->isDone("SPIN"))
+		animationComponent->play("SPIN", dt, true);
 
 	if (movementComponent->isState(MovementComponent::IDLE))
 		animationComponent->play("IDLE", dt);
 
-	else if (movementComponent->isState(MovementComponent::MOVING_LEFT))
+	if (movementComponent->isState(MovementComponent::MOVING_LEFT))
 		animationComponent->play("WALK_LEFT", dt, std::abs(
 				movementComponent->getSpeed().x /
 				movementComponent->getMaxSpeed()));
 
-	else if (movementComponent->isState(MovementComponent::MOVING_RIGHT))
+	if (movementComponent->isState(MovementComponent::MOVING_RIGHT))
 		animationComponent->play("WALK_RIGHT", dt, std::abs(
 				movementComponent->getSpeed().x /
 				movementComponent->getMaxSpeed()));
 
-	else if (movementComponent->isState(MovementComponent::MOVING_UP))
+	if (movementComponent->isState(MovementComponent::MOVING_UP))
 		animationComponent->play("WALK_UP", dt, std::abs(
 				movementComponent->getSpeed().y /
 				movementComponent->getMaxSpeed()));
 
-	else if (movementComponent->isState(MovementComponent::MOVING_DOWN))
+	if (movementComponent->isState(MovementComponent::MOVING_DOWN))
 		animationComponent->play("WALK_DOWN", dt, std::abs(
 				movementComponent->getSpeed().y /
 				movementComponent->getMaxSpeed()));
-
-	animationComponent->playPriorityAnimation(dt);
-
-	hitboxComponent->update();
 }
 
 // Initialization functions

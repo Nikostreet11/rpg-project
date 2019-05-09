@@ -39,9 +39,6 @@ public:
 	void addAnimation(
 			const std::string key,
 			float animationTimer,
-			/*sf::Vector2i startFrame,
-			sf::Vector2i frames,
-			sf::Vector2i size*/
 			std::vector<sf::IntRect>& rectVector
 			);
 
@@ -49,7 +46,9 @@ public:
 			const bool priority = false);
 	void play(const std::string key, const float& dt,
 			const float modifier, const bool priority = false);
-	void playPriorityAnimation(const float& dt);
+
+	// Getters / Setters
+	bool isDone(std::string key);
 
 private:
 	class Animation
@@ -59,9 +58,6 @@ private:
 				sf::Sprite& sprite,
 				std::shared_ptr<sf::Texture> textureSheet,
 				float animationTimer,
-				/*sf::Vector2i startFrame,
-				sf::Vector2i frames,
-				sf::Vector2i size*/
 				const std::vector<sf::IntRect>& rectVector
 				);
 		virtual ~Animation();
@@ -74,19 +70,16 @@ private:
 		// Getters / Setters
 		bool isDone() const;
 
-		// Variables
+		// Resources
 		sf::Sprite& sprite;
 		std::shared_ptr<sf::Texture> textureSheet;
+		std::vector<sf::IntRect> rectVector;
+
+		// Variables
+		std::size_t currentRect;
 		float animationTimer;
 		float timer;
 		bool done;
-		/*sf::Vector2i size;
-		sf::IntRect startRect;
-		sf::IntRect currentRect;
-		sf::IntRect endRect;*/
-
-		std::vector<sf::IntRect> rectVector;
-		std::size_t currentRect;
 	};
 
 	sf::Sprite& sprite;

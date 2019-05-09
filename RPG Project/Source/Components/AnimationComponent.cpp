@@ -29,9 +29,6 @@ AnimationComponent::~AnimationComponent()
 void AnimationComponent::addAnimation(
 		const std::string key,
 		float animationTimer,
-		/*sf::Vector2i startFrame,
-		sf::Vector2i frames,
-		sf::Vector2i size*/
 		std::vector<sf::IntRect>& rectVector
 		)
 {
@@ -49,11 +46,13 @@ void AnimationComponent::play(const std::string key, const float& dt,
 	if (priorityAnimation)
 	{// There is a priority animation playing
 		if (priorityAnimation == animations[key])
-		{// This is the priority animation => Animate
+		{// This is the priority animation
+			// Animate
 			animations[key]->play(dt);
 
 			if (animations[key]->isDone())
-			{// The animation has finished => Unlock the priority
+			{// The animation has finished
+				// Unlock the priority
 				priorityAnimation = nullptr;
 			}
 		}
@@ -64,7 +63,8 @@ void AnimationComponent::play(const std::string key, const float& dt,
 	else
 	{// There isn't a priority animation playing
 		if (priority)
-		{// This is a priority animation => Lock the priority
+		{// This is a priority animation
+			// Lock the priority
 			priorityAnimation = animations[key];
 		}
 
@@ -83,11 +83,13 @@ void AnimationComponent::play(const std::string key, const float& dt,
 	if (priorityAnimation)
 	{// There is a priority animation playing
 		if (priorityAnimation == animations[key])
-		{// This is the priority animation => Animate
+		{// This is the priority animation
+			// Animate
 			animations[key]->play(dt, modifier);
 
 			if (animations[key]->isDone())
-			{// The animation has finished => Unlock the priority
+			{// The animation has finished
+				// Unlock the priority
 				priorityAnimation = nullptr;
 			}
 		}
@@ -98,7 +100,8 @@ void AnimationComponent::play(const std::string key, const float& dt,
 	else
 	{// There isn't a priority animation playing
 		if (priority)
-		{// This is a priority animation => Lock the priority
+		{// This is a priority animation
+			// Lock the priority
 			priorityAnimation = animations[key];
 		}
 
@@ -111,17 +114,9 @@ void AnimationComponent::play(const std::string key, const float& dt,
 	}
 }
 
-void AnimationComponent::playPriorityAnimation(const float& dt)
+bool AnimationComponent::isDone(std::string key)
 {
-	if (priorityAnimation)
-	{
-		priorityAnimation->play(dt);
-
-		if (priorityAnimation->isDone())
-		{// The animation has finished => Unlock the priority
-			priorityAnimation = nullptr;
-		}
-	}
+	return animations[key]->isDone();
 }
 
 // Animation
@@ -131,22 +126,17 @@ AnimationComponent::Animation::Animation(
 		sf::Sprite& sprite,
 		std::shared_ptr<sf::Texture> textureSheet,
 		float animationTimer,
-		/*sf::Vector2i startFrame,
-		sf::Vector2i frames,
-		sf::Vector2i size*/
 		const std::vector<sf::IntRect>& rectVector
 		) :
 sprite(sprite),
 textureSheet(textureSheet),
+rectVector(rectVector),
+currentRect(0),
 animationTimer(animationTimer),
-rectVector(rectVector)
-//size(size)
+timer(0),
+done(true)
 {
-	timer = 0;
-	done = false;
-	currentRect = 0;
-
-	this->sprite.setTexture(*textureSheet, true);
+	this->sprite.setTexture(*textureSheet);
 }
 
 AnimationComponent::Animation::~Animation()
