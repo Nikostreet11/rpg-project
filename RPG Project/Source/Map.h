@@ -8,7 +8,6 @@
 #ifndef MAP_H_
 #define MAP_H_
 
-#include "Tile.h"
 #include "Foe.h"
 #include "Party.h"
 
@@ -16,6 +15,7 @@
 #include <vector>
 
 #include "States/Battle.h"
+#include "Tiles/Tile.hpp"
 
 class Map {
 public:

@@ -5,12 +5,12 @@
  *      Author: nicop
  */
 
-#ifndef TILE_H_
-#define TILE_H_
+#ifndef TILES_TILE_HPP_
+#define TILES_TILE_HPP_
 
-#include "Character.h"
+#include "../Character.h"
 
-#include "TileType.h"
+#include "../TileType.h"
 
 class Tile {
 public:
@@ -34,4 +34,4 @@ private:
 	bool dangerous;
 };
 
-#endif /* TILE_H_ */
+#endif /* TILES_TILE_HPP_ */

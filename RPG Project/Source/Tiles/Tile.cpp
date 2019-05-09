@@ -5,7 +5,7 @@
  *      Author: nicop
  */
 
-#include "Tile.h"
+#include "Tile.hpp"
 
 Tile::Tile() : /*texture(villages), */tileType(TileType::nullType) {
 	updateInfo(/*texture, */tileType);
@@ -17,6 +17,7 @@ Tile::Tile(/*Texture texture, */TileType tileType) :
 }
 
 Tile::~Tile() {}
+
 Tile& Tile::operator=(const Tile& entry) {
 	if (this != &entry) {
 		//texture = entry.getTexture();
