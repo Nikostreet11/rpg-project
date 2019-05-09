@@ -44,32 +44,36 @@ void AnimationComponent::play(const std::string key, const float& dt,
 		const bool priority)
 {
 	if (priorityAnimation)
-	{// There is a priority animation playing
+	{
+		// There is a priority animation playing
 		if (priorityAnimation == animations[key])
-		{// This is the priority animation
-			// Animate
+		{
+			// This is the priority animation => Animate
 			animations[key]->play(dt);
 
 			if (animations[key]->isDone())
-			{// The animation has finished
-				// Unlock the priority
+			{
+				// The animation has finished => Unlock the priority
 				priorityAnimation = nullptr;
 			}
 		}
 		else
-		{// This is another animation => Do nothing
+		{
+			// This is another animation => Do nothing
 		}
 	}
 	else
-	{// There isn't a priority animation playing
+	{
+		// There isn't a priority animation playing
 		if (priority)
-		{// This is a priority animation
-			// Lock the priority
+		{
+			// This is a priority animation => Lock the priority
 			priorityAnimation = animations[key];
 		}
 
 		if (animations[key] != lastAnimation)
-		{// This animation is different from the last one
+		{
+			// This animation is different from the last one
 			animations[key]->reset();
 			lastAnimation = animations[key];
 		}
@@ -81,35 +85,40 @@ void AnimationComponent::play(const std::string key, const float& dt,
 		const float modifier, const bool priority)
 {
 	if (priorityAnimation)
-	{// There is a priority animation playing
+	{
+		// There is a priority animation playing
 		if (priorityAnimation == animations[key])
-		{// This is the priority animation
-			// Animate
+		{
+			// This is the priority animation => Animate
 			animations[key]->play(dt, modifier);
 
 			if (animations[key]->isDone())
-			{// The animation has finished
-				// Unlock the priority
+			{
+				// The animation has finished => Unlock the priority
 				priorityAnimation = nullptr;
 			}
 		}
 		else
-		{// This is another animation => Do nothing
+		{
+			// This is another animation => Do nothing
 		}
 	}
 	else
-	{// There isn't a priority animation playing
+	{
+		// There isn't a priority animation playing
 		if (priority)
-		{// This is a priority animation
-			// Lock the priority
+		{
+			// This is a priority animation => Lock the priority
 			priorityAnimation = animations[key];
 		}
 
 		if (animations[key] != lastAnimation)
-		{// This animation is different from the last one
+		{
+			// This animation is different from the last one
 			animations[key]->reset();
 			lastAnimation = animations[key];
 		}
+
 		animations[key]->play(dt, modifier);
 	}
 }
