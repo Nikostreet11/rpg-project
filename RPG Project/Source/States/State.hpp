@@ -48,6 +48,7 @@ protected:
 	// Initialization functions
 	virtual void initKeybinds() = 0;
 
+	// Structures
 	struct Key {
 		int code;
 		bool wasPressed = false;

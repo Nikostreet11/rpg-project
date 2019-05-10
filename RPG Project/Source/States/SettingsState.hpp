@@ -1,30 +1,29 @@
 /*
- * MainMenu.h
+ * SettingsState.hpp
  *
- *  Created on: Sep 19, 2018
+ *  Created on: May 10, 2019
  *      Author: nicop
  */
 
-#ifndef STATES_MAINMENUSTATE_HPP_
-#define STATES_MAINMENUSTATE_HPP_
+#ifndef STATES_SETTINGSSTATE_HPP_
+#define STATES_SETTINGSSTATE_HPP_
 
-#include "GameState.hpp"
-#include "EditorState.hpp"
-#include "SettingsState.hpp"
+#include "State.hpp"
+
 #include "../Resources/Button.hpp"
 
-class MainMenuState:
-		public State
+class SettingsState :
+	public State
 {
 public:
 	// Static functions
 
 	// Constructors / Destructors
-	explicit MainMenuState(
+	explicit SettingsState(
 			std::shared_ptr<sf::RenderWindow> window,
 			std::shared_ptr<std::map<std::string, int>> supportedKeys,
 			std::shared_ptr<std::stack<std::unique_ptr<State>>> states);
-	virtual ~MainMenuState();
+	virtual ~SettingsState();
 
 	// Functions
 	virtual void endState();
@@ -34,15 +33,6 @@ public:
 	void updateButtons();
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
 	void renderButtons(std::shared_ptr<sf::RenderTarget> target = nullptr);
-
-	//static MainMenu* getInstance();
-
-	/*virtual void draw();
-	virtual void keyPressed_W(Game& game);
-	virtual void keyPressed_A(Game& game);
-	virtual void keyPressed_S(Game& game);
-	virtual void keyPressed_D(Game& game);
-	virtual void keyPressed_Enter(Game& game);*/
 
 protected:
 	// Initialization functions
@@ -60,8 +50,6 @@ protected:
 
 	// Resources
 	sf::Texture backgroundTexture;
-
-	//static MainMenu* instance;
 };
 
-#endif /* STATES_MAINMENUSTATE_HPP_ */
+#endif /* STATES_SETTINGSSTATE_HPP_ */
