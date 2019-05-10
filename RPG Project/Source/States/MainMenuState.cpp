@@ -159,7 +159,7 @@ void MainMenuState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
-			keybinds[action] = (*supportedKeys)[key];
+			keybinds[action].code = (*supportedKeys)[key];
 		}
 	}
 

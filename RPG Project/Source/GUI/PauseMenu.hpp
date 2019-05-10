@@ -41,17 +41,32 @@ class PauseMenu
 {
 public:
 	// Constructor / Destructor
-	PauseMenu(std::shared_ptr<sf::RenderWindow> window);
+	PauseMenu(
+			std::shared_ptr<sf::RenderWindow> window,
+			std::shared_ptr<sf::Font> font);
 	virtual ~PauseMenu();
 
 	// Functions
-	void update(const float& dt);
+	void addButton(
+			const std::string key,
+			float y,
+			const std::string text);
+
+	bool isButtonPressed(const std::string& key);
+
+	void update(const sf::Vector2f& mousePos);
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
+	// Getters / Setters
+	std::map<std::string, std::unique_ptr<Button>>& getButtons();
+
 private:
-	// Variables
+	// Resources
 	sf::RectangleShape background;
 	sf::RectangleShape container;
+
+	std::shared_ptr<sf::Font> font;
+	sf::Text menuText;
 
 	std::map<std::string, std::unique_ptr<Button>> buttons;
 };

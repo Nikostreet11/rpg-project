@@ -30,6 +30,8 @@ public:
 
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
+	virtual void updatePlayerInput(const float& dt);
+	virtual void updatePauseMenuButtons();
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
 
 	// Getters / Setters
@@ -37,12 +39,18 @@ public:
 private:
 	// Initialization functions
 	void initKeybinds();
+	void initFonts();
 	void initTextures();
 	void initPlayers();
+	void initPauseMenu();
 
 	// Resources
 	std::unique_ptr<Player> player;
-	PauseMenu pauseMenu;
+	std::unique_ptr<PauseMenu> pauseMenu;
+	std::shared_ptr<sf::Font> font;
+
+	// Variables
+	bool wasButtonPressed;
 };
 
 #endif /* STATES_GAMESTATE_HPP_ */

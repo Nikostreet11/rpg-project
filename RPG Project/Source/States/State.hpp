@@ -48,11 +48,16 @@ protected:
 	// Initialization functions
 	virtual void initKeybinds() = 0;
 
+	struct Key {
+		int code;
+		bool wasPressed = false;
+	};
+
 	// Resources
 	std::shared_ptr<sf::RenderWindow> window;
 	std::shared_ptr<std::stack<std::unique_ptr<State>>> states;
 	std::shared_ptr<std::map<std::string, int>> supportedKeys;
-	std::map<std::string, int> keybinds;
+	std::map<std::string, Key> keybinds;
 	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 
 	// Variables

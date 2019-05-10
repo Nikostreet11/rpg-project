@@ -7,7 +7,10 @@
 
 #include "PauseMenu.hpp"
 
-PauseMenu::PauseMenu(std::shared_ptr<sf::RenderWindow> window)
+PauseMenu::PauseMenu(
+		std::shared_ptr<sf::RenderWindow> window,
+		std::shared_ptr<sf::Font> font) :
+font(std::move(font))
 {
 	// Initialize background
 	background.setSize(
@@ -33,14 +36,61 @@ PauseMenu::PauseMenu(std::shared_ptr<sf::RenderWindow> window)
 			30.f
 		)
 	);
+
+	// Initialize text
+	menuText.setFont(*this->font);
+	menuText.setFillColor(sf::Color(255, 255, 255, 200));
+	menuText.setCharacterSize(60);
+	menuText.setString("PAUSED");
+	menuText.setPosition(
+			container.getPosition().x + container.getSize().x / 2.f -
+					menuText.getGlobalBounds().width / 2.f,
+			container.getPosition().y + 40.f
+	);
 }
 
 PauseMenu::~PauseMenu()
 {
 }
 
-void PauseMenu::update(const float& dt)
+void PauseMenu::addButton(
+		const std::string key,
+		float y,
+		const std::string text)
 {
+	sf::Vector2f size(250.f, 100.f);
+
+	float x = container.getPosition().x + container.getSize().x / 2.f -
+			size.x / 2.f;
+
+	buttons[key].reset(new Button(
+			// Position
+			sf::Vector2f(x, y),
+			// Size
+			size,
+			// Text options
+			font, text, 50,
+			sf::Color(150, 150, 150, 250),
+			sf::Color(250, 250, 250, 250),
+			sf::Color(220, 220, 220, 250),
+			// Button colors
+			sf::Color(150, 150, 150, 0),
+			sf::Color(250, 250, 250, 0),
+			sf::Color(220, 220, 220, 0))
+	);
+}
+
+bool PauseMenu::isButtonPressed(const std::string& key)
+{
+	return buttons[key]->isPressed();
+}
+
+void PauseMenu::update(const sf::Vector2f& mousePos)
+{
+	for (auto &i : buttons)
+	{
+		i.second->update(mousePos);
+	}
 }
 
 void PauseMenu::render(std::shared_ptr<sf::RenderTarget> target)
@@ -54,5 +104,12 @@ void PauseMenu::render(std::shared_ptr<sf::RenderTarget> target)
 		{
 			i.second->render(target);
 		}
+
+		target->draw(menuText);
 	}
+}
+
+std::map<std::string, std::unique_ptr<Button>>& PauseMenu::getButtons()
+{
+	return buttons;
 }
