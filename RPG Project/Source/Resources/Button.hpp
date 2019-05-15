@@ -28,49 +28,49 @@
 
 namespace gui {
 
-	class Button
-	{
-	public:
-		// Enumerators
-		enum class states {Idle, Hover, Active};
+class Button
+{
+public:
+	// Enumerators
+	enum class states {Idle, Hover, Active};
 
-		// Constructors / Destructors
-		explicit Button(
-				sf::Vector2f position,
-				sf::Vector2f size,
-				std::shared_ptr<sf::Font> font,
-				std::string text,
-				unsigned characterSize,
-				sf::Color textIdleColor, sf::Color textHoverColor, sf::Color textActiveColor,
-				sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
-		virtual ~Button();
+	// Constructors / Destructors
+	explicit Button(
+			sf::Vector2f position,
+			sf::Vector2f size,
+			std::shared_ptr<sf::Font> font,
+			std::string text,
+			unsigned characterSize,
+			sf::Color textIdleColor, sf::Color textHoverColor, sf::Color textActiveColor,
+			sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
+	virtual ~Button();
 
-		// Functions
-		void update(const sf::Vector2f& mousePos);
-		void render(std::shared_ptr<sf::RenderTarget> target);
+	// Functions
+	void update(const sf::Vector2f& mousePos);
+	void render(std::shared_ptr<sf::RenderTarget> target);
 
-		// Getters / Setters
-		bool isPressed() const;
+	// Getters / Setters
+	bool isPressed() const;
 
-	private:
-		// Resources
-		std::shared_ptr<sf::Font> font;
+private:
+	// Resources
+	std::shared_ptr<sf::Font> font;
 
-		// Variables
-		Button::states state;
+	// Variables
+	Button::states state;
 
-		sf::RectangleShape shape;
-		sf::Text text;
+	sf::RectangleShape shape;
+	sf::Text text;
 
-		sf::Color textIdleColor;
-		sf::Color textHoverColor;
-		sf::Color textActiveColor;
+	sf::Color textIdleColor;
+	sf::Color textHoverColor;
+	sf::Color textActiveColor;
 
-		sf::Color idleColor;
-		sf::Color hoverColor;
-		sf::Color activeColor;
-	};
+	sf::Color idleColor;
+	sf::Color hoverColor;
+	sf::Color activeColor;
+};
 
-}
+} /* namespace gui */
 
 #endif /* RESOURCES_BUTTON_HPP_ */

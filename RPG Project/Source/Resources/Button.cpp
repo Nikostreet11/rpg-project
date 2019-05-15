@@ -7,7 +7,7 @@
 
 #include "Button.hpp"
 
-using namespace gui;
+namespace gui {
 
 // Constructors / Destructors
 Button::Button(
@@ -104,3 +104,5 @@ bool Button::isPressed() const
 	else
 		return false;
 }
+
+} /* namespace gui */
