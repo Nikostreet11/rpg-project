@@ -39,6 +39,22 @@ void Entity::createMovement(
 			deceleration));
 }
 
+void Entity::createAnimationComponent(
+		std::shared_ptr<sf::Texture> textureSheet)
+{
+	animationComponent.reset(new AnimationComponent(
+			sprite,
+			std::move(textureSheet)));
+}
+
+void Entity::createHitboxComponent(
+		sf::Sprite& sprite,
+		sf::Vector2f offset,
+		sf::Vector2f size)
+{
+	hitboxComponent.reset(new HitboxComponent(sprite, offset, size));
+}
+
 // Functions
 void Entity::setPosition(const sf::Vector2f& position)
 {
@@ -62,6 +78,9 @@ void Entity::update(const float& dt)
 void Entity::render(std::shared_ptr<sf::RenderTarget> target)
 {
 	target->draw(sprite);
+
+	if (hitboxComponent)
+		hitboxComponent->render(target);
 }
 
 // Initialization functions
@@ -69,12 +88,5 @@ void Entity::initVariables()
 {
 	movementComponent = nullptr;
 	animationComponent = nullptr;
-}
-
-void Entity::createAnimationComponent(
-		std::shared_ptr<sf::Texture> textureSheet)
-{
-	animationComponent.reset(new AnimationComponent(
-			sprite,
-			std::move(textureSheet)));
+	hitboxComponent = nullptr;
 }

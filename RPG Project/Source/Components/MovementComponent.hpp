@@ -63,6 +63,7 @@ public:
 	// Getters / Setters
 	const sf::Vector2f& getSpeed() const;
 	bool isState(State state) const;
+	float getMaxSpeed() const;
 
 private:
 	// Initialization functions

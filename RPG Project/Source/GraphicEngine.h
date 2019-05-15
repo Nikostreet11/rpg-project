@@ -10,7 +10,6 @@
 
 #include "GraphicService.h"
 #include "Map.h"
-#include "Tile.h"
 #include "Camera.h"
 #include "GraphicsInfo.h"
 #include "SpriteInfo.h"
@@ -26,6 +25,7 @@
 #include "States/Battle.h"
 #include "States/Exploration.h"
 #include "States/MainMenuState.hpp"
+#include "Tiles/Tile.hpp"
 
 class GraphicEngine : public GraphicService {
 public:

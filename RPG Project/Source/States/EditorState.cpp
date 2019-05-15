@@ -44,7 +44,7 @@ void EditorState::update(const float& dt)
 
 void EditorState::updateInput(const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE"))))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE").code)))
 		endState();
 }
 
@@ -102,7 +102,7 @@ void EditorState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
-			keybinds[action] = (*supportedKeys)[key];
+			keybinds[action].code = (*supportedKeys)[key];
 		}
 	}
 

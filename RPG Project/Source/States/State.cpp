@@ -15,14 +15,25 @@ State::State(
 		std::shared_ptr<std::map<std::string, int>> supportedKeys,
 		std::shared_ptr<std::stack<std::unique_ptr<State>>> states) :
 window(move(window)),
-supportedKeys(move(supportedKeys)),
-states(move(states))
+states(move(states)),
+supportedKeys(move(supportedKeys))
 {
 	ended = false;
+	paused = false;
 }
 
 State::~State()
 {
+}
+
+void State::pauseState()
+{
+	paused = true;
+}
+
+void State::unpauseState()
+{
+	paused = false;
 }
 
 // Functions

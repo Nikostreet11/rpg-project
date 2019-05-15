@@ -20,10 +20,12 @@ public:
 
 	// Functions
 	virtual void update(const float& dt) override;
+	void updateAnimations(const float& dt);
 
 private:
 	// Initialization functions
 	void initVariables();
+	void initAnimations();
 
 	// Variables
 };

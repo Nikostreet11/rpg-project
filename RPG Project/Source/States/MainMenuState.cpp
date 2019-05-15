@@ -70,12 +70,20 @@ void MainMenuState::updateButtons()
 		states->push(move(gameStatePtr));
 	}
 
-	// New game
+	// Editor
 	if (buttons["EDITOR_STATE"]->isPressed())
 	{
 		std::unique_ptr<State> editorStatePtr(
 				new EditorState(window, supportedKeys, states));
 		states->push(move(editorStatePtr));
+	}
+
+	// Settings
+	if (buttons["SETTINGS_STATE"]->isPressed())
+	{
+		std::unique_ptr<State> settingsStatePtr(
+				new SettingsState(window, supportedKeys, states));
+		states->push(move(settingsStatePtr));
 	}
 
 	// Quit the game
@@ -159,7 +167,7 @@ void MainMenuState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
-			keybinds[action] = (*supportedKeys)[key];
+			keybinds[action].code = (*supportedKeys)[key];
 		}
 	}
 

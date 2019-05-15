@@ -10,6 +10,7 @@
 
 #include "../Components/AnimationComponent.hpp"
 #include "../Components/MovementComponent.hpp"
+#include "../Components/HitboxComponent.hpp"
 
 class Entity
 {
@@ -28,6 +29,10 @@ public:
 			float deceleration);
 	void createAnimationComponent(
 			std::shared_ptr<sf::Texture> textureSheet);
+	void createHitboxComponent(
+			sf::Sprite& sprite,
+			sf::Vector2f offset,
+			sf::Vector2f size);
 
 	// Functions
 	virtual void setPosition(const sf::Vector2f& position);
@@ -43,6 +48,7 @@ protected:
 	// Variables
 	sf::Sprite sprite;
 
+	std::unique_ptr<HitboxComponent> hitboxComponent;
 	std::unique_ptr<MovementComponent> movementComponent;
 	std::unique_ptr<AnimationComponent> animationComponent;
 };

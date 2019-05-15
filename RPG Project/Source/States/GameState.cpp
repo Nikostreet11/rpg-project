@@ -16,8 +16,12 @@ GameState::GameState(
 State(window, supportedKeys, states)
 {
 	initKeybinds();
+	initFonts();
 	initTextures();
 	initPlayers();
+	initPauseMenu();
+
+	wasButtonPressed = false;
 }
 
 GameState::~GameState()
@@ -33,23 +37,71 @@ void GameState::endState()
 
 void GameState::update(const float& dt)
 {
-	updateInput(dt);
 	updateMousePositions();
+	updateInput(dt);
 
-	player->update(dt);
+	if (!paused)
+	{
+		// Unpaused update
+		updatePlayerInput(dt);
+
+		player->update(dt);
+	}
+	else
+	{
+		// Paused update
+		pauseMenu->update(mousePosView);
+		updatePauseMenuButtons();
+	}
 }
 
 void GameState::updateInput(const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_LEFT"))))
+	Key& key = keybinds.at("CLOSE");
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(key.code)) &&
+			!key.wasPressed)
+	{
+		// Key pressed
+		if (!paused)
+			pauseState();
+		else
+			unpauseState();
+
+		key.wasPressed = true;
+	}
+
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(key.code)) &&
+			key.wasPressed)
+	{
+		// Key released
+
+		key.wasPressed = false;
+	}
+}
+
+void GameState::updatePlayerInput(const float& dt)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(
+			keybinds.at("MOVE_LEFT").code)))
 		player->move(-1, 0, dt);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_RIGHT"))))
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(
+			keybinds.at("MOVE_RIGHT").code)))
 		player->move(1, 0, dt);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_UP"))))
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(
+			keybinds.at("MOVE_UP").code)))
 		player->move(0, -1, dt);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("MOVE_DOWN"))))
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(
+			keybinds.at("MOVE_DOWN").code)))
 		player->move(0, 1, dt);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE"))))
+}
+
+void GameState::updatePauseMenuButtons()
+{
+	if (pauseMenu->isButtonPressed("QUIT"))
 		endState();
 }
 
@@ -59,6 +111,12 @@ void GameState::render(std::shared_ptr<sf::RenderTarget> target)
 		target = window;
 
 	player->render(target);
+
+	if (paused)
+	{
+		// Pause menu render
+		pauseMenu->render(window);
+	}
 }
 
 // Getters / Setters
@@ -74,7 +132,7 @@ void GameState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
-			keybinds[action] = (*supportedKeys)[key];
+			keybinds[action].code = (*supportedKeys)[key];
 		}
 	}
 
@@ -85,6 +143,16 @@ void GameState::initKeybinds()
 	keybinds["MOVE_RIGHT"] = supportedKeys->at("D");
 	keybinds["MOVE_UP"] = supportedKeys->at("W");
 	keybinds["MOVE_DOWN"] = supportedKeys->at("S");*/
+}
+
+void GameState::initFonts()
+{
+	font = std::make_shared<sf::Font>();
+
+	if (!font->loadFromFile("Fonts/Arial.ttf"))
+	{
+		throw("ERROR::MAINMENUSTATE::COULD_NOT_LOAD_FONT");
+	}
 }
 
 void GameState::initTextures()
@@ -108,4 +176,11 @@ void GameState::initPlayers()
 {
 	sf::Vector2f position = {0, 0};
 	player.reset(new Player(position, textures["EXPLORATION_PLAYABLE_CHARACTERS"]));
+}
+
+void GameState::initPauseMenu()
+{
+	pauseMenu.reset(new PauseMenu(window, font));
+
+	pauseMenu->addButton("QUIT", 800.f, "Quit");
 }

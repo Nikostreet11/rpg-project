@@ -23,7 +23,7 @@
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
-#include "SFML/Network.hpp"
+//#include "SFML/Network.hpp"
 
 class AnimationComponent
 {
@@ -39,13 +39,16 @@ public:
 	void addAnimation(
 			const std::string key,
 			float animationTimer,
-			/*sf::Vector2i startFrame,
-			sf::Vector2i frames,
-			sf::Vector2i size*/
 			std::vector<sf::IntRect>& rectVector
 			);
 
-	void play(const std::string key, const float& dt);
+	void play(const std::string key, const float& dt,
+			const bool priority = false);
+	void play(const std::string key, const float& dt,
+			const float modifier, const bool priority = false);
+
+	// Getters / Setters
+	bool isDone(std::string key);
 
 private:
 	class Animation
@@ -55,35 +58,35 @@ private:
 				sf::Sprite& sprite,
 				std::shared_ptr<sf::Texture> textureSheet,
 				float animationTimer,
-				/*sf::Vector2i startFrame,
-				sf::Vector2i frames,
-				sf::Vector2i size*/
 				const std::vector<sf::IntRect>& rectVector
 				);
 		virtual ~Animation();
 
 		// Functions
 		void play(const float& dt);
+		void play(const float& dt, float modifier);
 		void reset();
 
-		// Variables
+		// Getters / Setters
+		bool isDone() const;
+
+		// Resources
 		sf::Sprite& sprite;
 		std::shared_ptr<sf::Texture> textureSheet;
+		std::vector<sf::IntRect> rectVector;
+
+		// Variables
+		std::size_t currentRect;
 		float animationTimer;
 		float timer;
-		/*sf::Vector2i size;
-		sf::IntRect startRect;
-		sf::IntRect currentRect;
-		sf::IntRect endRect;*/
-
-		std::vector<sf::IntRect> rectVector;
-		std::size_t currentRect;
+		bool done;
 	};
 
 	sf::Sprite& sprite;
 	std::shared_ptr<sf::Texture> textureSheet;
 	std::map<std::string, std::shared_ptr<Animation>> animations;
 	std::shared_ptr<Animation> lastAnimation;
+	std::shared_ptr<Animation> priorityAnimation;
 };
 
 #endif /* COMPONENTS_ANIMATIONCOMPONENT_HPP_ */
