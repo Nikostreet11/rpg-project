@@ -201,7 +201,7 @@ void MainMenuState::initBackground()
 
 void MainMenuState::initButtons()
 {
-	buttons["GAME_STATE"].reset(new Button(
+	buttons["GAME_STATE"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(100, 100),
 			// Size
@@ -217,7 +217,7 @@ void MainMenuState::initButtons()
 			sf::Color(220, 220, 220, 0)
 			));
 
-	buttons["EDITOR_STATE"].reset(new Button(
+	buttons["EDITOR_STATE"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(100, 225),
 			// Size
@@ -233,7 +233,7 @@ void MainMenuState::initButtons()
 			sf::Color(220, 220, 220, 0)
 			));
 
-	buttons["SETTINGS_STATE"].reset(new Button(
+	buttons["SETTINGS_STATE"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(100, 350),
 			// Size
@@ -249,7 +249,7 @@ void MainMenuState::initButtons()
 			sf::Color(220, 220, 220, 0)
 			));
 
-	buttons["EXIT"].reset(new Button(
+	buttons["EXIT"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(100, 475),
 			// Size

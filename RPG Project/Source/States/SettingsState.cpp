@@ -125,7 +125,7 @@ void SettingsState::initBackground()
 
 void SettingsState::initButtons()
 {
-	buttons["EXIT"].reset(new Button(
+	buttons["EXIT"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(300, 175),
 			// Size

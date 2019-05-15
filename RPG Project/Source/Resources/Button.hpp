@@ -26,47 +26,51 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
 
-class Button
-{
-public:
-	// Enumerators
-	enum class states {Idle, Hover, Active};
+namespace gui {
 
-	// Constructors / Destructors
-	explicit Button(
-			sf::Vector2f position,
-			sf::Vector2f size,
-			std::shared_ptr<sf::Font> font,
-			std::string text,
-			unsigned characterSize,
-			sf::Color textIdleColor, sf::Color textHoverColor, sf::Color textActiveColor,
-			sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
-	virtual ~Button();
+	class Button
+	{
+	public:
+		// Enumerators
+		enum class states {Idle, Hover, Active};
 
-	// Functions
-	void update(const sf::Vector2f& mousePos);
-	void render(std::shared_ptr<sf::RenderTarget> target);
+		// Constructors / Destructors
+		explicit Button(
+				sf::Vector2f position,
+				sf::Vector2f size,
+				std::shared_ptr<sf::Font> font,
+				std::string text,
+				unsigned characterSize,
+				sf::Color textIdleColor, sf::Color textHoverColor, sf::Color textActiveColor,
+				sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
+		virtual ~Button();
 
-	// Getters / Setters
-	bool isPressed() const;
+		// Functions
+		void update(const sf::Vector2f& mousePos);
+		void render(std::shared_ptr<sf::RenderTarget> target);
 
-private:
-	// Resources
-	std::shared_ptr<sf::Font> font;
+		// Getters / Setters
+		bool isPressed() const;
 
-	// Variables
-	Button::states state;
+	private:
+		// Resources
+		std::shared_ptr<sf::Font> font;
 
-	sf::RectangleShape shape;
-	sf::Text text;
+		// Variables
+		Button::states state;
 
-	sf::Color textIdleColor;
-	sf::Color textHoverColor;
-	sf::Color textActiveColor;
+		sf::RectangleShape shape;
+		sf::Text text;
 
-	sf::Color idleColor;
-	sf::Color hoverColor;
-	sf::Color activeColor;
-};
+		sf::Color textIdleColor;
+		sf::Color textHoverColor;
+		sf::Color textActiveColor;
+
+		sf::Color idleColor;
+		sf::Color hoverColor;
+		sf::Color activeColor;
+	};
+
+}
 
 #endif /* RESOURCES_BUTTON_HPP_ */

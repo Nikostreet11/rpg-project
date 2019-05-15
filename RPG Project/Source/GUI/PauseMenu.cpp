@@ -63,7 +63,7 @@ void PauseMenu::addButton(
 	float x = container.getPosition().x + container.getSize().x / 2.f -
 			size.x / 2.f;
 
-	buttons[key].reset(new Button(
+	buttons[key].reset(new gui::Button(
 			// Position
 			sf::Vector2f(x, y),
 			// Size
@@ -109,7 +109,7 @@ void PauseMenu::render(std::shared_ptr<sf::RenderTarget> target)
 	}
 }
 
-std::map<std::string, std::unique_ptr<Button>>& PauseMenu::getButtons()
+std::map<std::string, std::unique_ptr<gui::Button>>& PauseMenu::getButtons()
 {
 	return buttons;
 }

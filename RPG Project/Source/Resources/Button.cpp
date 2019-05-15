@@ -7,6 +7,7 @@
 
 #include "Button.hpp"
 
+using namespace gui;
 
 // Constructors / Destructors
 Button::Button(

@@ -58,7 +58,7 @@ public:
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
 	// Getters / Setters
-	std::map<std::string, std::unique_ptr<Button>>& getButtons();
+	std::map<std::string, std::unique_ptr<gui::Button>>& getButtons();
 
 private:
 	// Resources
@@ -68,7 +68,7 @@ private:
 	std::shared_ptr<sf::Font> font;
 	sf::Text menuText;
 
-	std::map<std::string, std::unique_ptr<Button>> buttons;
+	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
 };
 
 #endif /* GUI_PAUSEMENU_HPP_ */

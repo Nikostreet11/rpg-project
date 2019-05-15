@@ -44,7 +44,7 @@ protected:
 	// Variables
 	std::shared_ptr<sf::Font> font;
 
-	std::map<std::string, std::unique_ptr<Button>> buttons;
+	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
 
 };
 
