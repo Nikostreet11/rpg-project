@@ -43,24 +43,32 @@ void SettingsState::updateInput(const float& dt)
 
 void SettingsState::updateGUI(const float& dt)
 {
-	// Updates all the buttons in the state
+	// Updates all the GUI elements in the state
+
+	// Buttons
 	for (auto &iterator : buttons)
 	{
 		iterator.second->update(mousePosView);
 	}
 
-	// Handles the buttons functionalities
-	if (buttons["EXIT"]->isPressed())
+	// Drop-down lists
+	for (auto &iterator : dropDownLists)
+	{
+		iterator.second->update(mousePosView);
+	}
+
+	// Handles the GUI elements' functionalities
+
+	// Buttons
+	if (buttons["BACK"]->isPressed())
 	{
 		// Quit the game
 		endState();
 	}
 
-	// Updates all the drop-down lists in the state
-	for (auto &iterator : dropDownLists)
-	{
-		iterator.second->update(mousePosView);
-	}
+	// Drop-down lists
+
+
 }
 
 void SettingsState::render(std::shared_ptr<sf::RenderTarget> target)
@@ -138,13 +146,13 @@ void SettingsState::initBackground()
 
 void SettingsState::initGUI()
 {
-	buttons["EXIT"].reset(new gui::Button(
+	buttons["BACK"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(800, 600),
 			// Size
 			sf::Vector2f(400, 100),
 			// Text options
-			font, "Quit", 50,
+			font, "Back", 50,
 			sf::Color(150, 150, 150, 250),
 			sf::Color(250, 250, 250, 250),
 			sf::Color(220, 220, 220, 250),

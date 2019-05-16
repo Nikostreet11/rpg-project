@@ -28,7 +28,7 @@ font(move(font)), showList(false)
 				// Size
 				size,
 				// Text options
-				this->font, list[index], 50,
+				this->font, list[index], 40,
 				sf::Color(220, 220, 220, 255),
 				sf::Color(230, 230, 230, 255),
 				sf::Color(210, 210, 210, 255),
@@ -47,7 +47,7 @@ font(move(font)), showList(false)
 			// Size
 			size,
 			// Text options
-			this->font, list[defaultIndex], 50,
+			this->font, list[defaultIndex], 40,
 			sf::Color(240, 240, 240, 255),
 			sf::Color(250, 250, 250, 255),
 			sf::Color(230, 230, 230, 255),
@@ -82,11 +82,12 @@ void DropDownList::update(const sf::Vector2f& mousePos)
 		{
 			iterator->update(mousePos);
 
-			/*if (iterator->isPressed())
+			if (iterator->isPressed())
 			{
-				active.reset(new Button(*iterator));
-				active->setPosition(list->getPosition);
-			}*/
+				showList = false;
+				//active.reset(new Button(*iterator));
+				active->setText(iterator->getText());
+			}
 		}
 	}
 }
