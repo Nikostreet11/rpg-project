@@ -60,7 +60,8 @@ void Button::update(const sf::Vector2f& mousePos)
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			state = states::Active;
+			if (state == states::Hover)
+				state = states::Active;
 		}
 		else
 		{
