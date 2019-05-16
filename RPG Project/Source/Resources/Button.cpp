@@ -9,15 +9,23 @@
 
 namespace gui {
 
-// Constructors / Destructors
+// Constructor / Destructor
 Button::Button(
 		sf::Vector2f position,
 		sf::Vector2f size,
 		std::shared_ptr<sf::Font> font,
 		std::string text,
 		unsigned characterSize,
-		sf::Color textIdleColor, sf::Color textHoverColor, sf::Color textActiveColor,
-		sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor) :
+		sf::Color textIdleColor,
+		sf::Color textHoverColor,
+		sf::Color textActiveColor,
+		sf::Color fillIdleColor,
+		sf::Color fillHoverColor,
+		sf::Color fillActiveColor,
+		sf::Color outlineIdleColor,
+		sf::Color outlineHoverColor,
+		sf::Color outlineActiveColor,
+		short unsigned id) :
 font(move(font))
 {
 	state = states::Idle;
@@ -25,6 +33,9 @@ font(move(font))
 
 	shape.setPosition(position);
 	shape.setSize(size);
+	shape.setFillColor(fillIdleColor);
+	shape.setOutlineThickness(1.f);
+	shape.setOutlineColor(outlineIdleColor);
 
 	this->text.setFont(*this->font);
 	this->text.setString(text);
@@ -40,11 +51,15 @@ font(move(font))
 	this->textHoverColor = textHoverColor;
 	this->textActiveColor = textActiveColor;
 
-	this->idleColor = idleColor;
-	this->hoverColor = hoverColor;
-	this->activeColor = activeColor;
+	this->fillIdleColor = fillIdleColor;
+	this->fillHoverColor = fillHoverColor;
+	this->fillActiveColor = fillActiveColor;
 
-	shape.setFillColor(idleColor);
+	this->outlineIdleColor = outlineIdleColor;
+	this->outlineHoverColor = outlineHoverColor;
+	this->outlineActiveColor = outlineActiveColor;
+
+	this->id = id;
 }
 
 Button::~Button()
@@ -78,22 +93,27 @@ void Button::update(const sf::Vector2f& mousePos)
 	switch (state)
 	{
 	case states::Idle:
-		shape.setFillColor(idleColor);
+		shape.setFillColor(fillIdleColor);
+		shape.setOutlineColor(outlineIdleColor);
 		text.setFillColor(textIdleColor);
 		break;
 
 	case states::Hover:
-		shape.setFillColor(hoverColor);
+		shape.setFillColor(fillHoverColor);
+		shape.setOutlineColor(outlineHoverColor);
 		text.setFillColor(textHoverColor);
 		break;
 
 	case states::Active:
-		shape.setFillColor(activeColor);
+		shape.setFillColor(fillActiveColor);
+		shape.setOutlineColor(outlineActiveColor);
 		text.setFillColor(textActiveColor);
 		break;
 
 	default:
 		shape.setFillColor(sf::Color::Red);
+		shape.setOutlineColor(sf::Color::Green);
+		text.setFillColor(sf::Color::Blue);
 		break;
 	}
 }
@@ -151,6 +171,11 @@ const std::string Button::getText() const
 void Button::setText(const std::string& text)
 {
 	this->text.setString(text);
+}
+
+const unsigned short Button::getId() const
+{
+	return id;
 }
 
 } /* namespace gui */

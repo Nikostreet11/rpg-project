@@ -35,7 +35,12 @@ font(move(font)), showList(false)
 				// Button colors
 				sf::Color(140, 140, 140, 255),
 				sf::Color(150, 150, 150, 255),
-				sf::Color(130, 130, 130, 255)
+				sf::Color(130, 130, 130, 255),
+				// Outline colors
+				sf::Color(200, 200, 200, 0),
+				sf::Color(250, 250, 250, 0),
+				sf::Color(150, 150, 150, 0),
+				index
 				));
 
 		this->list.push_back(std::move(buttonPtr));
@@ -54,6 +59,10 @@ font(move(font)), showList(false)
 			// Button colors
 			sf::Color(160, 160, 160, 255),
 			sf::Color(170, 170, 170, 255),
+			sf::Color(150, 150, 150, 255),
+			// Outline colors
+			sf::Color(200, 200, 200, 255),
+			sf::Color(250, 250, 250, 255),
 			sf::Color(150, 150, 150, 255)
 			));
 	//active->setPosition(position);

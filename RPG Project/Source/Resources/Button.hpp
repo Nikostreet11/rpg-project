@@ -34,15 +34,23 @@ public:
 	// Enumerators
 	enum class states {Idle, Hover, Active};
 
-	// Constructors / Destructors
+	// Constructor / Destructor
 	explicit Button(
 			sf::Vector2f position,
 			sf::Vector2f size,
 			std::shared_ptr<sf::Font> font,
 			std::string text,
 			unsigned characterSize,
-			sf::Color textIdleColor, sf::Color textHoverColor, sf::Color textActiveColor,
-			sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
+			sf::Color textIdleColor,
+			sf::Color textHoverColor,
+			sf::Color textActiveColor,
+			sf::Color fillIdleColor,
+			sf::Color fillHoverColor,
+			sf::Color fillActiveColor,
+			sf::Color outlineIdleColor = sf::Color::Transparent,
+			sf::Color outlineHoverColor = sf::Color::Transparent,
+			sf::Color outlineActiveColor = sf::Color::Transparent,
+			short unsigned id = 0);
 	virtual ~Button();
 
 	// Functions
@@ -56,6 +64,7 @@ public:
 	// Getters / Setters
 	const std::string getText() const;
 	void setText(const std::string& text);
+	const short unsigned getId() const;
 
 private:
 	// Resources
@@ -72,9 +81,15 @@ private:
 	sf::Color textHoverColor;
 	sf::Color textActiveColor;
 
-	sf::Color idleColor;
-	sf::Color hoverColor;
-	sf::Color activeColor;
+	sf::Color fillIdleColor;
+	sf::Color fillHoverColor;
+	sf::Color fillActiveColor;
+
+	sf::Color outlineIdleColor;
+	sf::Color outlineHoverColor;
+	sf::Color outlineActiveColor;
+
+	short unsigned id;
 };
 
 } /* namespace gui */
