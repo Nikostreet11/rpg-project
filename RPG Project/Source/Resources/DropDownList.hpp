@@ -47,8 +47,11 @@ public:
 private:
 	// Resources
 	std::shared_ptr<sf::Font> font;
-	std::shared_ptr<gui::Button> active;
-	std::vector<std::shared_ptr<gui::Button>> list;
+	std::unique_ptr<gui::Button> active;
+	std::vector<std::unique_ptr<Button>> list;
+
+	// Variables
+	bool showList;
 };
 
 } /* namespace gui */

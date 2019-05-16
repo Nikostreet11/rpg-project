@@ -14,11 +14,11 @@ DropDownList::DropDownList(
 		std::shared_ptr<sf::Font> font,
 		std::vector<std::string> list,
 		const unsigned defaultIndex) :
-font(move(font))
+font(move(font)), showList(false)
 {
 	for (std::size_t index; index < list.size(); ++index)
 	{
-		this->list.push_back(std::make_shared<gui::Button>(
+		std::unique_ptr<Button> buttonPtr(new Button(
 				// Position
 				sf::Vector2f(100, 100),
 				// Size
@@ -33,9 +33,11 @@ font(move(font))
 				sf::Color(250, 250, 250, 0),
 				sf::Color(220, 220, 220, 0)
 				));
+
+		this->list.push_back(std::move(buttonPtr));
 	}
 
-	active = this->list[defaultIndex];
+	active.reset(new Button(*this->list[defaultIndex]));
 }
 
 DropDownList::~DropDownList()
@@ -45,10 +47,36 @@ DropDownList::~DropDownList()
 // Functions
 void DropDownList::update(const sf::Vector2f& mousePos)
 {
+	active->update(mousePos);
+
+	if (active->isPressed())
+	{
+		if (showList)
+			showList = false;
+		else
+			showList = true;
+	}
+
+	if (showList)
+	{
+		for (auto &iterator : list)
+		{
+			iterator->update(mousePos);
+		}
+	}
 }
 
 void DropDownList::render(std::shared_ptr<sf::RenderTarget> target)
 {
+	active->render(target);
+
+	if (showList)
+	{
+		for (auto &iterator : list)
+		{
+			iterator->render(target);
+		}
+	}
 }
 
 } /* namespace gui */
