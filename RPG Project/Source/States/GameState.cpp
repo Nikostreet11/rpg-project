@@ -20,8 +20,6 @@ State(window, supportedKeys, states)
 	initTextures();
 	initPlayers();
 	initPauseMenu();
-
-	wasButtonPressed = false;
 }
 
 GameState::~GameState()

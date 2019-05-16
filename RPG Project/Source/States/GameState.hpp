@@ -48,9 +48,6 @@ private:
 	std::unique_ptr<Player> player;
 	std::unique_ptr<PauseMenu> pauseMenu;
 	std::shared_ptr<sf::Font> font;
-
-	// Variables
-	bool wasButtonPressed;
 };
 
 #endif /* STATES_GAMESTATE_HPP_ */

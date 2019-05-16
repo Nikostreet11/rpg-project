@@ -49,8 +49,11 @@ public:
 	void update(const sf::Vector2f& mousePos);
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
+	bool isPressed();
+	bool isHold() const;
+	// bool isReleased();
+
 	// Getters / Setters
-	bool isPressed() const;
 	const std::string getText() const;
 	void setText(const std::string& text);
 
@@ -58,11 +61,12 @@ private:
 	// Resources
 	std::shared_ptr<sf::Font> font;
 
-	// Variables
-	Button::states state;
-
 	sf::RectangleShape shape;
 	sf::Text text;
+
+	// Variables
+	Button::states state;
+	bool wasPressed;
 
 	sf::Color textIdleColor;
 	sf::Color textHoverColor;

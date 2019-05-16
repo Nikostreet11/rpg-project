@@ -21,6 +21,7 @@ Button::Button(
 font(move(font))
 {
 	state = states::Idle;
+	wasPressed = false;
 
 	shape.setPosition(position);
 	shape.setSize(size);
@@ -55,16 +56,22 @@ void Button::update(const sf::Vector2f& mousePos)
 {
 	/* Update the booleans for hover and pressed */
 
-	state = states::Idle;
-
 	if (shape.getGlobalBounds().contains(mousePos))
 	{
-		state = states::Hover;
-
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
 			state = states::Active;
 		}
+		else
+		{
+			state = states::Hover;
+			wasPressed = false;
+		}
+	}
+	else
+	{
+		state = states::Idle;
+		wasPressed = false;
 	}
 
 	switch (state)
@@ -96,15 +103,45 @@ void Button::render(std::shared_ptr<sf::RenderTarget> target)
 	target->draw(text);
 }
 
-// Getters / Setters
-bool Button::isPressed() const
+bool Button::isPressed()
 {
-	if (state == states::Active)
+	if (state == states::Active && !wasPressed)
+	{
+		wasPressed = true;
 		return true;
+	}
 	else
+	{
 		return false;
+	}
 }
 
+bool Button::isHold() const
+{
+	if (state == states::Active)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+/*bool Button::isReleased()
+{
+	if (state != states::Active && wasPressed)
+	{
+		wasPressed = false;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}*/
+
+// Getters / Setters
 const std::string Button::getText() const
 {
 	return text.getString();
