@@ -29,13 +29,13 @@ font(move(font)), showList(false)
 				size,
 				// Text options
 				this->font, list[index], 50,
+				sf::Color(220, 220, 220, 255),
 				sf::Color(230, 230, 230, 255),
-				sf::Color(250, 250, 250, 255),
 				sf::Color(210, 210, 210, 255),
 				// Button colors
+				sf::Color(140, 140, 140, 255),
 				sf::Color(150, 150, 150, 255),
-				sf::Color(160, 160, 160, 255),
-				sf::Color(140, 140, 140, 255)
+				sf::Color(130, 130, 130, 255)
 				));
 
 		this->list.push_back(std::move(buttonPtr));
@@ -48,13 +48,13 @@ font(move(font)), showList(false)
 			size,
 			// Text options
 			this->font, list[defaultIndex], 50,
-			sf::Color(230, 230, 230, 255),
+			sf::Color(240, 240, 240, 255),
 			sf::Color(250, 250, 250, 255),
-			sf::Color(210, 210, 210, 255),
+			sf::Color(230, 230, 230, 255),
 			// Button colors
-			sf::Color(150, 150, 150, 255),
 			sf::Color(160, 160, 160, 255),
-			sf::Color(140, 140, 140, 255)
+			sf::Color(170, 170, 170, 255),
+			sf::Color(150, 150, 150, 255)
 			));
 	//active->setPosition(position);
 }
@@ -81,6 +81,12 @@ void DropDownList::update(const sf::Vector2f& mousePos)
 		for (auto &iterator : list)
 		{
 			iterator->update(mousePos);
+
+			/*if (iterator->isPressed())
+			{
+				active.reset(new Button(*iterator));
+				active->setPosition(list->getPosition);
+			}*/
 		}
 	}
 }
