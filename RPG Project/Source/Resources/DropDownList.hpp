@@ -35,6 +35,8 @@ class DropDownList {
 public:
 	// Contructor / Destructor
 	DropDownList(
+			sf::Vector2f position,
+			sf::Vector2f size,
 			std::shared_ptr<sf::Font> font,
 			std::vector<std::string> list,
 			const unsigned defaultIndex = 0);

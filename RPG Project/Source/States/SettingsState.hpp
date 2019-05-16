@@ -11,6 +11,7 @@
 #include "State.hpp"
 
 #include "../Resources/Button.hpp"
+#include "../Resources/DropDownList.hpp"
 
 class SettingsState :
 	public State
@@ -50,6 +51,7 @@ protected:
 
 	// Resources
 	sf::Texture backgroundTexture;
+	std::unique_ptr<gui::DropDownList> dropDownList;
 };
 
 #endif /* STATES_SETTINGSSTATE_HPP_ */

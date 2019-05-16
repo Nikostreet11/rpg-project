@@ -11,23 +11,27 @@ namespace gui {
 
 // Constructor / Destructor
 DropDownList::DropDownList(
+		sf::Vector2f position,
+		sf::Vector2f size,
 		std::shared_ptr<sf::Font> font,
 		std::vector<std::string> list,
 		const unsigned defaultIndex) :
 font(move(font)), showList(false)
 {
-	for (std::size_t index; index < list.size(); ++index)
+	for (std::size_t index = 0; index < list.size(); index++)
 	{
 		std::unique_ptr<Button> buttonPtr(new Button(
 				// Position
-				sf::Vector2f(100, 100),
+				sf::Vector2f(
+						position.x,
+						position.y + (index + 1) * size.y),
 				// Size
-				sf::Vector2f(400, 100),
+				size,
 				// Text options
 				this->font, list[index], 50,
-				sf::Color(150, 150, 150, 250),
-				sf::Color(250, 250, 250, 250),
-				sf::Color(220, 220, 220, 250),
+				sf::Color(150, 150, 150, 255),
+				sf::Color(250, 250, 250, 255),
+				sf::Color(220, 220, 220, 255),
 				// Button colors
 				sf::Color(150, 150, 150, 0),
 				sf::Color(250, 250, 250, 0),
@@ -37,7 +41,22 @@ font(move(font)), showList(false)
 		this->list.push_back(std::move(buttonPtr));
 	}
 
-	active.reset(new Button(*this->list[defaultIndex]));
+	active.reset(new Button(
+			// Position
+			position,
+			// Size
+			size,
+			// Text options
+			this->font, list[defaultIndex], 50,
+			sf::Color(150, 150, 150, 255),
+			sf::Color(250, 250, 250, 255),
+			sf::Color(220, 220, 220, 255),
+			// Button colors
+			sf::Color(150, 150, 150, 0),
+			sf::Color(250, 250, 250, 0),
+			sf::Color(220, 220, 220, 0)
+			));
+	//active->setPosition(position);
 }
 
 DropDownList::~DropDownList()

@@ -49,6 +49,8 @@ void SettingsState::updateButtons()
 		it.second->update(mousePosView);
 	}
 
+	dropDownList->update(mousePosView);
+
 	// Quit the game
 	if (buttons["EXIT"]->isPressed())
 	{
@@ -74,6 +76,8 @@ void SettingsState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
 	{
 		it.second->render(target);
 	}
+
+	dropDownList->render(target);
 }
 
 // Initialization functions
@@ -127,7 +131,7 @@ void SettingsState::initButtons()
 {
 	buttons["EXIT"].reset(new gui::Button(
 			// Position
-			sf::Vector2f(300, 175),
+			sf::Vector2f(800, 600),
 			// Size
 			sf::Vector2f(400, 100),
 			// Text options
@@ -139,6 +143,24 @@ void SettingsState::initButtons()
 			sf::Color(150, 150, 150, 0),
 			sf::Color(250, 250, 250, 0),
 			sf::Color(220, 220, 220, 0)
+			));
+
+	std::vector<std::string> list = {
+			"first",
+			"second",
+			"third",
+			"fourth",
+			"fifth",
+			"sixth"
+	};
+
+	dropDownList.reset(new gui::DropDownList(
+			// Position
+			sf::Vector2f(400, 100),
+			// Size
+			sf::Vector2f(400, 100),
+			// Text options
+			font, list, 5
 			));
 }
 
