@@ -105,4 +105,14 @@ bool Button::isPressed() const
 		return false;
 }
 
+const std::string Button::getText() const
+{
+	return text.getString();
+}
+
+void Button::setText(const std::string& text)
+{
+	this->text.setString(text);
+}
+
 } /* namespace gui */

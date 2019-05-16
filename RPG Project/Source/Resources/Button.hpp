@@ -51,6 +51,8 @@ public:
 
 	// Getters / Setters
 	bool isPressed() const;
+	const std::string getText() const;
+	void setText(const std::string& text);
 
 private:
 	// Resources

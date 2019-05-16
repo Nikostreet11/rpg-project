@@ -34,7 +34,10 @@ namespace gui {
 class DropDownList {
 public:
 	// Contructor / Destructor
-	DropDownList();
+	DropDownList(
+			std::shared_ptr<sf::Font> font,
+			std::vector<std::string> list,
+			const unsigned defaultIndex = 0);
 	virtual ~DropDownList();
 
 	// Functions
@@ -42,9 +45,10 @@ public:
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
 private:
-	// Variables
-	sf::RectangleShape active;
-	std::vector<gui::Button> list;
+	// Resources
+	std::shared_ptr<sf::Font> font;
+	std::shared_ptr<gui::Button> active;
+	std::vector<std::shared_ptr<gui::Button>> list;
 };
 
 } /* namespace gui */
