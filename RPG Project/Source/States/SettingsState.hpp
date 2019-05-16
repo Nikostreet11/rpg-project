@@ -31,9 +31,9 @@ public:
 
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
-	void updateButtons();
+	void updateGUI(const float& dt);
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
-	void renderButtons(std::shared_ptr<sf::RenderTarget> target = nullptr);
+	void renderGUI(std::shared_ptr<sf::RenderTarget> target = nullptr);
 
 protected:
 	// Initialization functions
@@ -41,17 +41,16 @@ protected:
 	virtual void initKeybinds();
 	void initFonts();
 	void initBackground();
-	void initButtons();
+	void initGUI();
 
-	// Variables
+	// Resources
 	sf::RectangleShape background;
+	sf::Texture backgroundTexture;
+
 	std::shared_ptr<sf::Font> font;
 
 	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
-
-	// Resources
-	sf::Texture backgroundTexture;
-	std::unique_ptr<gui::DropDownList> dropDownList;
+	std::map<std::string, std::unique_ptr<gui::DropDownList>> dropDownLists;
 };
 
 #endif /* STATES_SETTINGSSTATE_HPP_ */

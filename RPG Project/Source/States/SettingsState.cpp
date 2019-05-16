@@ -17,7 +17,7 @@ State(window, supportedKeys, states)
 	initKeybinds();
 	initFonts();
 	initBackground();
-	initButtons();
+	initGUI();
 }
 
 SettingsState::~SettingsState()
@@ -34,27 +34,32 @@ void SettingsState::update(const float& dt)
 {
 	updateInput(dt);
 	updateMousePositions();
-	updateButtons();
+	updateGUI(dt);
 }
 
 void SettingsState::updateInput(const float& dt)
 {
 }
 
-void SettingsState::updateButtons()
+void SettingsState::updateGUI(const float& dt)
 {
-	/* Updates all the buttons in the state and handles their functionalities */
-	for (auto &it : buttons)
+	// Updates all the buttons in the state
+	for (auto &iterator : buttons)
 	{
-		it.second->update(mousePosView);
+		iterator.second->update(mousePosView);
 	}
 
-	dropDownList->update(mousePosView);
-
-	// Quit the game
+	// Handles the buttons functionalities
 	if (buttons["EXIT"]->isPressed())
 	{
+		// Quit the game
 		endState();
+	}
+
+	// Updates all the drop-down lists in the state
+	for (auto &iterator : dropDownLists)
+	{
+		iterator.second->update(mousePosView);
 	}
 }
 
@@ -64,20 +69,24 @@ void SettingsState::render(std::shared_ptr<sf::RenderTarget> target)
 		target = window;
 
 	target->draw(background);
-	renderButtons(target);
+
+	renderGUI(target);
 }
 
-void SettingsState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
+void SettingsState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
 {
 	if (!target)
 		target = window;
 
-	for (auto &it : buttons)
+	for (auto &iterator : buttons)
 	{
-		it.second->render(target);
+		iterator.second->render(target);
 	}
 
-	dropDownList->render(target);
+	for (auto &iterator : dropDownLists)
+	{
+		iterator.second->render(target);
+	}
 }
 
 // Initialization functions
@@ -127,7 +136,7 @@ void SettingsState::initBackground()
 	background.setTexture(&backgroundTexture);
 }
 
-void SettingsState::initButtons()
+void SettingsState::initGUI()
 {
 	buttons["EXIT"].reset(new gui::Button(
 			// Position
@@ -146,21 +155,19 @@ void SettingsState::initButtons()
 			));
 
 	std::vector<std::string> list = {
-			"first",
-			"second",
-			"third",
-			"fourth",
-			"fifth",
-			"sixth"
+			"1920x1080",
+			"1024x576",
+			"800x600",
+			"640x480"
 	};
 
-	dropDownList.reset(new gui::DropDownList(
+	dropDownLists["RESOLUTIONS"].reset(new gui::DropDownList(
 			// Position
-			sf::Vector2f(400, 100),
+			sf::Vector2f(800, 450),
 			// Size
-			sf::Vector2f(400, 100),
+			sf::Vector2f(400, 70),
 			// Text options
-			font, list, 5
+			font, list
 			));
 }
 
