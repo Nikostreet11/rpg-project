@@ -24,8 +24,7 @@ Button::Button(
 		sf::Color fillActiveColor,
 		sf::Color outlineIdleColor,
 		sf::Color outlineHoverColor,
-		sf::Color outlineActiveColor,
-		short unsigned id) :
+		sf::Color outlineActiveColor) :
 font(move(font))
 {
 	state = states::Idle;
@@ -58,8 +57,6 @@ font(move(font))
 	this->outlineIdleColor = outlineIdleColor;
 	this->outlineHoverColor = outlineHoverColor;
 	this->outlineActiveColor = outlineActiveColor;
-
-	this->id = id;
 }
 
 Button::~Button()
@@ -171,11 +168,12 @@ const std::string Button::getText() const
 void Button::setText(const std::string& text)
 {
 	this->text.setString(text);
-}
 
-const unsigned short Button::getId() const
-{
-	return id;
+	this->text.setPosition(
+			shape.getPosition().x + shape.getGlobalBounds().width / 2.f -
+				this->text.getGlobalBounds().width / 2.f,
+			shape.getPosition().y + shape.getGlobalBounds().height / 2.f -
+				this->text.getCharacterSize() / 2.f);
 }
 
 } /* namespace gui */

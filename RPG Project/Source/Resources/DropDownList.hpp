@@ -38,7 +38,7 @@ public:
 			sf::Vector2f position,
 			sf::Vector2f size,
 			std::shared_ptr<sf::Font> font,
-			std::vector<std::string> list,
+			std::vector<std::pair<std::string, std::string>> list,
 			const unsigned defaultIndex = 0);
 	virtual ~DropDownList();
 
@@ -49,8 +49,9 @@ public:
 private:
 	// Resources
 	std::shared_ptr<sf::Font> font;
-	std::unique_ptr<gui::Button> active;
-	std::vector<std::unique_ptr<Button>> list;
+
+	std::pair<std::string, std::unique_ptr<Button>> active;
+	std::map<std::string, std::unique_ptr<Button>> list;
 
 	// Variables
 	bool showList;

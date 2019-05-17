@@ -148,7 +148,7 @@ void SettingsState::initGUI()
 {
 	buttons["BACK"].reset(new gui::Button(
 			// Position
-			sf::Vector2f(800, 600),
+			sf::Vector2f(1400, 600),
 			// Size
 			sf::Vector2f(400, 100),
 			// Text options
@@ -162,11 +162,10 @@ void SettingsState::initGUI()
 			sf::Color(220, 220, 220, 0)
 			));
 
-	std::vector<std::string> list = {
-			"1920x1080",
-			"1024x576",
-			"800x600",
-			"640x480"
+	std::vector<std::pair<std::string, std::string>> list = {
+			{"FULL_HD", "1920x1080"},
+			{"HD", "1280x720"},
+			{"SD", "854x480"}
 	};
 
 	dropDownLists["RESOLUTIONS"].reset(new gui::DropDownList(

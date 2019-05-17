@@ -49,8 +49,7 @@ public:
 			sf::Color fillActiveColor,
 			sf::Color outlineIdleColor = sf::Color::Transparent,
 			sf::Color outlineHoverColor = sf::Color::Transparent,
-			sf::Color outlineActiveColor = sf::Color::Transparent,
-			short unsigned id = 0);
+			sf::Color outlineActiveColor = sf::Color::Transparent);
 	virtual ~Button();
 
 	// Functions
@@ -64,7 +63,6 @@ public:
 	// Getters / Setters
 	const std::string getText() const;
 	void setText(const std::string& text);
-	const short unsigned getId() const;
 
 private:
 	// Resources
@@ -88,8 +86,6 @@ private:
 	sf::Color outlineIdleColor;
 	sf::Color outlineHoverColor;
 	sf::Color outlineActiveColor;
-
-	short unsigned id;
 };
 
 } /* namespace gui */
