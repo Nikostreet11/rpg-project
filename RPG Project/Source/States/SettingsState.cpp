@@ -162,7 +162,23 @@ void SettingsState::initGUI()
 			sf::Color(220, 220, 220, 0)
 			));
 
-	std::vector<std::pair<std::string, std::string>> list = {
+	buttons["APPLY"].reset(new gui::Button(
+			// Position
+			sf::Vector2f(1100, 600),
+			// Size
+			sf::Vector2f(400, 100),
+			// Text options
+			font, "Apply", 50,
+			sf::Color(150, 150, 150, 250),
+			sf::Color(250, 250, 250, 250),
+			sf::Color(220, 220, 220, 250),
+			// Button colors
+			sf::Color(150, 150, 150, 0),
+			sf::Color(250, 250, 250, 0),
+			sf::Color(220, 220, 220, 0)
+			));
+
+	std::vector<std::pair<std::string, std::string>> elements = {
 			{"FULL_HD", "1920x1080"},
 			{"HD", "1280x720"},
 			{"SD", "854x480"}
@@ -170,11 +186,11 @@ void SettingsState::initGUI()
 
 	dropDownLists["RESOLUTIONS"].reset(new gui::DropDownList(
 			// Position
-			sf::Vector2f(800, 450),
+			sf::Vector2f(400, 200),
 			// Size
 			sf::Vector2f(400, 70),
 			// Text options
-			font, list
+			font, elements
 			));
 }
 

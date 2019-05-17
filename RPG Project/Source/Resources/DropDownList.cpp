@@ -14,16 +14,16 @@ DropDownList::DropDownList(
 		sf::Vector2f position,
 		sf::Vector2f size,
 		std::shared_ptr<sf::Font> font,
-		std::vector<std::pair<std::string, std::string>> list,
+		std::vector<std::pair<std::string, std::string>> elements,
 		const unsigned defaultIndex) :
 font(move(font)), showList(false)
 {
-	for (std::size_t index = 0; index < list.size(); index++)
+	for (std::size_t index = 0; index < elements.size(); index++)
 	{
-		std::string& key = list[index].first;
-		std::string& text = list[index].second;
+		std::string& key = elements[index].first;
+		std::string& text = elements[index].second;
 
-		this->list[key].reset(new Button(
+		this->elements[key].reset(new Button(
 				// Position
 				sf::Vector2f(
 						position.x,
@@ -46,14 +46,14 @@ font(move(font)), showList(false)
 		));
 	}
 
-	active.first = list[defaultIndex].first;
+	active.first = elements[defaultIndex].first;
 	active.second.reset(new Button(
 			// Position
 			position,
 			// Size
 			size,
 			// Text options
-			this->font, list[defaultIndex].second, 40,
+			this->font, elements[defaultIndex].second, 40,
 			sf::Color(240, 240, 240, 255),
 			sf::Color(250, 250, 250, 255),
 			sf::Color(230, 230, 230, 255),
@@ -91,7 +91,7 @@ void DropDownList::update(const sf::Vector2f& mousePos)
 
 	if (showList)
 	{
-		for (auto &iterator : list)
+		for (auto &iterator : elements)
 		{
 			Button& element = *(iterator.second);
 
@@ -115,7 +115,7 @@ void DropDownList::render(std::shared_ptr<sf::RenderTarget> target)
 
 	if (showList)
 	{
-		for (auto &iterator : list)
+		for (auto &iterator : elements)
 		{
 			gui::Button& element = *(iterator.second);
 
