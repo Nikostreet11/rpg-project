@@ -15,7 +15,7 @@
 
 // Static functions
 
-// Constructors / Destructors
+// Constructor / Destructor
 Game::Game()/* : state(MainMenu::getInstance())*/
 {
 	initWindow();

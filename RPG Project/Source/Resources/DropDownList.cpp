@@ -125,3 +125,8 @@ void DropDownList::render(std::shared_ptr<sf::RenderTarget> target)
 }
 
 } /* namespace gui */
+
+const std::string& gui::DropDownList::getActiveKey() const
+{
+	return active.first;
+}

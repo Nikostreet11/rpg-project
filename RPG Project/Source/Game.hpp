@@ -52,16 +52,18 @@ private:
 
 	// Variables
 	std::shared_ptr<sf::RenderWindow> window;
-	sf::Event sfEvent;
 	std::vector<sf::VideoMode> videomodes;
 	sf::ContextSettings windowSettings;
-	bool fullscreen;
-
-	sf::Clock dtClock;
-	float dt;
-
 	std::shared_ptr<std::stack<std::unique_ptr<State>>> states;
 	std::shared_ptr<std::map<std::string, int>> supportedKeys;
+	sf::Event sfEvent;
+	sf::Clock dtClock;
+
+	// Variables
+	bool fullscreen;
+
+	float dt;
+
 	// State* state;
 };
 

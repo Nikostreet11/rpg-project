@@ -42,15 +42,16 @@ protected:
 	void initFonts();
 	void initBackground();
 	void initGUI();
+	void initOptions();
 
 	// Resources
 	sf::RectangleShape background;
 	sf::Texture backgroundTexture;
-
 	std::shared_ptr<sf::Font> font;
-
 	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
 	std::map<std::string, std::unique_ptr<gui::DropDownList>> dropDownLists;
+	sf::Text options;
+	std::vector<sf::VideoMode> videoModes;
 };
 
 #endif /* STATES_SETTINGSSTATE_HPP_ */

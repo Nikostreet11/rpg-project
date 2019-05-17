@@ -46,6 +46,9 @@ public:
 	void update(const sf::Vector2f& mousePos);
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
+	// Getters / Setters
+	const std::string& getActiveKey() const;
+
 private:
 	// Resources
 	std::shared_ptr<sf::Font> font;

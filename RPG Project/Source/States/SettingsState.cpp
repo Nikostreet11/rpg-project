@@ -18,6 +18,7 @@ State(window, supportedKeys, states)
 	initFonts();
 	initBackground();
 	initGUI();
+	initOptions();
 }
 
 SettingsState::~SettingsState()
@@ -66,6 +67,16 @@ void SettingsState::updateGUI(const float& dt)
 		endState();
 	}
 
+	if (buttons["APPLY"]->isPressed())
+	{
+		// TODO: remove later
+		window->create(
+				videoModes[std::stoi(
+						dropDownLists["RESOLUTIONS"]->getActiveKey()
+						)],
+				"test", sf::Style::Default);
+	}
+
 	// Drop-down lists
 
 
@@ -95,11 +106,14 @@ void SettingsState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
 	{
 		iterator.second->render(target);
 	}
+
+	target->draw(options);
 }
 
 // Initialization functions
 void SettingsState::initVariables()
 {
+	videoModes = sf::VideoMode::getFullscreenModes();
 }
 
 void SettingsState::initKeybinds()
@@ -123,7 +137,7 @@ void SettingsState::initFonts()
 {
 	font = std::make_shared<sf::Font>();
 
-	if (!font->loadFromFile("Fonts/Arial.ttf"))
+	if (!font->loadFromFile("Fonts/OpenSans-Regular.ttf"))
 	{
 		throw("ERROR::MAINMENUSTATE::COULD_NOT_LOAD_FONT");
 	}
@@ -146,6 +160,7 @@ void SettingsState::initBackground()
 
 void SettingsState::initGUI()
 {
+	// Back button
 	buttons["BACK"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(1400, 600),
@@ -162,6 +177,7 @@ void SettingsState::initGUI()
 			sf::Color(220, 220, 220, 0)
 			));
 
+	// Apply button
 	buttons["APPLY"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(1100, 600),
@@ -178,11 +194,19 @@ void SettingsState::initGUI()
 			sf::Color(220, 220, 220, 0)
 			));
 
-	std::vector<std::pair<std::string, std::string>> elements = {
-			{"FULL_HD", "1920x1080"},
-			{"HD", "1280x720"},
-			{"SD", "854x480"}
-	};
+	// Resolution drop-down list
+	std::vector<std::pair<std::string, std::string>> elements;
+
+	int videoModesIndex = 0;
+	for (auto &videoMode : videoModes)
+	{
+		std::string str =
+				std::to_string(videoMode.width) + 'x' +
+				std::to_string(videoMode.height);
+
+		elements.push_back({std::to_string(videoModesIndex), str});
+		videoModesIndex++;
+	}
 
 	dropDownLists["RESOLUTIONS"].reset(new gui::DropDownList(
 			// Position
@@ -190,7 +214,20 @@ void SettingsState::initGUI()
 			// Size
 			sf::Vector2f(400, 70),
 			// Text options
-			font, elements
-			));
+			font, elements)
+	);
+}
+
+void SettingsState::initOptions()
+{
+	options.setFont(*font);
+
+	options.setPosition(sf::Vector2f(100.f, 450.f));
+
+	options.setCharacterSize(30);
+	options.setFillColor(sf::Color(255, 255, 255, 255));
+
+	options.setString(
+			"Resolution:\nVSync\nAntialiasing");
 }
 
