@@ -108,7 +108,7 @@ void Exploration::keyPressed_D(Game& game) {
 
 void Exploration::keyPressed_Enter(Game& game) {}
 
-const Map& Exploration::getMap() const {
+const TileMap& Exploration::getMap() const {
 	return *map;
 }
 
@@ -143,6 +143,7 @@ void Exploration::moveParty(Direction direction, Game& game) {
 			break;
 		}
 
+		/*
 		if (!map->isOutOfBounds(newX, newY) && map->at(newX, newY).isCrossable()) {
 			party.move(direction);
 			// TODO: movement animation
@@ -150,7 +151,7 @@ void Exploration::moveParty(Direction direction, Game& game) {
 				Randomizer& randomizer = Randomizer::getInstance();
 				if (randomizer.percentageOn(100)) {
 					// starts battle
-					/*Battle* battle = Battle::getInstance();
+					Battle* battle = Battle::getInstance();
 					std::vector<Character*> partyVector;
 					for (int count = 0; count < party.getSize(); count++) {
 						partyVector.push_back(party.getHero(count));
@@ -158,10 +159,11 @@ void Exploration::moveParty(Direction direction, Game& game) {
 					battle->setParty(partyVector);
 					battle->setFoes(map->getFoes(party)); // factory method
 					battle->setBackground(map->getBackground());
-					//game.changeState(battle);*/
+					//game.changeState(battle);
 				}
 			}
 		}
+		*/
 	}
 }
 

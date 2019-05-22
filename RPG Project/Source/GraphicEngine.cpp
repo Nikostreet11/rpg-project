@@ -9,7 +9,6 @@
 
 #include "BattleState.h"
 #include "Human.h"
-#include "Map.h"
 #include "Party.h"
 
 #include "graphics/InnerWindow.hpp"
@@ -20,6 +19,7 @@
 #include <typeinfo>
 
 #include "Graphics/Dialogue.hpp"
+#include "Map/TileMap.h"
 
 GraphicEngine::GraphicEngine(int resX, int resY) :
 		camera(resX, resY),
@@ -65,12 +65,13 @@ void GraphicEngine::drawMainMenu(MainMenuState* mainMenu) {
 }
 
 void GraphicEngine::drawExploration(Exploration& exploration) {
-	const Map& map = exploration.getMap();
+	//const TileMap& map = exploration.getMap();
 	const Party& party = exploration.getParty();
 
 	camera.setX(party.getHero(0)->getPosX() * tileWidth - (camera.getWidth() - tileWidth) / 2);
 	camera.setY(party.getHero(0)->getPosY() * tileHeight - (camera.getHeight() - tileWidth) / 2);
 
+	/*
 	for (int y = 0; y < map.getHeight(); y++) {
 		for (int x = 0; x < map.getWidth(); x++) {
 			if (isVisible(x, y)) {
@@ -80,6 +81,7 @@ void GraphicEngine::drawExploration(Exploration& exploration) {
 			}
 		}
 	}
+	*/
 
 	for (int position = party.getSize() - 1; position >= 0; position--) {
 		drawCharacter(party.getHero(position));

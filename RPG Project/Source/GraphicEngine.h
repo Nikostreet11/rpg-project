@@ -9,7 +9,6 @@
 #define GRAPHICENGINE_H_
 
 #include "GraphicService.h"
-#include "Map.h"
 #include "Camera.h"
 #include "GraphicsInfo.h"
 #include "SpriteInfo.h"
@@ -22,6 +21,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Map/TileMap.h"
 #include "States/Battle.h"
 #include "States/Exploration.h"
 #include "States/MainMenuState.hpp"

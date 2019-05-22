@@ -11,18 +11,20 @@
 
 #include "Tiletype.h"
 
-DebugMap::DebugMap(int width, int height) : Map(width, height) {
+DebugMap::DebugMap(int width, int height) : TileMap() {
 	Randomizer& randomizer = Randomizer::getInstance();
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			if (randomizer.percentageOn(20))
-				setTile(x, y, Tile(TileType::bush));
-			else if (randomizer.percentageOn(5)) {
-				setTile(x, y-1, Tile(TileType::tree));
-				setTile(x, y, Tile(TileType::root));
+			if (randomizer.percentageOn(20)) {
+				//setTile(x, y, Tile(TileType::bush));
 			}
-			else
-				setTile(x, y, Tile(TileType::grass));
+			else if (randomizer.percentageOn(5)) {
+				//setTile(x, y-1, Tile(TileType::tree));
+				//setTile(x, y, Tile(TileType::root));
+			}
+			else {
+				//setTile(x, y, Tile(TileType::grass));
+			}
 		}
 	}
 }

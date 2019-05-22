@@ -8,7 +8,7 @@
 #ifndef STATES_EXPLORATION_H_
 #define STATES_EXPLORATION_H_
 
-#include "../Map.h"
+#include "../Map/TileMap.h"
 #include "../Party.h"
 #include "State.hpp"
 
@@ -38,7 +38,7 @@ public:
 	virtual void keyPressed_D(Game& game);
 	virtual void keyPressed_Enter(Game& game);
 
-	const Map& getMap() const;
+	const TileMap& getMap() const;
 	const Party& getParty() const;
 
 protected:
@@ -49,7 +49,7 @@ protected:
 
 	void moveParty(Direction direction, Game& game);
 
-	Map* map;
+	TileMap* map;
 	Party party;
 	//std::vector<Character*> npcs;
 };

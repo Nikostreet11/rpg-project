@@ -8,12 +8,11 @@
 #ifndef SOURCE_DEBUGMAP_H_
 #define SOURCE_DEBUGMAP_H_
 
-#include "Map.h"
-
+#include "Map/TileMap.h"
 #include "Party.h"
 #include "States/Battle.h"
 
-class DebugMap: public Map {
+class DebugMap: public TileMap {
 public:
 	DebugMap(int width, int height);
 	virtual ~DebugMap();
