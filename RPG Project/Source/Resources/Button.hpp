@@ -8,10 +8,41 @@
 #ifndef RESOURCES_BUTTON_HPP_
 #define RESOURCES_BUTTON_HPP_
 
-// Streams
-#include <iostream>
+// Utilities
+#include <utility>
+#include <thread>
+#include <algorithm>
 
-#include "headers.hpp"
+// Legacy
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+
+// Data structures
+#include <set>
+#include <list>
+#include <deque>
+#include <stack>
+#include <vector>
+#include <map>
+
+// Smart Pointers
+#include <memory>
+
+// Data types
+#include <string>
+
+// Stream
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+// SFML
+#include <SFML\System.hpp>
+#include <SFML\Window.hpp>
+#include <SFML\Graphics.hpp>
+#include <SFML\Audio.hpp>
+#include <SFML\Network.hpp>
 
 namespace gui {
 

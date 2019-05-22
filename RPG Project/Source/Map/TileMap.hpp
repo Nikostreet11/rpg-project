@@ -11,7 +11,41 @@
 // Project
 #include "../Tiles/Tile.hpp"
 
-#include "headers.hpp"
+// Utilities
+#include <utility>
+#include <thread>
+#include <algorithm>
+
+// Legacy
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+
+// Data structures
+#include <set>
+#include <list>
+#include <deque>
+#include <stack>
+#include <vector>
+#include <map>
+
+// Smart Pointers
+#include <memory>
+
+// Data types
+#include <string>
+
+// Stream
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+// SFML
+#include <SFML\System.hpp>
+#include <SFML\Window.hpp>
+#include <SFML\Graphics.hpp>
+#include <SFML\Audio.hpp>
+#include <SFML\Network.hpp>
 
 
 class TileMap {
