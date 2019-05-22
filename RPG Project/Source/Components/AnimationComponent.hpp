@@ -8,22 +8,7 @@
 #ifndef COMPONENTS_ANIMATIONCOMPONENT_HPP_
 #define COMPONENTS_ANIMATIONCOMPONENT_HPP_
 
-// Streams
-#include <iostream>
-
-// Data structures
-#include <map>
-#include <string>
-
-// Smart pointers
-#include <memory>
-
-// SFML libraries
-#include "SFML/System.hpp"
-#include "SFML/Window.hpp"
-#include "SFML/Graphics.hpp"
-#include "SFML/Audio.hpp"
-//#include "SFML/Network.hpp"
+#include "headers.hpp"
 
 class AnimationComponent
 {

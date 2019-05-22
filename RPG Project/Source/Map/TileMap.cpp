@@ -5,7 +5,7 @@
  *      Author: nicop
  */
 
-#include "TileMap.h"
+#include "TileMap.hpp"
 
 #include "../Randomizer.h"
 

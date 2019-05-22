@@ -8,24 +8,7 @@
 #ifndef COMPONENTS_HITBOXCOMPONENT_HPP_
 #define COMPONENTS_HITBOXCOMPONENT_HPP_
 
-// Streams
-#include <iostream>
-
-// Time (legacy)
-#include <ctime>
-
-// General utilities (legacy)
-#include <cstdlib>
-
-// Smart pointers
-#include <memory>
-
-// SFML libraries
-#include "SFML/System.hpp"
-#include "SFML/Window.hpp"
-#include "SFML/Graphics.hpp"
-#include "SFML/Audio.hpp"
-//#include "SFML/Network.hpp"
+#include "headers.hpp"
 
 class HitboxComponent
 {

@@ -8,7 +8,7 @@
 #ifndef SOURCE_DEBUGMAP_H_
 #define SOURCE_DEBUGMAP_H_
 
-#include "Map/TileMap.h"
+#include "Map/TileMap.hpp"
 #include "Party.h"
 #include "States/Battle.h"
 

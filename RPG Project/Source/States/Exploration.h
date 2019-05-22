@@ -8,10 +8,11 @@
 #ifndef STATES_EXPLORATION_H_
 #define STATES_EXPLORATION_H_
 
-#include "../Map/TileMap.h"
+#include "../Map/TileMap.hpp"
 #include "../Party.h"
 #include "State.hpp"
 
+class Game;
 class Exploration: public State {
 public:
 	// Static functions

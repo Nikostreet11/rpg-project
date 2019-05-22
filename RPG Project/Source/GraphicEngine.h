@@ -21,7 +21,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Map/TileMap.h"
+#include "Map/TileMap.hpp"
 #include "States/Battle.h"
 #include "States/Exploration.h"
 #include "States/MainMenuState.hpp"

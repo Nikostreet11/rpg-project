@@ -11,31 +11,7 @@
 // Project
 #include "../Resources/Button.hpp"
 
-// Streams
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
-// Time (legacy)
-#include <ctime>
-
-// General utilities (legacy)
-#include <cstdlib>
-
-// Data structures
-#include <vector>
-#include <stack>
-#include <map>
-
-// Smart pointers
-#include <memory>
-
-// SFML libraries
-#include "SFML/System.hpp"
-#include "SFML/Window.hpp"
-#include "SFML/Graphics.hpp"
-#include "SFML/Audio.hpp"
-//#include "SFML/Network.hpp"
+#include "headers.hpp"
 
 class PauseMenu
 {

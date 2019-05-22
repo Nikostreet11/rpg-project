@@ -19,7 +19,7 @@
 #include <typeinfo>
 
 #include "Graphics/Dialogue.hpp"
-#include "Map/TileMap.h"
+#include "Map/TileMap.hpp"
 
 GraphicEngine::GraphicEngine(int resX, int resY) :
 		camera(resX, resY),
