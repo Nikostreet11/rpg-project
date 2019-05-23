@@ -46,25 +46,46 @@ private:
 
 	// Initialization functions
 	void initVariables();
+	void initGraphicsSettings();
 	void initWindow();
 	void initKeys();
 	void initStates();
 
-	// Variables
+	// Classes
+	class GraphicsSettings
+	{
+	public:
+		// Constructor / Destructor
+		GraphicsSettings();
+		~GraphicsSettings();
+
+		// Functions
+		void saveToFile(const std::string path);
+		void loadFromFile(const std::string path);
+
+		// Variables
+		std::string title;
+		sf::VideoMode resolution;
+		bool fullscreen;
+		bool verticalSync;
+		unsigned framerateLimit;
+		sf::ContextSettings contextSettings;
+		std::vector<sf::VideoMode> videoModes;
+
+	};
+
+	// Resources
 	std::shared_ptr<sf::RenderWindow> window;
-	std::vector<sf::VideoMode> videomodes;
-	sf::ContextSettings windowSettings;
 	std::shared_ptr<std::stack<std::unique_ptr<State>>> states;
 	std::shared_ptr<std::map<std::string, int>> supportedKeys;
 	sf::Event sfEvent;
 	sf::Clock dtClock;
 
-	// Variables
-	bool fullscreen;
+	GraphicsSettings graphicsSettings;
 
+	// Variables
 	float dt;
 
-	// State* state;
 };
 
 #endif /* GAME_HPP_ */
