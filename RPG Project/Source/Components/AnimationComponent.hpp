@@ -8,6 +8,8 @@
 #ifndef COMPONENTS_ANIMATIONCOMPONENT_HPP_
 #define COMPONENTS_ANIMATIONCOMPONENT_HPP_
 
+#include "..\PCH\pch.hpp"
+/*
 // Utilities
 #include <utility>
 #include <thread>
@@ -43,6 +45,7 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
 #include <SFML\Network.hpp>
+*/
 
 class AnimationComponent
 {

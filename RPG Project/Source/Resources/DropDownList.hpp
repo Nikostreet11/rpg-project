@@ -8,9 +8,11 @@
 #ifndef RESOURCES_DROPDOWNLIST_HPP_
 #define RESOURCES_DROPDOWNLIST_HPP_
 
+#include "..\PCH\pch.hpp"
+
 // Project
 #include "Button.hpp"
-
+/*
 // Utilities
 #include <utility>
 #include <thread>
@@ -46,6 +48,7 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
 #include <SFML\Network.hpp>
+*/
 
 namespace gui {
 

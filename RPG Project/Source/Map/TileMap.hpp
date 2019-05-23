@@ -8,9 +8,11 @@
 #ifndef MAP_TILEMAP_HPP_
 #define MAP_TILEMAP_HPP_
 
+#include "..\PCH\pch.hpp"
+
 // Project
 #include "../Tiles/Tile.hpp"
-
+/*
 // Utilities
 #include <utility>
 #include <thread>
@@ -46,7 +48,7 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
 #include <SFML\Network.hpp>
-
+*/
 
 class TileMap {
 public:

@@ -8,9 +8,11 @@
 #ifndef GUI_PAUSEMENU_HPP_
 #define GUI_PAUSEMENU_HPP_
 
+#include "..\PCH\pch.hpp"
+
 // Project
 #include "../Resources/Button.hpp"
-
+/*
 // Utilities
 #include <utility>
 #include <thread>
@@ -46,6 +48,7 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
 #include <SFML\Network.hpp>
+*/
 
 class PauseMenu
 {
