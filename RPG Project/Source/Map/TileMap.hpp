@@ -11,49 +11,17 @@
 #include "..\PCH\pch.hpp"
 
 // Project
-#include "../Tiles/Tile.hpp"
-/*
-// Utilities
-#include <utility>
-#include <thread>
-#include <algorithm>
+#include "..\Tiles\Tile.hpp"
 
-// Legacy
-#include <cstdlib>
-#include <ctime>
-#include <cmath>
-
-// Data structures
-#include <set>
-#include <list>
-#include <deque>
-#include <stack>
-#include <vector>
-#include <map>
-
-// Smart Pointers
-#include <memory>
-
-// Data types
-#include <string>
-
-// Stream
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
-// SFML
-#include <SFML\System.hpp>
-#include <SFML\Window.hpp>
-#include <SFML\Graphics.hpp>
-#include <SFML\Audio.hpp>
-#include <SFML\Network.hpp>
-*/
-
-class TileMap {
+class TileMap
+{
 public:
 	explicit TileMap();
 	virtual ~TileMap();
+
+	// Functions
+	void update();
+	void render(std::shared_ptr<sf::RenderTarget> target);
 
 	/*
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -82,6 +50,7 @@ private:
 	sf::Vector2u maxSize;
 	unsigned maxLayers;
 	unsigned gridSizeU;
+	float gridSizeF;
 
 	/*
 	int width;

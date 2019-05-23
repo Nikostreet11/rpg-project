@@ -108,6 +108,8 @@ void GameState::render(std::shared_ptr<sf::RenderTarget> target)
 	if (!target)
 		target = window;
 
+	map.render(target);
+
 	player->render(target);
 
 	if (paused)

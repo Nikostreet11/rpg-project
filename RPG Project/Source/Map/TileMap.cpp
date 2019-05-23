@@ -13,30 +13,57 @@
 
 TileMap::TileMap()
 {
-	gridSizeU = 50;
-	maxSize.x = 5000;
-	maxSize.y = 5000;
-	maxLayers = 5;
+	gridSizeF = 50.f;
+	gridSizeU = static_cast<unsigned>(gridSizeF);
+	maxSize.x = 40;
+	maxSize.y = 25;
+	maxLayers = 1;
+
+	map.resize(maxSize.x);
+	sf::Vector2f tilePosition;
 
 	for (std::size_t x = 0; x < maxSize.x; x++)
 	{
 		map.push_back(std::vector< std::vector<Tile> >());
+		map[x].resize(maxSize.y);
+		tilePosition.x = gridSizeF * x;
 
-		for (std::size_t y = 0; y < maxSize.x; y++)
+		for (std::size_t y = 0; y < maxSize.y; y++)
 		{
 			map[x].push_back(std::vector<Tile>());
+			map[x][y].resize(maxLayers);
+			tilePosition.y = gridSizeF * y;
 
 			for (std::size_t z = 0; z < maxLayers; z++)
 			{
-				map[x][y].push_back(Tile());
+				map[x][y].push_back(Tile(tilePosition, gridSizeF));
 			}
 		}
 
 	}
 }
 
-TileMap::~TileMap() {}
+TileMap::~TileMap()
+{
+}
 
+void TileMap::update()
+{
+}
+
+void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
+{
+	for (auto &x : map)
+	{
+		for (auto &y : x)
+		{
+			for (auto &layer : y)
+			{
+				layer.render(target);
+			}
+		}
+	}
+}
 /*
 bool TileMap::isOutOfBounds(int posX, int posY) const {
 	if (posX < 0 || posX >= width || posY < 0 || posY >= height)

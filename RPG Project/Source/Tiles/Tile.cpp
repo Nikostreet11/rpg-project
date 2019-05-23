@@ -7,17 +7,29 @@
 
 #include "Tile.hpp"
 
-Tile::Tile() : /*texture(villages), */tileType(TileType::nullType) {
-	updateInfo(/*texture, */tileType);
+Tile::Tile()
+{
 }
 
-Tile::Tile(/*Texture texture, */TileType tileType) :
-		/*texture(texture), */tileType(tileType) {
-	updateInfo(/*texture, */tileType);
+Tile::Tile(sf::Vector2f position, float gridSizeF)
+{
+	shape.setSize(sf::Vector2f(gridSizeF, gridSizeF));
+	shape.setFillColor(sf::Color::Green);
+	shape.setPosition(position);
 }
 
-Tile::~Tile() {}
+Tile::~Tile() {
+}
 
+void Tile::update()
+{
+}
+
+void Tile::render(std::shared_ptr<sf::RenderTarget> target)
+{
+	target->draw(shape);
+}
+/*
 Tile& Tile::operator=(const Tile& entry) {
 	if (this != &entry) {
 		//texture = entry.getTexture();
@@ -32,7 +44,7 @@ bool Tile::isCrossable() const {
 	return crossable;
 }
 
-bool Tile::updateInfo(/*Texture texture, */TileType tileType) {
+bool Tile::updateInfo(Texture texture, TileType tileType) {
 	crossable = true;
 	dangerous = false;
 
@@ -59,9 +71,9 @@ bool Tile::updateInfo(/*Texture texture, */TileType tileType) {
 	return true;
 }
 
-/*Texture Tile::getTexture() const {
+Texture Tile::getTexture() const {
 	return texture;
-}*/
+}
 
 const TileType Tile::getTileType() const {
 	return tileType;
@@ -70,3 +82,4 @@ const TileType Tile::getTileType() const {
 bool Tile::isDangerous() const {
 	return dangerous;
 }
+*/

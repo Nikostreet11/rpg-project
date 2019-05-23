@@ -10,7 +10,8 @@
 
 #include "State.hpp"
 
-#include "../GUI/PauseMenu.hpp"
+#include "..\GUI\PauseMenu.hpp"
+#include "..\Map\TileMap.hpp"
 
 class GameState :
 		public State
@@ -48,6 +49,8 @@ private:
 	std::unique_ptr<Player> player;
 	std::unique_ptr<PauseMenu> pauseMenu;
 	std::shared_ptr<sf::Font> font;
+	TileMap map;
+
 };
 
 #endif /* STATES_GAMESTATE_HPP_ */
