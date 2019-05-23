@@ -14,7 +14,7 @@ Tile::Tile()
 Tile::Tile(sf::Vector2f position, float gridSizeF)
 {
 	shape.setSize(sf::Vector2f(gridSizeF, gridSizeF));
-	shape.setFillColor(sf::Color::Green);
+	shape.setFillColor(sf::Color(34, 193, 34, 255));
 	shape.setPosition(position);
 }
 

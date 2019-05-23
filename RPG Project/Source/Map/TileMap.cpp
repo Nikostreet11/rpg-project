@@ -7,10 +7,6 @@
 
 #include "TileMap.hpp"
 
-#include "../Randomizer.h"
-
-#include "../Texture.h"
-
 TileMap::TileMap()
 {
 	gridSizeF = 50.f;
