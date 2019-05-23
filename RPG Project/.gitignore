@@ -108,3 +108,4 @@ local.properties
 # End of https://www.gitignore.io/api/c++,eclipse
 /Debug/
 /Release/
+/SFML-2.5.0/
