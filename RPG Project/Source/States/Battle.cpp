@@ -22,14 +22,14 @@ Battle::Battle(
 		std::shared_ptr<sf::RenderWindow> window,
 		std::shared_ptr<std::map<std::string, int>> supportedKeys,
 		std::shared_ptr<std::stack<std::unique_ptr<State>>> states) :
-State(window, supportedKeys, states),
+State(window, supportedKeys, states)/*,
 		state(SubState::player_select_action),
 		background(Background::none),
 		party(0),
-		foes(0) {
+		foes(0) */{
 
-	loadMenu();
-	loadGraphics();
+	/*loadMenu();
+	loadGraphics();*/
 }
 
 Battle::~Battle() {
@@ -55,7 +55,7 @@ void Battle::render(std::shared_ptr<sf::RenderTarget> target)
 	return instance;
 }*/
 
-void Battle::draw() {
+/*void Battle::draw() {
 	// TODO: rework GraphicEngine getter system
 	GraphicService* graphicService = ServiceLocator::getGraphicService();
 	//graphicService->drawBattle(*this);
@@ -282,14 +282,14 @@ Battle::SubState Battle::getState() const {
 
 void Battle::setState(Battle::SubState state) {
 	this->state = state;
-}
+}*/
 
 // Initialization functions
 void Battle::initKeybinds()
 {
 }
 
-void Battle::loadMenu() {
+/*void Battle::loadMenu() {
 	menu.addChild(new MenuComposite("Dummy"));
 	menu.addChild(new MenuComposite("Dummy"));
 	menu.addChild(new MenuComposite("Dummy"));
@@ -378,4 +378,4 @@ void Battle::loadGraphics() {
 	commands.setViewSize(sf::Vector2i(2, 2));
 	commands.setViewIndex(sf::Vector2i(1, 1));
 	commands.setMarkerIndex(sf::Vector2i(0, 0));
-}
+}*/

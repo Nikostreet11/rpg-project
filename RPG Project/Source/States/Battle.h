@@ -22,7 +22,7 @@
 #include <vector>
 #include "State.hpp"
 
-class GraphicEngine;
+//class GraphicEngine;
 class Battle: public State {
 public:
 	enum class SubState {
@@ -56,7 +56,7 @@ public:
 
 	//static Battle* getInstance();
 
-	virtual void draw();
+	/*virtual void draw();
 	void draw_start(GraphicEngine& graphicEngine);
 	void draw_player_select_action(GraphicEngine& graphicEngine);
 
@@ -74,7 +74,7 @@ public:
 	void setBackground(Background background);
 	const MenuContainer& getMenu() const;
 	SubState getState() const;
-	void setState(SubState state);
+	void setState(SubState state);*/
 
 protected:
 	// Initialization functions
@@ -82,21 +82,21 @@ protected:
 
 	//static Battle* instance;
 
-	SubState state;
-	Background background;
+	//SubState state;
+	//Background background;
 
-	void loadMenu();
-	void loadGraphics();
+	/*void loadMenu();
+	void loadGraphics();*/
 
 	//StateEnum state;
 
-	std::vector<Character*> party;
+	/*std::vector<Character*> party;
 	std::vector<Foe*> foes;
 
 	MenuContainer menu;
 
 	InnerWindow commandWindow;
-	Selection commands;
+	Selection commands;*/
 	//BattleState state;
 	//BattleBackground background;
 };

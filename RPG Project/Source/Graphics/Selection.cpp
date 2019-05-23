@@ -24,9 +24,9 @@ markerSize(20),
 scrollsSize(20) {
 	// get the font
 	// TODO: rework GraphicEngine getter system
-	GraphicService* graphicService = ServiceLocator::getGraphicService();
+	/*GraphicService* graphicService = ServiceLocator::getGraphicService();
 	GraphicEngine& graphicEngine = dynamic_cast<GraphicEngine&>(*graphicService);
-	font = graphicEngine.getArial();
+	font = graphicEngine.getArial();*/
 
 	markerIndex = sf::Vector2i(-1, -1);
 

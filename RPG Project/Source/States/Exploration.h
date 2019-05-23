@@ -12,7 +12,7 @@
 #include "../Party.h"
 #include "State.hpp"
 
-class Game;
+//class Game;
 class Exploration: public State {
 public:
 	// Static functions
@@ -32,6 +32,7 @@ public:
 
 	//static Exploration* getInstance();
 
+	/*
 	virtual void draw();
 	virtual void keyPressed_W(Game& game);
 	virtual void keyPressed_A(Game& game);
@@ -41,6 +42,7 @@ public:
 
 	const TileMap& getMap() const;
 	const Party& getParty() const;
+	*/
 
 protected:
 	// Initialization functions
@@ -48,11 +50,13 @@ protected:
 
 	//static Exploration* instance;
 
+	/*
 	void moveParty(Direction direction, Game& game);
 
 	TileMap* map;
 	Party party;
 	//std::vector<Character*> npcs;
+	*/
 };
 
 #endif /* STATES_EXPLORATION_H_ */
