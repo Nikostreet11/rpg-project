@@ -7,32 +7,40 @@
 
 #include "TileMap.hpp"
 
-TileMap::TileMap()
+TileMap::TileMap(sf::Vector2u size, float gridSize)
 {
-	gridSizeF = 100.f;
-	gridSizeU = static_cast<unsigned>(gridSizeF);
+	this->gridSize = gridSize;
+
+	//gridSizeU = static_cast<unsigned>(gridSizeF);
+
 	maxSize.x = 18;
 	maxSize.y = 10;
 	maxLayers = 1;
 
-	map.resize(maxSize.x);
+	if (size.x > maxSize.x)
+		size.x = maxSize.x;
+
+	if (size.y > maxSize.y)
+		size.y = maxSize.y;
+
+	map.resize(size.x);
 	sf::Vector2f tilePosition;
 
-	for (std::size_t x = 0; x < maxSize.x; x++)
+	for (std::size_t x = 0; x < size.x; x++)
 	{
 		map.push_back(std::vector< std::vector<Tile> >());
-		map[x].resize(maxSize.y);
-		tilePosition.x = gridSizeF * x;
+		map[x].resize(size.y);
+		tilePosition.x = gridSize * x;
 
-		for (std::size_t y = 0; y < maxSize.y; y++)
+		for (std::size_t y = 0; y < size.y; y++)
 		{
 			map[x].push_back(std::vector<Tile>());
 			map[x][y].resize(maxLayers);
-			tilePosition.y = gridSizeF * y;
+			tilePosition.y = gridSize * y;
 
 			for (std::size_t z = 0; z < maxLayers; z++)
 			{
-				map[x][y].push_back(Tile(tilePosition, gridSizeF));
+				map[x][y].push_back(Tile(tilePosition, gridSize));
 			}
 		}
 
@@ -60,6 +68,15 @@ void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
 		}
 	}
 }
+
+void TileMap::addTile()
+{
+}
+
+void TileMap::removeTile()
+{
+}
+
 /*
 bool TileMap::isOutOfBounds(int posX, int posY) const {
 	if (posX < 0 || posX >= width || posY < 0 || posY >= height)

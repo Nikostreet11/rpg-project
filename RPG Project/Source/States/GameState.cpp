@@ -16,6 +16,7 @@ GameState::GameState(StateData& stateData) :
 	initFonts();
 	initTextures();
 	initPlayers();
+	initTileMap();
 	initPauseMenu();
 }
 
@@ -105,7 +106,7 @@ void GameState::render(std::shared_ptr<sf::RenderTarget> target)
 	if (!target)
 		target = window;
 
-	map.render(target);
+	tileMap->render(target);
 
 	player->render(target);
 
@@ -173,6 +174,11 @@ void GameState::initPlayers()
 {
 	sf::Vector2f position = {0, 0};
 	player.reset(new Player(position, textures["EXPLORATION_PLAYABLE_CHARACTERS"]));
+}
+
+void GameState::initTileMap()
+{
+	tileMap.reset(new TileMap(sf::Vector2u(15, 15), stateData.gridSize));
 }
 
 void GameState::initPauseMenu()

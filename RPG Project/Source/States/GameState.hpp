@@ -40,13 +40,15 @@ private:
 	void initFonts();
 	void initTextures();
 	void initPlayers();
+	void initTileMap();
 	void initPauseMenu();
 
 	// Resources
 	std::unique_ptr<Player> player;
+	std::unique_ptr<TileMap> tileMap;
 	std::unique_ptr<PauseMenu> pauseMenu;
+
 	std::shared_ptr<sf::Font> font;
-	TileMap map;
 
 };
 

@@ -16,12 +16,15 @@
 class TileMap
 {
 public:
-	explicit TileMap();
+	explicit TileMap(sf::Vector2u size, float gridSize);
 	virtual ~TileMap();
 
 	// Functions
 	void update();
 	void render(std::shared_ptr<sf::RenderTarget> target);
+
+	void addTile();
+	void removeTile();
 
 	/*
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -49,8 +52,8 @@ private:
 	std::vector< std::vector< std::vector<Tile> > > map;
 	sf::Vector2u maxSize;
 	unsigned maxLayers;
-	unsigned gridSizeU;
-	float gridSizeF;
+	//unsigned gridSizeU;
+	float gridSize;
 
 	/*
 	int width;

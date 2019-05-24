@@ -10,7 +10,7 @@
 
 #include "State.hpp"
 
-#include "../Resources/Button.hpp"
+#include "..\Resources\Button.hpp"
 #include "..\GUI\PauseMenu.hpp"
 #include "..\Map\TileMap.hpp"
 
@@ -20,7 +20,7 @@ class EditorState :
 public:
 	// Static functions
 
-	// Constructors / Destructors
+	// Constructor / Destructor
 	explicit EditorState(StateData& stateData);
 	virtual ~EditorState();
 
@@ -29,10 +29,12 @@ public:
 
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
+	virtual void updateGUI();
 	virtual void updateButtons();
 	virtual void updatePauseMenu();
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
-	void renderButtons(std::shared_ptr<sf::RenderTarget> target = nullptr);
+	virtual void renderGUI(std::shared_ptr<sf::RenderTarget> target = nullptr);
+	virtual void renderButtons(std::shared_ptr<sf::RenderTarget> target = nullptr);
 
 protected:
 	// Initialization functions
@@ -40,15 +42,20 @@ protected:
 	virtual void initKeybinds();
 	void initFonts();
 	void initBackground();
+	void initTileMap();
 	void initPauseMenu();
+	void initGUI();
 	void initButtons();
 
 	// Resources
 	std::shared_ptr<sf::Font> font;
-	std::unique_ptr<PauseMenu> pauseMenu;
-	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
-	TileMap map;
 
+	std::unique_ptr<TileMap> tileMap;
+	std::unique_ptr<PauseMenu> pauseMenu;
+
+	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
+
+	sf::RectangleShape selectorRect;
 };
 
 #endif /* STATES_EDITORSTATE_HPP_ */

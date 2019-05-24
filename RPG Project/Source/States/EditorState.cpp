@@ -14,7 +14,9 @@ EditorState::EditorState(StateData& stateData) :
 	initKeybinds();
 	initFonts();
 	initBackground();
+	initTileMap();
 	initPauseMenu();
+	initGUI();
 	initButtons();
 
 	/*addEntry("New Game", Exploration::getInstance());
@@ -41,6 +43,7 @@ void EditorState::update(const float& dt)
 	if (!paused)
 	{
 		// Unpaused update
+		updateGUI();
 		updateButtons();
 	}
 	else
@@ -75,6 +78,11 @@ void EditorState::updateInput(const float& dt)
 	}
 }
 
+void EditorState::updateGUI()
+{
+	selectorRect.setPosition(mousePosView);
+}
+
 void EditorState::updateButtons()
 {
 	/* Updates all the buttons in the state and handles their functionalities */
@@ -97,8 +105,9 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 	if (!target)
 		target = window;
 
-	map.render(target);
+	tileMap->render(target);
 
+	renderGUI(target);
 	renderButtons(target);
 
 	if (paused)
@@ -117,6 +126,14 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 	mouseText.setString(ss.str());
 
 	target->draw(mouseText);
+}
+
+void EditorState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
+{
+	if (!target)
+		target = window;
+
+	target->draw(selectorRect);
 }
 
 void EditorState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
@@ -166,8 +183,9 @@ void EditorState::initBackground()
 {
 }
 
-void EditorState::initButtons()
+void EditorState::initTileMap()
 {
+	tileMap.reset(new TileMap(sf::Vector2u(15, 15), stateData.gridSize));
 }
 
 void EditorState::initPauseMenu()
@@ -175,4 +193,17 @@ void EditorState::initPauseMenu()
 	pauseMenu.reset(new PauseMenu(window, font));
 
 	pauseMenu->addButton("QUIT", 800.f, "Quit");
+}
+
+void EditorState::initGUI()
+{
+	selectorRect.setSize(sf::Vector2f(stateData.gridSize, stateData.gridSize));
+
+	selectorRect.setFillColor(sf::Color::Transparent);
+	selectorRect.setOutlineThickness(1.f);
+	selectorRect.setOutlineColor(sf::Color::Green);
+}
+
+void EditorState::initButtons()
+{
 }
