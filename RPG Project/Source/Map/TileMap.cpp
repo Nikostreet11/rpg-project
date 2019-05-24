@@ -9,10 +9,10 @@
 
 TileMap::TileMap()
 {
-	gridSizeF = 50.f;
+	gridSizeF = 100.f;
 	gridSizeU = static_cast<unsigned>(gridSizeF);
-	maxSize.x = 40;
-	maxSize.y = 25;
+	maxSize.x = 18;
+	maxSize.y = 10;
 	maxLayers = 1;
 
 	map.resize(maxSize.x);

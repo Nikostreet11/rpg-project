@@ -90,6 +90,17 @@ void SettingsState::render(std::shared_ptr<sf::RenderTarget> target)
 	target->draw(background);
 
 	renderGUI(target);
+
+	// TODO: remove later
+	sf::Text mouseText;
+	mouseText.setPosition(mousePosView.x, mousePosView.y - 12);
+	mouseText.setFont(*font);
+	mouseText.setCharacterSize(12);
+	std::stringstream ss;
+	ss << mousePosView.x << " " << mousePosView.y;
+	mouseText.setString(ss.str());
+
+	target->draw(mouseText);
 }
 
 void SettingsState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
@@ -163,9 +174,9 @@ void SettingsState::initGUI()
 	// Back button
 	buttons["BACK"].reset(new gui::Button(
 			// Position
-			sf::Vector2f(1400, 600),
+			sf::Vector2f(1600, 100),
 			// Size
-			sf::Vector2f(400, 100),
+			sf::Vector2f(200, 100),
 			// Text options
 			font, "Back", 50,
 			sf::Color(150, 150, 150, 250),
@@ -180,9 +191,9 @@ void SettingsState::initGUI()
 	// Apply button
 	buttons["APPLY"].reset(new gui::Button(
 			// Position
-			sf::Vector2f(1100, 600),
+			sf::Vector2f(1000, 100),
 			// Size
-			sf::Vector2f(400, 100),
+			sf::Vector2f(200, 100),
 			// Text options
 			font, "Apply", 50,
 			sf::Color(150, 150, 150, 250),
@@ -210,9 +221,9 @@ void SettingsState::initGUI()
 
 	dropDownLists["RESOLUTIONS"].reset(new gui::DropDownList(
 			// Position
-			sf::Vector2f(400, 200),
+			sf::Vector2f(500, 100),
 			// Size
-			sf::Vector2f(400, 70),
+			sf::Vector2f(300, 60),
 			// Text options
 			font, elements)
 	);
@@ -222,12 +233,12 @@ void SettingsState::initOptions()
 {
 	options.setFont(*font);
 
-	options.setPosition(sf::Vector2f(100.f, 450.f));
+	options.setPosition(sf::Vector2f(100.f, 100.f));
 
-	options.setCharacterSize(30);
+	options.setCharacterSize(50);
 	options.setFillColor(sf::Color(255, 255, 255, 255));
 
 	options.setString(
-			"Resolution:\nVSync\nAntialiasing");
+			"Resolution\n\nFullscreen\n\nVSync\n\nAntialiasing");
 }
 

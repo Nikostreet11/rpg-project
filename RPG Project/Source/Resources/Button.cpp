@@ -37,14 +37,9 @@ font(move(font))
 	shape.setOutlineColor(outlineIdleColor);
 
 	this->text.setFont(*this->font);
-	this->text.setString(text);
 	this->text.setFillColor(textIdleColor);
 	this->text.setCharacterSize(characterSize);
-	this->text.setPosition(
-			shape.getPosition().x + shape.getGlobalBounds().width / 2.f -
-				this->text.getGlobalBounds().width / 2.f,
-			shape.getPosition().y + shape.getGlobalBounds().height / 2.f -
-				this->text.getCharacterSize() / 2.f);
+	setText(text);
 
 	this->textIdleColor = textIdleColor;
 	this->textHoverColor = textHoverColor;
@@ -54,9 +49,10 @@ font(move(font))
 	this->fillHoverColor = fillHoverColor;
 	this->fillActiveColor = fillActiveColor;
 
-	this->outlineIdleColor = outlineIdleColor;
-	this->outlineHoverColor = outlineHoverColor;
-	this->outlineActiveColor = outlineActiveColor;
+	// TODO: modify later
+	this->outlineIdleColor = sf::Color::Green; //outlineIdleColor;
+	this->outlineHoverColor = sf::Color::Green; //outlineHoverColor;
+	this->outlineActiveColor = sf::Color::Green; //outlineActiveColor;
 }
 
 Button::~Button()
@@ -173,7 +169,7 @@ void Button::setText(const std::string& text)
 			shape.getPosition().x + shape.getGlobalBounds().width / 2.f -
 				this->text.getGlobalBounds().width / 2.f,
 			shape.getPosition().y + shape.getGlobalBounds().height / 2.f -
-				this->text.getCharacterSize() / 2.f);
+				this->text.getCharacterSize() * 1.3f / 2.f);
 }
 
 } /* namespace gui */
