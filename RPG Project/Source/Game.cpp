@@ -22,6 +22,7 @@ Game::Game()/* : state(MainMenu::getInstance())*/
 	initGraphicsSettings();
 	initWindow();
 	initKeys();
+	initStateData();
 	initStates();
 }
 
@@ -99,35 +100,37 @@ void Game::initVariables()
 {
 	window = nullptr;
 	dt = 0.f;
+	gridSize = 50.f;
 }
 
 void Game::initGraphicsSettings()
 {
-	graphicsSettings.loadFromFile("Config/Graphics.ini");
+	graphicsSettings = std::make_shared<GraphicsSettings>();
+	graphicsSettings->loadFromFile("Config/Graphics.ini");
 }
 
 void Game::initWindow()
 {
 	/* Creates a SFML window */
-	if (graphicsSettings.fullscreen)
+	if (graphicsSettings->fullscreen)
 	{
 		window = std::make_shared<sf::RenderWindow>(
-			graphicsSettings.resolution,
-			graphicsSettings.title,
+			graphicsSettings->resolution,
+			graphicsSettings->title,
 			sf::Style::Fullscreen,
-			graphicsSettings.contextSettings);
+			graphicsSettings->contextSettings);
 	}
 	else
 	{
 		window = std::make_shared<sf::RenderWindow>(
-			graphicsSettings.resolution,
-			graphicsSettings.title,
+			graphicsSettings->resolution,
+			graphicsSettings->title,
 			sf::Style::Titlebar | sf::Style::Close,
-			graphicsSettings.contextSettings);
+			graphicsSettings->contextSettings);
 	}
 
-	window->setFramerateLimit(graphicsSettings.framerateLimit);
-	window->setVerticalSyncEnabled(graphicsSettings.verticalSync);
+	window->setFramerateLimit(graphicsSettings->framerateLimit);
+	window->setVerticalSyncEnabled(graphicsSettings->verticalSync);
 }
 
 void Game::initKeys()
@@ -156,64 +159,20 @@ void Game::initKeys()
 	}
 }
 
+void Game::initStateData()
+{
+	stateData.graphicsSettings = graphicsSettings;
+	stateData.window = window;
+	stateData.supportedKeys = supportedKeys;
+	stateData.states = states;
+	stateData.gridSize = gridSize;
+}
+
 void Game::initStates()
 {
 	states = std::make_shared<std::stack<std::unique_ptr<State>>>();
 	std::unique_ptr<State> mainMenuStatePtr(
-			new MainMenuState(window, supportedKeys, states));
+			new MainMenuState(stateData));
 	states->push(move(mainMenuStatePtr));
 }
 
-// ::::::::::::::::::::GraphicsSettings::::::::::::::::::::
-
-// Constructor / Destructor
-Game::GraphicsSettings::GraphicsSettings()
-{
-	title = "DEFAULT";
-	resolution = sf::VideoMode::getDesktopMode();
-	fullscreen = false;
-	verticalSync = false;
-	framerateLimit = 120;
-	contextSettings.antialiasingLevel = 0;
-	videoModes = sf::VideoMode::getFullscreenModes();
-}
-
-Game::GraphicsSettings::~GraphicsSettings()
-{
-
-}
-
-// Functions
-void Game::GraphicsSettings::saveToFile(const std::string path)
-{
-	std::ofstream ofs(path);
-
-	if (ofs.is_open())
-	{
-		ofs << title;
-		ofs << resolution.width << " " << resolution.height;
-		ofs << fullscreen;
-		ofs << framerateLimit;
-		ofs << verticalSync;
-		ofs << contextSettings.antialiasingLevel;
-	}
-
-	ofs.close();
-}
-
-void Game::GraphicsSettings::loadFromFile(const std::string path)
-{
-	std::ifstream ifs(path);
-
-	if (ifs.is_open())
-	{
-		std::getline(ifs, title);
-		ifs >> resolution.width >> resolution.height;
-		ifs >> fullscreen;
-		ifs >> framerateLimit;
-		ifs >> verticalSync;
-		ifs >> contextSettings.antialiasingLevel;
-	}
-
-	ifs.close();
-}

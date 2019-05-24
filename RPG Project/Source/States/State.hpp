@@ -8,20 +8,18 @@
 #ifndef STATES_STATE_HPP_
 #define STATES_STATE_HPP_
 
-#include "../Entities/Player.hpp"
+#include "..\Containers\StateData.hpp"
+#include "..\Entities\Player.hpp"
 
 // class Game;
 
-class State {
+class State
+{
 public:
 	// Static functions
 
-	// Constructors / Destructors
-	explicit State(
-			std::shared_ptr<sf::RenderWindow> window,
-			std::shared_ptr<std::map<std::string, int>> supportedKeys,
-			std::shared_ptr<std::stack<std::unique_ptr<State>>> states
-			);
+	// Constructor / Destructor
+	State(StateData& stateData);
 	virtual ~State() = 0;
 
 	// Functions
@@ -37,13 +35,6 @@ public:
 	// Getters / Setters
 	const bool& isEnded() const;
 
-	/*virtual void draw() = 0;
-	virtual void keyPressed_W(Game& game) = 0;
-	virtual void keyPressed_A(Game& game) = 0;
-	virtual void keyPressed_S(Game& game) = 0;
-	virtual void keyPressed_D(Game& game) = 0;
-	virtual void keyPressed_Enter(Game& game) = 0;*/
-
 protected:
 	// Initialization functions
 	virtual void initKeybinds() = 0;
@@ -55,15 +46,18 @@ protected:
 	};
 
 	// Resources
+	StateData& stateData;
+	std::shared_ptr<GraphicsSettings> graphicsSettings;
 	std::shared_ptr<sf::RenderWindow> window;
-	std::shared_ptr<std::stack<std::unique_ptr<State>>> states;
 	std::shared_ptr<std::map<std::string, int>> supportedKeys;
+	std::shared_ptr<std::stack<std::unique_ptr<State>>> states;
 	std::map<std::string, Key> keybinds;
 	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 
 	// Variables
 	bool ended;
 	bool paused;
+	float gridSize;
 
 	sf::Vector2i mousePosScreen;
 	sf::Vector2i mousePosWindow;

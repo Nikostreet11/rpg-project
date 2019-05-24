@@ -15,11 +15,8 @@
 
 //MainMenu* MainMenu::instance = nullptr;
 
-MainMenuState::MainMenuState(
-		std::shared_ptr<sf::RenderWindow> window,
-		std::shared_ptr<std::map<std::string, int>> supportedKeys,
-		std::shared_ptr<std::stack<std::unique_ptr<State>>> states) :
-State(window, supportedKeys, states)
+MainMenuState::MainMenuState(StateData& stateData) :
+		State(stateData)
 {
 	initVariables();
 	initKeybinds();
@@ -66,7 +63,7 @@ void MainMenuState::updateButtons()
 	if (buttons["GAME_STATE"]->isPressed())
 	{
 		std::unique_ptr<State> gameStatePtr(
-				new GameState(window, supportedKeys, states));
+				new GameState(stateData));
 		states->push(move(gameStatePtr));
 	}
 
@@ -74,7 +71,7 @@ void MainMenuState::updateButtons()
 	if (buttons["EDITOR_STATE"]->isPressed())
 	{
 		std::unique_ptr<State> editorStatePtr(
-				new EditorState(window, supportedKeys, states));
+				new EditorState(stateData));
 		states->push(move(editorStatePtr));
 	}
 
@@ -82,7 +79,7 @@ void MainMenuState::updateButtons()
 	if (buttons["SETTINGS_STATE"]->isPressed())
 	{
 		std::unique_ptr<State> settingsStatePtr(
-				new SettingsState(window, supportedKeys, states));
+				new SettingsState(stateData));
 		states->push(move(settingsStatePtr));
 	}
 
@@ -123,34 +120,6 @@ void MainMenuState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
 		it.second->render(target);
 	}
 }
-
-/*MainMenu* MainMenu::getInstance() {
-	if (instance == nullptr) {
-		instance = new MainMenu();
-	}
-	return instance;
-}*/
-
-/*void MainMenu::draw() {
-	GraphicService* graphicService = ServiceLocator::getGraphicService();
-	graphicService->drawMainMenu(this);
-}
-
-void MainMenu::keyPressed_W(Game& game) {
-	shiftBackwardActive();
-}
-
-void MainMenu::keyPressed_A(Game& game) {}
-
-void MainMenu::keyPressed_S(Game& game) {
-	shiftForwardActive();
-}
-
-void MainMenu::keyPressed_D(Game& game) {}
-
-void MainMenu::keyPressed_Enter(Game& game) {
-	entriesList.at(activeEntry)->action(game);
-}*/
 
 // Initialization functions
 void MainMenuState::initVariables()

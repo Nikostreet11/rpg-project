@@ -20,10 +20,7 @@ public:
 	// Static functions
 
 	// Constructors / Destructors
-	explicit MainMenuState(
-			std::shared_ptr<sf::RenderWindow> window,
-			std::shared_ptr<std::map<std::string, int>> supportedKeys,
-			std::shared_ptr<std::stack<std::unique_ptr<State>>> states);
+	explicit MainMenuState(StateData& stateData);
 	virtual ~MainMenuState();
 
 	// Functions
@@ -34,15 +31,6 @@ public:
 	void updateButtons();
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
 	void renderButtons(std::shared_ptr<sf::RenderTarget> target = nullptr);
-
-	//static MainMenu* getInstance();
-
-	/*virtual void draw();
-	virtual void keyPressed_W(Game& game);
-	virtual void keyPressed_A(Game& game);
-	virtual void keyPressed_S(Game& game);
-	virtual void keyPressed_D(Game& game);
-	virtual void keyPressed_Enter(Game& game);*/
 
 protected:
 	// Initialization functions

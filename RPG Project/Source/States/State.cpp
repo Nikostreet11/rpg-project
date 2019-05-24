@@ -10,13 +10,13 @@
 // Static functions
 
 // Constructors / Destructors
-State::State(
-		std::shared_ptr<sf::RenderWindow> window,
-		std::shared_ptr<std::map<std::string, int>> supportedKeys,
-		std::shared_ptr<std::stack<std::unique_ptr<State>>> states) :
-window(move(window)),
-states(move(states)),
-supportedKeys(move(supportedKeys))
+State::State(StateData& stateData) :
+		stateData(stateData),
+		graphicsSettings(stateData.graphicsSettings),
+		window(stateData.window),
+		supportedKeys(stateData.supportedKeys),
+		states(stateData.states),
+		gridSize(stateData.gridSize)
 {
 	ended = false;
 	paused = false;
@@ -49,3 +49,4 @@ const bool& State::isEnded() const
 {
 	return ended;
 }
+

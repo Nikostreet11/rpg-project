@@ -7,11 +7,8 @@
 
 #include "SettingsState.hpp"
 
-SettingsState::SettingsState(
-		std::shared_ptr<sf::RenderWindow> window,
-		std::shared_ptr<std::map<std::string, int>> supportedKeys,
-		std::shared_ptr<std::stack<std::unique_ptr<State>>> states) :
-State(window, supportedKeys, states)
+SettingsState::SettingsState(StateData& stateData) :
+		State(stateData)
 {
 	initVariables();
 	initKeybinds();
