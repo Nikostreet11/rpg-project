@@ -17,6 +17,7 @@ State(window, supportedKeys, states)
 	initKeybinds();
 	initFonts();
 	initBackground();
+	initPauseMenu();
 	initButtons();
 
 	/*addEntry("New Game", Exploration::getInstance());
@@ -39,13 +40,42 @@ void EditorState::update(const float& dt)
 {
 	updateInput(dt);
 	updateMousePositions();
-	updateButtons();
+
+	if (!paused)
+	{
+		// Unpaused update
+		updateButtons();
+	}
+	else
+	{
+		// Paused update
+		updatePauseMenu();
+	}
 }
 
 void EditorState::updateInput(const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(keybinds.at("CLOSE").code)))
-		endState();
+	Key& key = keybinds.at("CLOSE");
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(key.code)) &&
+			!key.wasPressed)
+	{
+		// Key pressed
+		if (!paused)
+			pauseState();
+		else
+			unpauseState();
+
+		key.wasPressed = true;
+	}
+
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(key.code)) &&
+			key.wasPressed)
+	{
+		// Key released
+
+		key.wasPressed = false;
+	}
 }
 
 void EditorState::updateButtons()
@@ -57,15 +87,31 @@ void EditorState::updateButtons()
 	}
 }
 
+void EditorState::updatePauseMenu()
+{
+	pauseMenu->update(mousePosView);
+
+	if (pauseMenu->isButtonPressed("QUIT"))
+		endState();
+}
+
 void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 {
 	if (!target)
 		target = window;
 
+	map.render(target);
+
 	renderButtons(target);
 
+	if (paused)
+	{
+		// Pause menu render
+		pauseMenu->render(window);
+	}
+
 	// TODO: remove later
-	/*sf::Text mouseText;
+	sf::Text mouseText;
 	mouseText.setPosition(mousePosView.x, mousePosView.y - 12);
 	mouseText.setFont(*font);
 	mouseText.setCharacterSize(12);
@@ -73,7 +119,7 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 	ss << mousePosView.x << " " << mousePosView.y;
 	mouseText.setString(ss.str());
 
-	target->draw(mouseText);*/
+	target->draw(mouseText);
 }
 
 void EditorState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
@@ -125,4 +171,11 @@ void EditorState::initBackground()
 
 void EditorState::initButtons()
 {
+}
+
+void EditorState::initPauseMenu()
+{
+	pauseMenu.reset(new PauseMenu(window, font));
+
+	pauseMenu->addButton("QUIT", 800.f, "Quit");
 }

@@ -9,7 +9,10 @@
 #define STATES_EDITORSTATE_HPP_
 
 #include "State.hpp"
+
 #include "../Resources/Button.hpp"
+#include "..\GUI\PauseMenu.hpp"
+#include "..\Map\TileMap.hpp"
 
 class EditorState :
 		public State
@@ -29,7 +32,8 @@ public:
 
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
-	void updateButtons();
+	virtual void updateButtons();
+	virtual void updatePauseMenu();
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
 	void renderButtons(std::shared_ptr<sf::RenderTarget> target = nullptr);
 
@@ -39,12 +43,14 @@ protected:
 	virtual void initKeybinds();
 	void initFonts();
 	void initBackground();
+	void initPauseMenu();
 	void initButtons();
 
-	// Variables
+	// Resources
 	std::shared_ptr<sf::Font> font;
-
+	std::unique_ptr<PauseMenu> pauseMenu;
 	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
+	TileMap map;
 
 };
 

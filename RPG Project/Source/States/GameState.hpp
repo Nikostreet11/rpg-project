@@ -32,7 +32,7 @@ public:
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
 	virtual void updatePlayerInput(const float& dt);
-	virtual void updatePauseMenuButtons();
+	virtual void updatePauseMenu();
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
 
 	// Getters / Setters

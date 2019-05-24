@@ -48,8 +48,7 @@ void GameState::update(const float& dt)
 	else
 	{
 		// Paused update
-		pauseMenu->update(mousePosView);
-		updatePauseMenuButtons();
+		updatePauseMenu();
 	}
 }
 
@@ -97,8 +96,9 @@ void GameState::updatePlayerInput(const float& dt)
 		player->move(0, 1, dt);
 }
 
-void GameState::updatePauseMenuButtons()
+void GameState::updatePauseMenu()
 {
+	pauseMenu->update(mousePosView);
 	if (pauseMenu->isButtonPressed("QUIT"))
 		endState();
 }
