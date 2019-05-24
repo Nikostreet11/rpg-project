@@ -22,8 +22,10 @@ Game::Game()/* : state(MainMenu::getInstance())*/
 	initGraphicsSettings();
 	initWindow();
 	initKeys();
-	initStateData();
 	initStates();
+	initStateData();
+
+	start();
 }
 
 Game::~Game()
@@ -71,7 +73,8 @@ void Game::update()
 void Game::updateDt()
 {
 	/* updates the dt variable with the time it takes to update and render one
-	 * frame */
+	 * frame
+	 */
 	dt = dtClock.restart().asSeconds();
 }
 
@@ -100,6 +103,7 @@ void Game::initVariables()
 {
 	window = nullptr;
 	dt = 0.f;
+
 	gridSize = 50.f;
 }
 
@@ -159,6 +163,11 @@ void Game::initKeys()
 	}
 }
 
+void Game::initStates()
+{
+	states = std::make_shared<std::stack<std::unique_ptr<State>>>();
+}
+
 void Game::initStateData()
 {
 	stateData.graphicsSettings = graphicsSettings;
@@ -168,11 +177,9 @@ void Game::initStateData()
 	stateData.gridSize = gridSize;
 }
 
-void Game::initStates()
+void Game::start()
 {
-	states = std::make_shared<std::stack<std::unique_ptr<State>>>();
-	std::unique_ptr<State> mainMenuStatePtr(
-			new MainMenuState(stateData));
+	std::unique_ptr<State> mainMenuStatePtr(new MainMenuState(stateData));
+
 	states->push(move(mainMenuStatePtr));
 }
-
