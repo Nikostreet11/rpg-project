@@ -45,6 +45,7 @@ void EditorState::update(const float& dt)
 		// Unpaused update
 		updateGUI();
 		updateButtons();
+		updateEditorInput();
 	}
 	else
 	{
@@ -78,9 +79,19 @@ void EditorState::updateInput(const float& dt)
 	}
 }
 
+void EditorState::updateEditorInput()
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		tileMap->addTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
+	}
+}
+
 void EditorState::updateGUI()
 {
-	selectorRect.setPosition(mousePosView);
+	selectorRect.setPosition(
+			mousePosGrid.x * gridSize,
+			mousePosGrid.y * gridSize);
 }
 
 void EditorState::updateButtons()
@@ -185,7 +196,7 @@ void EditorState::initBackground()
 
 void EditorState::initTileMap()
 {
-	tileMap.reset(new TileMap(sf::Vector2u(15, 15), stateData.gridSize));
+	tileMap.reset(new TileMap(sf::Vector2u(20, 15), stateData.gridSize));
 }
 
 void EditorState::initPauseMenu()

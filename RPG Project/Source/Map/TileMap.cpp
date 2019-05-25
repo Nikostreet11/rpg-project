@@ -13,8 +13,8 @@ TileMap::TileMap(sf::Vector2u size, float gridSize)
 
 	//gridSizeU = static_cast<unsigned>(gridSizeF);
 
-	maxSize.x = 18;
-	maxSize.y = 10;
+	maxSize.x = 20;
+	maxSize.y = 15;
 	maxLayers = 1;
 
 	if (size.x > maxSize.x)
@@ -28,22 +28,20 @@ TileMap::TileMap(sf::Vector2u size, float gridSize)
 
 	for (std::size_t x = 0; x < size.x; x++)
 	{
-		map.push_back(std::vector< std::vector<Tile> >());
 		map[x].resize(size.y);
 		tilePosition.x = gridSize * x;
 
 		for (std::size_t y = 0; y < size.y; y++)
 		{
-			map[x].push_back(std::vector<Tile>());
 			map[x][y].resize(maxLayers);
 			tilePosition.y = gridSize * y;
 
 			for (std::size_t z = 0; z < maxLayers; z++)
 			{
-				map[x][y].push_back(Tile(tilePosition, gridSize));
+				//std::unique_ptr<Tile> tilePtr(new Tile(tilePosition, gridSize));
+				map[x][y][z] = nullptr;//std::move(tilePtr);
 			}
 		}
-
 	}
 }
 
@@ -63,17 +61,33 @@ void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
 		{
 			for (auto &layer : y)
 			{
-				layer.render(target);
+				if (layer != nullptr)
+				{
+					layer->render(target);
+				}
 			}
 		}
 	}
 }
 
-void TileMap::addTile()
+void TileMap::addTile(sf::Vector2u position, unsigned z)
 {
+	if (0 <= position.x && position.x < maxSize.x &&
+			0 <= position.y && position.y < maxSize.y &&
+			0 <= z && z < maxLayers)
+	{
+		if (map[position.x][position.y][z] == nullptr)
+		{
+			sf::Vector2f tilePosition;
+			tilePosition.x = position.x * gridSize;
+			tilePosition.y = position.y * gridSize;
+			std::unique_ptr<Tile> tilePtr(new Tile(tilePosition, gridSize));
+			map[position.x][position.y][z] = std::move(tilePtr);
+		}
+	}
 }
 
-void TileMap::removeTile()
+void TileMap::removeTile(sf::Vector2u position)
 {
 }
 

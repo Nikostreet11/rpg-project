@@ -115,9 +115,9 @@ void MainMenuState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
 	if (!target)
 		target = window;
 
-	for (auto &it : buttons)
+	for (auto &iterator : buttons)
 	{
-		it.second->render(target);
+		iterator.second->render(target);
 	}
 }
 

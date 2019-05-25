@@ -29,6 +29,7 @@ public:
 
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
+	virtual void updateEditorInput();
 	virtual void updateGUI();
 	virtual void updateButtons();
 	virtual void updatePauseMenu();

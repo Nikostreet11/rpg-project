@@ -23,8 +23,8 @@ public:
 	void update();
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
-	void addTile();
-	void removeTile();
+	void addTile(sf::Vector2u position, unsigned z);
+	void removeTile(sf::Vector2u position);
 
 	/*
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -49,7 +49,7 @@ public:
 
 private:
 	// 3-dimensional vector
-	std::vector< std::vector< std::vector<Tile> > > map;
+	std::vector< std::vector< std::vector< std::unique_ptr<Tile> > > > map;
 	sf::Vector2u maxSize;
 	unsigned maxLayers;
 	//unsigned gridSizeU;
