@@ -85,6 +85,10 @@ void EditorState::updateEditorInput()
 	{
 		tileMap->addTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
 	}
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	{
+		tileMap->removeTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
+	}
 }
 
 void EditorState::updateGUI()

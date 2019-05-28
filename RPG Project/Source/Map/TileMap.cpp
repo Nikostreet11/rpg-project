@@ -9,13 +9,11 @@
 
 TileMap::TileMap(sf::Vector2u size, float gridSize)
 {
+	initVariables();
+
 	this->gridSize = gridSize;
 
 	//gridSizeU = static_cast<unsigned>(gridSizeF);
-
-	maxSize.x = 20;
-	maxSize.y = 15;
-	maxLayers = 1;
 
 	if (size.x > maxSize.x)
 		size.x = maxSize.x;
@@ -29,12 +27,12 @@ TileMap::TileMap(sf::Vector2u size, float gridSize)
 	for (std::size_t x = 0; x < size.x; x++)
 	{
 		map[x].resize(size.y);
-		tilePosition.x = gridSize * x;
+		//tilePosition.x = gridSize * x;
 
 		for (std::size_t y = 0; y < size.y; y++)
 		{
 			map[x][y].resize(maxLayers);
-			tilePosition.y = gridSize * y;
+			//tilePosition.y = gridSize * y;
 
 			for (std::size_t z = 0; z < maxLayers; z++)
 			{
@@ -43,6 +41,13 @@ TileMap::TileMap(sf::Vector2u size, float gridSize)
 			}
 		}
 	}
+
+	border.setSize(sf::Vector2f(
+			size.x * gridSize,
+			size.y * gridSize));
+	border.setFillColor(sf::Color::Transparent);
+	border.setOutlineThickness(3);
+	border.setOutlineColor(sf::Color::Red);
 }
 
 TileMap::~TileMap()
@@ -68,13 +73,15 @@ void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
 			}
 		}
 	}
+
+	target->draw(border);
 }
 
 void TileMap::addTile(sf::Vector2u position, unsigned z)
 {
-	if (0 <= position.x && position.x < maxSize.x &&
-			0 <= position.y && position.y < maxSize.y &&
-			0 <= z && z < maxLayers)
+	if (0 <= position.x && position.x < map.size() &&
+			0 <= position.y && position.y < map[position.x].size() &&
+			0 <= z && z < map[position.x][position.y].size())
 	{
 		if (map[position.x][position.y][z] == nullptr)
 		{
@@ -87,10 +94,36 @@ void TileMap::addTile(sf::Vector2u position, unsigned z)
 	}
 }
 
-void TileMap::removeTile(sf::Vector2u position)
+void TileMap::removeTile(sf::Vector2u position, unsigned z)
 {
+	if (0 <= position.x && position.x < map.size() &&
+			0 <= position.y && position.y < map[position.x].size() &&
+			0 <= z && z < map[position.x][position.y].size())
+	{
+		if (map[position.x][position.y][z] != nullptr)
+		{
+			map[position.x][position.y][z].reset();
+		}
+	}
 }
 
+void TileMap::initVariables()
+{
+	maxSize.x = 20;
+	maxSize.y = 15;
+	maxLayers = 1;
+	gridSize = 0;
+}
+
+void TileMap::initMap()
+{
+	// TODO
+}
+
+void TileMap::initBorder()
+{
+	// TODO
+}
 /*
 bool TileMap::isOutOfBounds(int posX, int posY) const {
 	if (posX < 0 || posX >= width || posY < 0 || posY >= height)

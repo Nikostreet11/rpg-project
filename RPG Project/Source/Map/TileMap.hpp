@@ -24,7 +24,7 @@ public:
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
 	void addTile(sf::Vector2u position, unsigned z);
-	void removeTile(sf::Vector2u position);
+	void removeTile(sf::Vector2u position, unsigned z);
 
 	/*
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -48,8 +48,16 @@ public:
 	*/
 
 private:
-	// 3-dimensional vector
+	// Initialization
+	void initVariables();
+	void initMap();
+	void initBorder();
+
+	// Resources
 	std::vector< std::vector< std::vector< std::unique_ptr<Tile> > > > map;
+	sf::RectangleShape border;
+
+	// Variables
 	sf::Vector2u maxSize;
 	unsigned maxLayers;
 	//unsigned gridSizeU;
