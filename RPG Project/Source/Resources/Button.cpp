@@ -27,8 +27,7 @@ Button::Button(
 		sf::Color outlineActiveColor) :
 font(move(font))
 {
-	state = states::Idle;
-	wasPressed = false;
+	initVariables();
 
 	shape.setPosition(position);
 	shape.setSize(size);
@@ -64,23 +63,31 @@ void Button::update(const sf::Vector2f& mousePos)
 {
 	/* Update the booleans for hover and pressed */
 
-	if (shape.getGlobalBounds().contains(mousePos))
+	if (shape.getGlobalBounds().contains(mousePos)) // Selection
 	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) // Input
 		{
 			if (state == states::Hover)
+			{
 				state = states::Active;
+				pressEvent = true;
+			}
 		}
 		else
 		{
+			if (state == states::Active)
+			{
+				releaseEvent = true;
+			}
+
 			state = states::Hover;
-			wasPressed = false;
 		}
 	}
 	else
 	{
 		state = states::Idle;
-		wasPressed = false;
+		// pressEvent = false;
+		// releaseEvent = false;
 	}
 
 	switch (state)
@@ -119,9 +126,10 @@ void Button::render(std::shared_ptr<sf::RenderTarget> target)
 
 bool Button::isPressed()
 {
-	if (state == states::Active && !wasPressed)
+	// TODO: verify if the state check is mandatory
+	if (state == states::Active && pressEvent)
 	{
-		wasPressed = true;
+		pressEvent = false;
 		return true;
 	}
 	else
@@ -142,18 +150,18 @@ bool Button::isHold() const
 	}
 }
 
-/*bool Button::isReleased()
+bool Button::isReleased()
 {
-	if (state != states::Active && wasPressed)
+	if (state == states::Hover && releaseEvent)
 	{
-		wasPressed = false;
+		releaseEvent = false;
 		return true;
 	}
 	else
 	{
 		return false;
 	}
-}*/
+}
 
 // Getters / Setters
 const std::string Button::getText() const
@@ -170,6 +178,13 @@ void Button::setText(const std::string& text)
 				this->text.getGlobalBounds().width / 2.f,
 			shape.getPosition().y + shape.getGlobalBounds().height / 2.f -
 				this->text.getCharacterSize() * 1.3f / 2.f);
+}
+
+void gui::Button::initVariables()
+{
+	state = states::Idle;
+	pressEvent = false;
+	releaseEvent = false;
 }
 
 } /* namespace gui */

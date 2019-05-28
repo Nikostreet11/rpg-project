@@ -42,13 +42,16 @@ public:
 
 	bool isPressed();
 	bool isHold() const;
-	// bool isReleased();
+	bool isReleased();
 
 	// Getters / Setters
 	const std::string getText() const;
 	void setText(const std::string& text);
 
 private:
+	// Initialization
+	void initVariables();
+
 	// Resources
 	std::shared_ptr<sf::Font> font;
 
@@ -57,7 +60,8 @@ private:
 
 	// Variables
 	Button::states state;
-	bool wasPressed;
+	bool pressEvent;
+	bool releaseEvent;
 
 	sf::Color textIdleColor;
 	sf::Color textHoverColor;

@@ -60,7 +60,7 @@ void MainMenuState::updateButtons()
 	}
 
 	// New game
-	if (buttons["GAME_STATE"]->isPressed())
+	if (buttons["GAME_STATE"]->isReleased())
 	{
 		std::unique_ptr<State> gameStatePtr(
 				new GameState(stateData));
@@ -68,7 +68,7 @@ void MainMenuState::updateButtons()
 	}
 
 	// Editor
-	if (buttons["EDITOR_STATE"]->isPressed())
+	if (buttons["EDITOR_STATE"]->isReleased())
 	{
 		std::unique_ptr<State> editorStatePtr(
 				new EditorState(stateData));
@@ -76,7 +76,7 @@ void MainMenuState::updateButtons()
 	}
 
 	// Settings
-	if (buttons["SETTINGS_STATE"]->isPressed())
+	if (buttons["SETTINGS_STATE"]->isReleased())
 	{
 		std::unique_ptr<State> settingsStatePtr(
 				new SettingsState(stateData));
@@ -84,7 +84,7 @@ void MainMenuState::updateButtons()
 	}
 
 	// Quit the game
-	if (buttons["EXIT"]->isPressed())
+	if (buttons["EXIT"]->isReleased())
 	{
 		endState();
 	}
