@@ -11,7 +11,11 @@ Tile::Tile()
 {
 }
 
-Tile::Tile(sf::Vector2f position, float gridSizeF, sf::Texture& tileTextureSheet)
+Tile::Tile(
+		sf::Vector2f position,
+		float gridSizeF,
+		const sf::Texture& tileTextureSheet,
+		sf::IntRect rect)
 {
 	shape.setSize(sf::Vector2f(gridSizeF, gridSizeF));
 	shape.setFillColor(sf::Color::White);
@@ -19,7 +23,7 @@ Tile::Tile(sf::Vector2f position, float gridSizeF, sf::Texture& tileTextureSheet
 	//shape.setOutlineColor(sf::Color::Black);
 	shape.setPosition(position);
 	shape.setTexture(&tileTextureSheet);
-	shape.setTextureRect(sf::IntRect(64, 0, 32, 32));
+	shape.setTextureRect(rect);
 }
 
 Tile::~Tile() {

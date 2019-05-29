@@ -23,7 +23,7 @@ public:
 	void update();
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
-	void addTile(sf::Vector2u position, unsigned z);
+	void addTile(sf::Vector2u position, unsigned z, sf::IntRect rect);
 	void removeTile(sf::Vector2u position, unsigned z);
 
 	/*

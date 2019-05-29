@@ -82,7 +82,7 @@ void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
 	target->draw(border);
 }
 
-void TileMap::addTile(sf::Vector2u position, unsigned z)
+void TileMap::addTile(sf::Vector2u position, unsigned z, sf::IntRect rect)
 {
 	if (0 <= position.x && position.x < map.size() &&
 			0 <= position.y && position.y < map[position.x].size() &&
@@ -93,7 +93,11 @@ void TileMap::addTile(sf::Vector2u position, unsigned z)
 			sf::Vector2f tilePosition;
 			tilePosition.x = position.x * gridSize;
 			tilePosition.y = position.y * gridSize;
-			std::unique_ptr<Tile> tilePtr(new Tile(tilePosition, gridSize, tileTextureSheet));
+			std::unique_ptr<Tile> tilePtr(new Tile(
+					tilePosition,
+					gridSize,
+					tileTextureSheet,
+					rect));
 			map[position.x][position.y][z] = std::move(tilePtr);
 		}
 	}

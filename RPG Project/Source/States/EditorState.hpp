@@ -56,6 +56,7 @@ protected:
 
 	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
 
+	sf::IntRect textureRect;
 	sf::RectangleShape selectorRect;
 };
 

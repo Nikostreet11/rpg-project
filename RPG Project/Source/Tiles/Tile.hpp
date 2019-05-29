@@ -13,7 +13,11 @@
 class Tile {
 public:
 	Tile();
-	Tile(sf::Vector2f position, float gridSizeF, sf::Texture& tileTextureSheet);
+	explicit Tile(
+			sf::Vector2f position,
+			float gridSizeF,
+			const sf::Texture& tileTextureSheet,
+			sf::IntRect rect);
 	virtual ~Tile();
 
 	// Function

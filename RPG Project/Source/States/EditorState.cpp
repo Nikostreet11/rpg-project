@@ -83,7 +83,7 @@ void EditorState::updateEditorInput()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		tileMap->addTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
+		tileMap->addTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0, textureRect);
 	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
@@ -137,10 +137,19 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 	mouseText.setFont(*font);
 	mouseText.setCharacterSize(12);
 	std::stringstream ss;
-	ss << mousePosView.x << " " << mousePosView.y;
+	ss << mousePosView.x << " " << mousePosView.y << '\n' <<
+			textureRect.left << " " << textureRect.top;
 	mouseText.setString(ss.str());
 
 	target->draw(mouseText);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		if (textureRect.left < 100)
+		{
+			textureRect.left += 100;
+		}
+	}
 }
 
 void EditorState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
@@ -165,6 +174,11 @@ void EditorState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
 // Initialization functions
 void EditorState::initVariables()
 {
+	textureRect = sf::IntRect(
+			0,
+			0,
+			static_cast<int>(gridSize),
+			static_cast<int>(gridSize));
 }
 
 void EditorState::initKeybinds()
