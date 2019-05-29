@@ -55,6 +55,7 @@ private:
 
 	// Resources
 	std::vector< std::vector< std::vector< std::unique_ptr<Tile> > > > map;
+	sf::Texture tileTextureSheet;
 	sf::RectangleShape border;
 
 	// Variables

@@ -42,6 +42,11 @@ TileMap::TileMap(sf::Vector2u size, float gridSize)
 		}
 	}
 
+	if (!tileTextureSheet.loadFromFile("Images/Exploration/Tilesets/Villages.png"))
+	{
+		std::cout << "ERROR::TILEMAP::FAILED_TO_LOAD_TILETEXTURESHEET" << std::endl;
+	}
+
 	border.setSize(sf::Vector2f(
 			size.x * gridSize,
 			size.y * gridSize));
@@ -88,7 +93,7 @@ void TileMap::addTile(sf::Vector2u position, unsigned z)
 			sf::Vector2f tilePosition;
 			tilePosition.x = position.x * gridSize;
 			tilePosition.y = position.y * gridSize;
-			std::unique_ptr<Tile> tilePtr(new Tile(tilePosition, gridSize));
+			std::unique_ptr<Tile> tilePtr(new Tile(tilePosition, gridSize, tileTextureSheet));
 			map[position.x][position.y][z] = std::move(tilePtr);
 		}
 	}
