@@ -104,7 +104,7 @@ void Game::initVariables()
 	window = nullptr;
 	dt = 0.f;
 
-	gridSize = 50.f;
+	gridSize = 128.f;
 }
 
 void Game::initGraphicsSettings()

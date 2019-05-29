@@ -46,7 +46,7 @@ private:
 	// Resources
 	std::unique_ptr<Player> player;
 	std::unique_ptr<TileMap> tileMap;
-	std::unique_ptr<PauseMenu> pauseMenu;
+	std::unique_ptr<gui::PauseMenu> pauseMenu;
 
 	std::shared_ptr<sf::Font> font;
 

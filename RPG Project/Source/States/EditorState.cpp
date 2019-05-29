@@ -111,10 +111,12 @@ void EditorState::updateGUI()
 			mousePosGrid.x * gridSize,
 			mousePosGrid.y * gridSize);
 
-	std::stringstream ss;
-	ss << mousePosView.x << " " << mousePosView.y << '\n';
-	cursorText.setString(ss.str());
-	cursorText.setPosition(mousePosView.x, mousePosView.y - 20.f);
+	std::stringstream cursorString;
+	cursorString <<
+			mousePosView.x << " " << mousePosView.y << '\n' <<
+			mousePosGrid.x << " " << mousePosGrid.y << '\n';
+	cursorText.setString(cursorString.str());
+	cursorText.setPosition(mousePosView.x, mousePosView.y - 40.f);
 }
 
 void EditorState::updateButtons()
@@ -157,6 +159,7 @@ void EditorState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
 		target = window;
 
 	target->draw(selectorRect);
+	textureSelector->render(target);
 	target->draw(cursorText);
 }
 
@@ -221,12 +224,12 @@ void EditorState::initBackground()
 
 void EditorState::initTileMap()
 {
-	tileMap.reset(new TileMap(sf::Vector2u(20, 15), stateData.gridSize));
+	tileMap.reset(new TileMap(sf::Vector2u(14, 8), stateData.gridSize));
 }
 
 void EditorState::initPauseMenu()
 {
-	pauseMenu.reset(new PauseMenu(window, font));
+	pauseMenu.reset(new gui::PauseMenu(window, font));
 
 	pauseMenu->addButton("QUIT", 800.f, "Quit");
 }
@@ -238,6 +241,11 @@ void EditorState::initGUI()
 	selectorRect.setFillColor(sf::Color(255, 255, 255, 150));
 	selectorRect.setOutlineThickness(1.f);
 	selectorRect.setOutlineColor(sf::Color::Green);
+
+	textureSelector.reset(new gui::TextureSelector(
+			sf::Vector2f(50.f, 50.f),
+			sf::Vector2f(200.f, 200.f),
+			tileMap->getTileSheet()));
 }
 
 void EditorState::initButtons()

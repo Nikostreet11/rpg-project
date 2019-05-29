@@ -8,10 +8,10 @@
 #ifndef STATES_SETTINGSSTATE_HPP_
 #define STATES_SETTINGSSTATE_HPP_
 
+#include "../GUI/Button.hpp"
+#include "../GUI/DropDownList.hpp"
 #include "State.hpp"
 
-#include "../Resources/Button.hpp"
-#include "../Resources/DropDownList.hpp"
 
 class SettingsState :
 	public State

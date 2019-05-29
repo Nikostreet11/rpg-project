@@ -5,8 +5,8 @@
  *      Author: nicop
  */
 
-#ifndef RESOURCES_DROPDOWNLIST_HPP_
-#define RESOURCES_DROPDOWNLIST_HPP_
+#ifndef GUI_DROPDOWNLIST_HPP_
+#define GUI_DROPDOWNLIST_HPP_
 
 #include "..\PCH\pch.hpp"
 
@@ -17,7 +17,7 @@ namespace gui {
 
 class DropDownList {
 public:
-	// Contructor / Destructor
+	// Constructor / Destructor
 	DropDownList(
 			sf::Vector2f position,
 			sf::Vector2f size,
@@ -46,4 +46,4 @@ private:
 
 } /* namespace gui */
 
-#endif /* RESOURCES_DROPDOWNLIST_HPP_ */
+#endif /* GUI_DROPDOWNLIST_HPP_ */

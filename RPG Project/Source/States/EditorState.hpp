@@ -10,9 +10,10 @@
 
 #include "State.hpp"
 
-#include "..\Resources\Button.hpp"
-#include "..\GUI\PauseMenu.hpp"
 #include "..\Map\TileMap.hpp"
+#include "..\GUI\Button.hpp"
+#include "..\GUI\PauseMenu.hpp"
+#include "..\GUI\TextureSelector.hpp"
 
 class EditorState :
 		public State
@@ -51,12 +52,10 @@ protected:
 
 	// Resources
 	std::shared_ptr<sf::Font> font;
-
 	std::unique_ptr<TileMap> tileMap;
-	std::unique_ptr<PauseMenu> pauseMenu;
-
+	std::unique_ptr<gui::PauseMenu> pauseMenu;
 	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
-
+	std::unique_ptr<gui::TextureSelector> textureSelector;
 	sf::Text cursorText;
 	sf::RectangleShape selectorRect;
 };

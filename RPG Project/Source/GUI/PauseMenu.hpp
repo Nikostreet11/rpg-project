@@ -11,7 +11,9 @@
 #include "..\PCH\pch.hpp"
 
 // Project
-#include "../Resources/Button.hpp"
+#include "Button.hpp"
+
+namespace gui {
 
 class PauseMenu
 {
@@ -46,5 +48,7 @@ private:
 
 	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
 };
+
+} /* namespace gui */
 
 #endif /* GUI_PAUSEMENU_HPP_ */

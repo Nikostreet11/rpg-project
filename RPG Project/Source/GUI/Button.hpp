@@ -5,8 +5,8 @@
  *      Author: nicop
  */
 
-#ifndef RESOURCES_BUTTON_HPP_
-#define RESOURCES_BUTTON_HPP_
+#ifndef GUI_BUTTON_HPP_
+#define GUI_BUTTON_HPP_
 
 #include "..\PCH\pch.hpp"
 
@@ -78,4 +78,4 @@ private:
 
 } /* namespace gui */
 
-#endif /* RESOURCES_BUTTON_HPP_ */
+#endif /* GUI_BUTTON_HPP_ */

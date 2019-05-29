@@ -7,6 +7,8 @@
 
 #include "PauseMenu.hpp"
 
+namespace gui {
+
 PauseMenu::PauseMenu(
 		std::shared_ptr<sf::RenderWindow> window,
 		std::shared_ptr<sf::Font> font) :
@@ -113,3 +115,6 @@ std::map<std::string, std::unique_ptr<gui::Button>>& PauseMenu::getButtons()
 {
 	return buttons;
 }
+
+} /* namespace gui */
+

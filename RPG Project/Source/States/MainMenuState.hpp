@@ -8,10 +8,10 @@
 #ifndef STATES_MAINMENUSTATE_HPP_
 #define STATES_MAINMENUSTATE_HPP_
 
+#include "../GUI/Button.hpp"
 #include "GameState.hpp"
 #include "EditorState.hpp"
 #include "SettingsState.hpp"
-#include "../Resources/Button.hpp"
 
 class MainMenuState:
 		public State

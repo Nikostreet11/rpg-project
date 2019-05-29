@@ -183,7 +183,7 @@ void GameState::initTileMap()
 
 void GameState::initPauseMenu()
 {
-	pauseMenu.reset(new PauseMenu(window, font));
+	pauseMenu.reset(new gui::PauseMenu(window, font));
 
 	pauseMenu->addButton("QUIT", 800.f, "Quit");
 }
