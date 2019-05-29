@@ -42,7 +42,7 @@ TileMap::TileMap(sf::Vector2u size, float gridSize)
 		}
 	}
 
-	if (!tileTextureSheet.loadFromFile("Images/Exploration/Tilesets/Villages.png"))
+	if (!tileSheet.loadFromFile("Images/Exploration/Tilesets/Villages.png"))
 	{
 		std::cout << "ERROR::TILEMAP::FAILED_TO_LOAD_TILETEXTURESHEET" << std::endl;
 	}
@@ -82,7 +82,7 @@ void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
 	target->draw(border);
 }
 
-void TileMap::addTile(sf::Vector2u position, unsigned z, sf::IntRect rect)
+void TileMap::addTile(sf::Vector2u position, unsigned z)
 {
 	if (0 <= position.x && position.x < map.size() &&
 			0 <= position.y && position.y < map[position.x].size() &&
@@ -96,8 +96,8 @@ void TileMap::addTile(sf::Vector2u position, unsigned z, sf::IntRect rect)
 			std::unique_ptr<Tile> tilePtr(new Tile(
 					tilePosition,
 					gridSize,
-					tileTextureSheet,
-					rect));
+					tileSheet,
+					tileRect));
 			map[position.x][position.y][z] = std::move(tilePtr);
 		}
 	}
@@ -116,12 +116,36 @@ void TileMap::removeTile(sf::Vector2u position, unsigned z)
 	}
 }
 
+void TileMap::selectNextTile()
+{
+	tileRect.left = 0;
+	tileRect.top = 32;
+}
+
+void TileMap::selectPreviousTile()
+{
+	tileRect.left = 64;
+	tileRect.top = 0;
+}
+
+const sf::Texture& TileMap::getTileSheet() const
+{
+	return tileSheet;
+}
+
+const sf::IntRect& TileMap::getTileRect() const
+{
+	return tileRect;
+}
+
 void TileMap::initVariables()
 {
 	maxSize.x = 20;
 	maxSize.y = 15;
 	maxLayers = 1;
 	gridSize = 0;
+
+	tileRect = sf::IntRect(64, 0, 32, 32);
 }
 
 void TileMap::initMap()
@@ -133,6 +157,7 @@ void TileMap::initBorder()
 {
 	// TODO
 }
+
 /*
 bool TileMap::isOutOfBounds(int posX, int posY) const {
 	if (posX < 0 || posX >= width || posY < 0 || posY >= height)

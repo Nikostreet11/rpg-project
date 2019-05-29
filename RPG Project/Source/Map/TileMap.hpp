@@ -23,8 +23,14 @@ public:
 	void update();
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
-	void addTile(sf::Vector2u position, unsigned z, sf::IntRect rect);
+	void addTile(sf::Vector2u position, unsigned z);
 	void removeTile(sf::Vector2u position, unsigned z);
+	void selectNextTile();
+	void selectPreviousTile();
+
+	// Getters / Setters
+	const sf::Texture& getTileSheet() const;
+	const sf::IntRect& getTileRect() const;
 
 	/*
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -55,7 +61,8 @@ private:
 
 	// Resources
 	std::vector< std::vector< std::vector< std::unique_ptr<Tile> > > > map;
-	sf::Texture tileTextureSheet;
+	sf::Texture tileSheet;
+	sf::IntRect tileRect;
 	sf::RectangleShape border;
 
 	// Variables

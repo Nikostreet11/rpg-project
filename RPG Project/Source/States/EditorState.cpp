@@ -13,6 +13,7 @@ EditorState::EditorState(StateData& stateData) :
 	initVariables();
 	initKeybinds();
 	initFonts();
+	initText();
 	initBackground();
 	initTileMap();
 	initPauseMenu();
@@ -83,19 +84,37 @@ void EditorState::updateEditorInput()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		tileMap->addTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0, textureRect);
+		tileMap->addTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
 	}
+
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
 		tileMap->removeTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		tileMap->selectNextTile();
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		tileMap->selectPreviousTile();
 	}
 }
 
 void EditorState::updateGUI()
 {
+	selectorRect.setTexture(&tileMap->getTileSheet());
+	selectorRect.setTextureRect(tileMap->getTileRect());
 	selectorRect.setPosition(
 			mousePosGrid.x * gridSize,
 			mousePosGrid.y * gridSize);
+
+	std::stringstream ss;
+	ss << mousePosView.x << " " << mousePosView.y << '\n';
+	cursorText.setString(ss.str());
+	cursorText.setPosition(mousePosView.x, mousePosView.y - 20.f);
 }
 
 void EditorState::updateButtons()
@@ -130,26 +149,6 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 		// Pause menu render
 		pauseMenu->render(window);
 	}
-
-	// TODO: remove later
-	sf::Text mouseText;
-	mouseText.setPosition(mousePosView.x, mousePosView.y - 12);
-	mouseText.setFont(*font);
-	mouseText.setCharacterSize(12);
-	std::stringstream ss;
-	ss << mousePosView.x << " " << mousePosView.y << '\n' <<
-			textureRect.left << " " << textureRect.top;
-	mouseText.setString(ss.str());
-
-	target->draw(mouseText);
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		if (textureRect.left < 100)
-		{
-			textureRect.left += 100;
-		}
-	}
 }
 
 void EditorState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
@@ -158,6 +157,7 @@ void EditorState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
 		target = window;
 
 	target->draw(selectorRect);
+	target->draw(cursorText);
 }
 
 void EditorState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
@@ -174,11 +174,11 @@ void EditorState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
 // Initialization functions
 void EditorState::initVariables()
 {
-	textureRect = sf::IntRect(
+	/*textureRect = sf::IntRect(
 			0,
 			0,
 			static_cast<int>(gridSize),
-			static_cast<int>(gridSize));
+			static_cast<int>(gridSize));*/
 }
 
 void EditorState::initKeybinds()
@@ -208,6 +208,13 @@ void EditorState::initFonts()
 	}
 }
 
+void EditorState::initText()
+{
+	cursorText.setFont(*font);
+	cursorText.setCharacterSize(16);
+	cursorText.setFillColor(sf::Color::White);
+}
+
 void EditorState::initBackground()
 {
 }
@@ -228,7 +235,7 @@ void EditorState::initGUI()
 {
 	selectorRect.setSize(sf::Vector2f(stateData.gridSize, stateData.gridSize));
 
-	selectorRect.setFillColor(sf::Color::Transparent);
+	selectorRect.setFillColor(sf::Color(255, 255, 255, 150));
 	selectorRect.setOutlineThickness(1.f);
 	selectorRect.setOutlineColor(sf::Color::Green);
 }

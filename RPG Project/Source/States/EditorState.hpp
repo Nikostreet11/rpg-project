@@ -42,6 +42,7 @@ protected:
 	void initVariables();
 	virtual void initKeybinds();
 	void initFonts();
+	void initText();
 	void initBackground();
 	void initTileMap();
 	void initPauseMenu();
@@ -56,7 +57,7 @@ protected:
 
 	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
 
-	sf::IntRect textureRect;
+	sf::Text cursorText;
 	sf::RectangleShape selectorRect;
 };
 
