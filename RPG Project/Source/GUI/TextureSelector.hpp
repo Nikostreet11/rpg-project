@@ -10,6 +10,8 @@
 
 #include "pch.hpp"
 
+#include "Button.hpp"
+
 namespace gui {
 
 class TextureSelector
@@ -19,7 +21,8 @@ public:
 			sf::Vector2f position,
 			sf::Vector2f size,
 			float gridSize,
-			const sf::Texture& textureSheet);
+			const sf::Texture& textureSheet,
+			std::shared_ptr<sf::Font> font);
 	virtual ~TextureSelector();
 
 	// Functions
@@ -37,9 +40,11 @@ private:
 	sf::RectangleShape selector;
 	sf::Vector2u mousePosGrid;
 	sf::IntRect textureRect;
+	std::unique_ptr<gui::Button> hideButton;
 
 	// Variables
 	bool active;
+	bool hidden;
 	float gridSize;
 };
 

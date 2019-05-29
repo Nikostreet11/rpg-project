@@ -13,10 +13,12 @@ TextureSelector::TextureSelector(
 		sf::Vector2f position,
 		sf::Vector2f size,
 		float gridSize,
-		const sf::Texture& textureSheet)
+		const sf::Texture& textureSheet,
+		std::shared_ptr<sf::Font> font)
 {
 	active = false;
 	this->gridSize = gridSize;
+	hidden = false;
 
 	bounds.setPosition(position);
 	bounds.setSize(size);
@@ -53,6 +55,23 @@ TextureSelector::TextureSelector(
 
 	textureRect.width = gridSize;
 	textureRect.height = gridSize;
+
+	position.x += bounds.getGlobalBounds().width;
+	hideButton.reset(new gui::Button(
+			// Position
+			position,
+			// Size
+			sf::Vector2f(200, 60),
+			// Text options
+			font, "Tile selector", 30,
+			sf::Color(150, 150, 150, 250),
+			sf::Color(250, 250, 250, 250),
+			sf::Color(220, 220, 220, 250),
+			// Button colors
+			sf::Color(150, 150, 150, 0),
+			sf::Color(250, 250, 250, 0),
+			sf::Color(220, 220, 220, 0)
+			));
 }
 
 TextureSelector::~TextureSelector()
@@ -62,41 +81,63 @@ TextureSelector::~TextureSelector()
 
 void TextureSelector::update(sf::Vector2i mousePosWindow)
 {
-	if (bounds.getGlobalBounds().contains(
-			static_cast<sf::Vector2f>(mousePosWindow)))
-	{
-		active = true;
-	}
-	else
-	{
-		active = false;
-	}
+	hideButton->update(static_cast<sf::Vector2f>(mousePosWindow));
 
-	if (active)
+	if (hideButton->isPressed())
 	{
-		mousePosGrid.x = static_cast<unsigned>(
-				(mousePosWindow.x - bounds.getPosition().x) / gridSize);
-		mousePosGrid.y = static_cast<unsigned>(
-				(mousePosWindow.y - bounds.getPosition().y) / gridSize);
-
-		selector.setPosition(sf::Vector2f(
-				bounds.getPosition().x + mousePosGrid.x * gridSize,
-				bounds.getPosition().y + mousePosGrid.y * gridSize));
+		if (hidden)
+		{
+			hidden = false;
+		}
+		else
+		{
+			hidden = true;
+		}
 	}
 
-	textureRect.left = selector.getPosition().x - bounds.getPosition().x;
-	textureRect.top = selector.getPosition().y - bounds.getPosition().y;
+	if (!hidden)
+	{
+		if (bounds.getGlobalBounds().contains(
+				static_cast<sf::Vector2f>(mousePosWindow)))
+		{
+			active = true;
+		}
+		else
+		{
+			active = false;
+		}
+
+		if (active)
+		{
+			mousePosGrid.x = static_cast<unsigned>(
+					(mousePosWindow.x - bounds.getPosition().x) / gridSize);
+			mousePosGrid.y = static_cast<unsigned>(
+					(mousePosWindow.y - bounds.getPosition().y) / gridSize);
+
+			selector.setPosition(sf::Vector2f(
+					bounds.getPosition().x + mousePosGrid.x * gridSize,
+					bounds.getPosition().y + mousePosGrid.y * gridSize));
+		}
+
+		textureRect.left = selector.getPosition().x - bounds.getPosition().x;
+		textureRect.top = selector.getPosition().y - bounds.getPosition().y;
+	}
 }
 
 void TextureSelector::render(std::shared_ptr<sf::RenderTarget> target)
 {
-	target->draw(bounds);
-	target->draw(sheet);
-
-	if (active)
+	if (!hidden)
 	{
-		target->draw(selector);
+		target->draw(bounds);
+		target->draw(sheet);
+
+		if (active)
+		{
+			target->draw(selector);
+		}
 	}
+
+	hideButton->render(target);
 }
 
 bool TextureSelector::getActive() const

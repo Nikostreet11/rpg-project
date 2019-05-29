@@ -268,7 +268,8 @@ void EditorState::initGUI()
 			sf::Vector2f(50.f, 50.f),
 			sf::Vector2f(200.f, 200.f),
 			32.f,
-			tileMap->getTileSheet()));
+			tileMap->getTileSheet(),
+			font));
 }
 
 void EditorState::initButtons()
