@@ -158,6 +158,10 @@ void TileMap::initBorder()
 	// TODO
 }
 
+void TileMap::setTileRect(const sf::IntRect& tileRect)
+{
+	this->tileRect = tileRect;
+}
 /*
 bool TileMap::isOutOfBounds(int posX, int posY) const {
 	if (posX < 0 || posX >= width || posY < 0 || posY >= height)

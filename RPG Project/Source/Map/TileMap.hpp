@@ -31,6 +31,7 @@ public:
 	// Getters / Setters
 	const sf::Texture& getTileSheet() const;
 	const sf::IntRect& getTileRect() const;
+	void setTileRect(const sf::IntRect& tileRect);
 
 	/*
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

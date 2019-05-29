@@ -28,6 +28,7 @@ public:
 
 	// Getters / Setters
 	bool getActive() const;
+	const sf::IntRect& getTextureRect() const;
 
 private:
 	// Resources

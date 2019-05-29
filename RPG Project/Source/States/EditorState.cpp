@@ -84,32 +84,51 @@ void EditorState::updateEditorInput()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		tileMap->addTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
+		if (!textureSelector->getActive())
+		{
+			tileMap->addTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
+		}
+		else
+		{
+			tileMap->setTileRect(textureSelector->getTextureRect());
+		}
 	}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
-		tileMap->removeTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
+		if (!textureSelector->getActive())
+		{
+			tileMap->removeTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
+		}
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		tileMap->selectNextTile();
+		if (!textureSelector->getActive())
+		{
+			tileMap->selectNextTile();
+		}
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		tileMap->selectPreviousTile();
+		if (!textureSelector->getActive())
+		{
+			tileMap->selectPreviousTile();
+		}
 	}
 }
 
 void EditorState::updateGUI()
 {
-	selectorRect.setTexture(&tileMap->getTileSheet());
-	selectorRect.setTextureRect(tileMap->getTileRect());
-	selectorRect.setPosition(
-			mousePosGrid.x * gridSize,
-			mousePosGrid.y * gridSize);
+	if (!textureSelector->getActive())
+	{
+		selectorRect.setTexture(&tileMap->getTileSheet());
+		selectorRect.setTextureRect(tileMap->getTileRect());
+		selectorRect.setPosition(
+				mousePosGrid.x * gridSize,
+				mousePosGrid.y * gridSize);
+	}
 
 	std::stringstream cursorString;
 	cursorString <<
@@ -161,6 +180,7 @@ void EditorState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
 		target = window;
 
 	target->draw(selectorRect);
+
 	textureSelector->render(target);
 	target->draw(cursorText);
 }

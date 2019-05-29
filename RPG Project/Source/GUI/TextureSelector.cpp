@@ -50,6 +50,9 @@ TextureSelector::TextureSelector(
 	selector.setFillColor(sf::Color::Transparent);
 	selector.setOutlineThickness(1.f);
 	selector.setOutlineColor(sf::Color::Yellow);
+
+	textureRect.width = gridSize;
+	textureRect.height = gridSize;
 }
 
 TextureSelector::~TextureSelector()
@@ -80,6 +83,9 @@ void TextureSelector::update(sf::Vector2i mousePosWindow)
 				bounds.getPosition().x + mousePosGrid.x * gridSize,
 				bounds.getPosition().y + mousePosGrid.y * gridSize));
 	}
+
+	textureRect.left = selector.getPosition().x - bounds.getPosition().x;
+	textureRect.top = selector.getPosition().y - bounds.getPosition().y;
 }
 
 void TextureSelector::render(std::shared_ptr<sf::RenderTarget> target)
@@ -96,6 +102,11 @@ void TextureSelector::render(std::shared_ptr<sf::RenderTarget> target)
 bool TextureSelector::getActive() const
 {
 	return active;
+}
+
+const sf::IntRect& TextureSelector::getTextureRect() const
+{
+	return textureRect;
 }
 
 } /* namespace gui */
