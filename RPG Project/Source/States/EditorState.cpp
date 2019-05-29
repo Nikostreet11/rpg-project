@@ -117,6 +117,8 @@ void EditorState::updateGUI()
 			mousePosGrid.x << " " << mousePosGrid.y << '\n';
 	cursorText.setString(cursorString.str());
 	cursorText.setPosition(mousePosView.x, mousePosView.y - 40.f);
+
+	textureSelector->update(mousePosWindow);
 }
 
 void EditorState::updateButtons()
@@ -245,6 +247,7 @@ void EditorState::initGUI()
 	textureSelector.reset(new gui::TextureSelector(
 			sf::Vector2f(50.f, 50.f),
 			sf::Vector2f(200.f, 200.f),
+			32.f,
 			tileMap->getTileSheet()));
 }
 

@@ -12,8 +12,12 @@ namespace gui {
 TextureSelector::TextureSelector(
 		sf::Vector2f position,
 		sf::Vector2f size,
+		float gridSize,
 		const sf::Texture& textureSheet)
 {
+	active = false;
+	this->gridSize = gridSize;
+
 	bounds.setPosition(position);
 	bounds.setSize(size);
 	bounds.setFillColor(sf::Color(50, 50, 50, 50));
@@ -40,6 +44,12 @@ TextureSelector::TextureSelector(
 				sheet.getGlobalBounds().width,
 				bounds.getSize().y));
 	}
+
+	selector.setPosition(position);
+	selector.setSize(sf::Vector2f(gridSize, gridSize));
+	selector.setFillColor(sf::Color::Transparent);
+	selector.setOutlineThickness(1.f);
+	selector.setOutlineColor(sf::Color::Yellow);
 }
 
 TextureSelector::~TextureSelector()
@@ -47,14 +57,45 @@ TextureSelector::~TextureSelector()
 	// TODO Auto-generated destructor stub
 }
 
-void TextureSelector::update()
+void TextureSelector::update(sf::Vector2i mousePosWindow)
 {
+	if (bounds.getGlobalBounds().contains(
+			static_cast<sf::Vector2f>(mousePosWindow)))
+	{
+		active = true;
+	}
+	else
+	{
+		active = false;
+	}
+
+	if (active)
+	{
+		mousePosGrid.x = static_cast<unsigned>(
+				(mousePosWindow.x - bounds.getPosition().x) / gridSize);
+		mousePosGrid.y = static_cast<unsigned>(
+				(mousePosWindow.y - bounds.getPosition().y) / gridSize);
+
+		selector.setPosition(sf::Vector2f(
+				bounds.getPosition().x + mousePosGrid.x * gridSize,
+				bounds.getPosition().y + mousePosGrid.y * gridSize));
+	}
 }
 
 void TextureSelector::render(std::shared_ptr<sf::RenderTarget> target)
 {
 	target->draw(bounds);
 	target->draw(sheet);
+
+	if (active)
+	{
+		target->draw(selector);
+	}
+}
+
+bool TextureSelector::getActive() const
+{
+	return active;
 }
 
 } /* namespace gui */
