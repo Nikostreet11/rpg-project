@@ -101,8 +101,7 @@ void TextureSelector::update(sf::Vector2i mousePosWindow)
 		sf::Vector2f mousePosWindowF =
 				static_cast<sf::Vector2f>(mousePosWindow);
 
-		if (bounds.getGlobalBounds().contains(mousePosWindowF) ||
-			hideButton->getGlobalBounds().contains(mousePosWindowF))
+		if (bounds.getGlobalBounds().contains(mousePosWindowF))
 		{
 			active = true;
 		}
