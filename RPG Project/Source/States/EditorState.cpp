@@ -87,10 +87,10 @@ void EditorState::updateEditorInput()
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			tileMap->setTileRect(textureSelector->getTextureRect());
+			tileMap->setTile(textureSelector->getTextureRect());
 		}
 	}
-	else
+	else if (tileMap->isActive())
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
@@ -159,8 +159,15 @@ void EditorState::updatePauseMenu()
 {
 	pauseMenu->update(mousePosView);
 
+	if (pauseMenu->isButtonPressed("SAVE"))
+	{
+		tileMap->saveToFile("TestTileMap.txt");
+	}
+
 	if (pauseMenu->isButtonPressed("QUIT"))
+	{
 		endState();
+	}
 }
 
 void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
@@ -255,13 +262,19 @@ void EditorState::initBackground()
 
 void EditorState::initTileMap()
 {
-	tileMap.reset(new TileMap(sf::Vector2f(160, 10), sf::Vector2u(12, 8), stateData.gridSize));
+	tileMap.reset(new TileMap(
+			sf::Vector2f(160, 10),
+			sf::Vector2u(12, 8),
+			stateData.gridSize,
+			"Villages.png",
+			32));
 }
 
 void EditorState::initPauseMenu()
 {
 	pauseMenu.reset(new gui::PauseMenu(window, font));
 
+	pauseMenu->addButton("SAVE", 600.f, "Save");
 	pauseMenu->addButton("QUIT", 800.f, "Quit");
 }
 
@@ -275,7 +288,7 @@ void EditorState::initGUI()
 
 	textureSelector.reset(new gui::TextureSelector(
 			sf::Vector2f(20.f, 50.f),
-			sf::Vector2f(400.f, 400.f),
+			sf::Vector2f(800.f, 400.f),
 			32.f,
 			tileMap->getTileSheet(),
 			font));
@@ -283,9 +296,9 @@ void EditorState::initGUI()
 	sidebar.setSize(sf::Vector2f(
 			150.f,
 			static_cast<float>(graphicsSettings->resolution.height)));
-	sidebar.setFillColor(sf::Color(50, 50, 50, 255));
+	sidebar.setFillColor(sf::Color(100, 100, 100, 255));
 	sidebar.setOutlineThickness(1.f);
-	sidebar.setOutlineColor(sf::Color(80, 80, 80, 255));
+	sidebar.setOutlineColor(sf::Color(130, 130, 130, 255));
 }
 
 void EditorState::initButtons()

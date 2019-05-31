@@ -7,7 +7,12 @@
 
 #include "TileMap.hpp"
 
-TileMap::TileMap(sf::Vector2f position, sf::Vector2u size, float gridSize)
+TileMap::TileMap(
+		sf::Vector2f position,
+		sf::Vector2u size,
+		float gridSize,
+		const std::string& textureName,
+		unsigned spriteSize)
 {
 	initVariables();
 
@@ -15,8 +20,13 @@ TileMap::TileMap(sf::Vector2f position, sf::Vector2u size, float gridSize)
 	this->size = size;
 	this->layers = maxLayers;
 	this->gridSize = gridSize;
+	this->textureName = textureName;
+	this->spriteSize = spriteSize;
 
-	//gridSizeU = static_cast<unsigned>(gridSizeF);
+	// tileRect.left = 64;
+	// tileRect.height = 0;
+	tileRect.width = spriteSize;
+	tileRect.height = spriteSize;
 
 	if (size.x > maxSize.x)
 		size.x = maxSize.x;
@@ -37,9 +47,9 @@ TileMap::TileMap(sf::Vector2f position, sf::Vector2u size, float gridSize)
 		}
 	}
 
-	if (!tileSheet.loadFromFile("Images/Exploration/Tilesets/Villages.png"))
+	if (!tileSheet.loadFromFile(texturePath + textureName))
 	{
-		std::cout << "ERROR::TILEMAP::FAILED_TO_LOAD_TILETEXTURESHEET" << std::endl;
+		std::cout << "ERROR::TILEMAP::FAILED_TO_LOAD_TILESHEET" << std::endl;
 	}
 
 	border.setPosition(position);
@@ -55,35 +65,48 @@ TileMap::~TileMap()
 {
 }
 
+// Functions
 void TileMap::update(sf::Vector2f mousePosView)
 {
-	if (mousePosView.x - position.x < 0)
+	if (border.getGlobalBounds().contains(mousePosView))
 	{
-		mousePosGrid.x = 0;
+		active = true;
 	}
 	else
 	{
-		mousePosGrid.x =
-				static_cast<unsigned>((mousePosView.x - position.x) / gridSize);
+		active = false;
 	}
 
-	if (mousePosView.y - position.y < 0)
+	if (active)
 	{
-		mousePosGrid.y = 0;
-	}
-	else
-	{
-		mousePosGrid.y =
-				static_cast<unsigned>((mousePosView.y - position.y) / gridSize);
-	}
+		if (mousePosView.x - position.x < 0)
+		{
+			mousePosGrid.x = 0;
+		}
+		else
+		{
+			mousePosGrid.x = static_cast<unsigned>(
+					(mousePosView.x - position.x) / gridSize);
+		}
 
-	if (mousePosGrid.x >= size.x)
-	{
-		mousePosGrid.x = size.x - 1;
-	}
-	if (mousePosGrid.y >= size.y)
-	{
-		mousePosGrid.y = size.y - 1;
+		if (mousePosView.y - position.y < 0)
+		{
+			mousePosGrid.y = 0;
+		}
+		else
+		{
+			mousePosGrid.y = static_cast<unsigned>(
+					(mousePosView.y - position.y) / gridSize);
+		}
+
+		if (mousePosGrid.x >= size.x)
+		{
+			mousePosGrid.x = size.x - 1;
+		}
+		if (mousePosGrid.y >= size.y)
+		{
+			mousePosGrid.y = size.y - 1;
+		}
 	}
 }
 
@@ -148,18 +171,72 @@ void TileMap::removeTile(unsigned layer)
 	removeTile(mousePosGrid, layer);
 }
 
-void TileMap::selectNextTile()
+void TileMap::saveToFile(const std::string& fileName)
 {
-	tileRect.left = 0;
-	tileRect.top = 32;
+	/* Saves the entire tilemap to a text file
+	 *
+	 * ---------- Format ----------
+	 * sizeX sizeY sizeZ
+	 * textureName
+	 * spriteSize
+	 *
+	 * tileX tileY tileZ spriteX spriteY
+	 */
+
+	std::ofstream outFile;
+
+	outFile.open(filePath + fileName);
+
+	if (outFile.is_open())
+	{
+		outFile <<
+				size.x << ' ' << size.y << ' ' << layers << '\n' <<
+				textureName << '\n' <<
+				spriteSize << '\n';
+
+		for (std::size_t index = 0; index < map.size(); index++)
+		{
+			for (std::size_t layer = 0; layer < layers; layer++)
+			{
+				outFile <<
+						index % size.x << ' ' <<
+						index / size.x << ' ' <<
+						layer << ' ';
+
+				if (map[index][layer] == nullptr)
+				{
+					outFile << "X X" << '\n';
+				}
+				else
+				{
+					outFile <<
+							map[index][layer]->getTextureRect().left /
+									spriteSize << ' ' <<
+							map[index][layer]->getTextureRect().top /
+									spriteSize << '\n';
+				}
+			}
+		}
+	}
+	else
+	{
+		std::cout << "ERROR::TILEMAP::COULD_NOT_SAVE_TO_FILE::FILEPATH: " <<
+				fileName << std::endl;
+	}
+
+	outFile.close();
 }
 
-void TileMap::selectPreviousTile()
+void TileMap::loadFromFile(const std::string& fileName)
 {
-	tileRect.left = 64;
-	tileRect.top = 0;
 }
 
+bool TileMap::isActive() const
+{
+	return active;
+}
+
+// Getters / Setters
 const sf::Texture& TileMap::getTileSheet() const
 {
 	return tileSheet;
@@ -172,12 +249,17 @@ const sf::IntRect& TileMap::getTileRect() const
 
 void TileMap::initVariables()
 {
+	active = false;
+
 	maxSize.x = 20;
 	maxSize.y = 15;
 	maxLayers = 1;
 	gridSize = 0;
 
-	tileRect = sf::IntRect(64, 0, 32, 32);
+	texturePath = "Images/Exploration/Tilesets/";
+	textureName = "";
+	spriteSize = 0;
+	filePath = "Data/Tilemaps/";
 }
 
 void TileMap::initMap()
@@ -190,9 +272,10 @@ void TileMap::initBorder()
 	// TODO
 }
 
-void TileMap::setTileRect(const sf::IntRect& tileRect)
+void TileMap::setTile(const sf::IntRect& tileRect)
 {
-	this->tileRect = tileRect;
+	this->tileRect.left = tileRect.left;
+	this->tileRect.top = tileRect.top;
 }
 
 const sf::Vector2f& TileMap::getPosition() const

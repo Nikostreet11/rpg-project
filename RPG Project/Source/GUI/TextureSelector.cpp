@@ -27,13 +27,13 @@ TextureSelector::TextureSelector(
 			sf::Vector2f(100, 60),
 			// Text options
 			font, "Tile", 30,
-			sf::Color(150, 150, 150, 250),
-			sf::Color(250, 250, 250, 250),
-			sf::Color(220, 220, 220, 250),
+			sf::Color(220, 220, 220, 255),
+			sf::Color(230, 230, 230, 255),
+			sf::Color(210, 210, 210, 255),
 			// Button colors
-			sf::Color(150, 150, 150, 0),
-			sf::Color(250, 250, 250, 0),
-			sf::Color(220, 220, 220, 0)
+			sf::Color(140, 140, 140, 255),
+			sf::Color(150, 150, 150, 255),
+			sf::Color(130, 130, 130, 255)
 			));
 
 	position.y += hideButton->getGlobalBounds().height;

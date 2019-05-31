@@ -16,7 +16,12 @@
 class TileMap
 {
 public:
-	explicit TileMap(sf::Vector2f position, sf::Vector2u size, float gridSize);
+	explicit TileMap(
+			sf::Vector2f position,
+			sf::Vector2u size,
+			float gridSize,
+			const std::string& textureName,
+			unsigned spriteSize);
 	virtual ~TileMap();
 
 	// Functions
@@ -27,13 +32,15 @@ public:
 	void addTile(unsigned layer);
 	void removeTile(sf::Vector2u index, unsigned layer);
 	void removeTile(unsigned layer);
-	void selectNextTile();
-	void selectPreviousTile();
+
+	void saveToFile(const std::string& fileName);
+	void loadFromFile(const std::string& fileName);
 
 	// Getters / Setters
+	bool isActive() const;
 	const sf::Texture& getTileSheet() const;
 	const sf::IntRect& getTileRect() const;
-	void setTileRect(const sf::IntRect& tileRect);
+	void setTile(const sf::IntRect& tileRect);
 	const sf::Vector2f& getPosition() const;
 	const sf::Vector2u& getMousePosGrid() const;
 
@@ -71,12 +78,19 @@ private:
 	sf::RectangleShape border;
 
 	// Variables
+	bool active;
+
 	sf::Vector2f position;
 	sf::Vector2u size;
 	sf::Vector2u maxSize;
 	unsigned layers;
 	unsigned maxLayers;
 	float gridSize;
+
+	std::string texturePath;
+	std::string textureName;
+	unsigned spriteSize;
+	std::string filePath;
 
 	sf::Vector2u mousePosGrid;
 

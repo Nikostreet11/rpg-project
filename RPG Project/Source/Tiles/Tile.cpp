@@ -13,17 +13,17 @@ Tile::Tile()
 
 Tile::Tile(
 		sf::Vector2f position,
-		float gridSizeF,
+		float gridSize,
 		const sf::Texture& tileTextureSheet,
-		sf::IntRect rect)
+		sf::IntRect textureRect)
 {
-	shape.setSize(sf::Vector2f(gridSizeF, gridSizeF));
+	shape.setSize(sf::Vector2f(gridSize, gridSize));
 	shape.setFillColor(sf::Color::White);
 	//shape.setOutlineThickness(1.f);
 	//shape.setOutlineColor(sf::Color::Black);
 	shape.setPosition(position);
 	shape.setTexture(&tileTextureSheet);
-	shape.setTextureRect(rect);
+	shape.setTextureRect(textureRect);
 }
 
 Tile::~Tile() {
@@ -36,6 +36,11 @@ void Tile::update()
 void Tile::render(std::shared_ptr<sf::RenderTarget> target)
 {
 	target->draw(shape);
+}
+
+const sf::IntRect& Tile::getTextureRect() const
+{
+	return shape.getTextureRect();
 }
 /*
 Tile& Tile::operator=(const Tile& entry) {

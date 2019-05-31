@@ -15,15 +15,17 @@ public:
 	Tile();
 	explicit Tile(
 			sf::Vector2f position,
-			float gridSizeF,
+			float gridSize,
 			const sf::Texture& tileTextureSheet,
-			sf::IntRect rect);
+			sf::IntRect textureRect);
 	virtual ~Tile();
 
 	// Function
 	void update();
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
+	// Getters / Setters
+	const sf::IntRect& getTextureRect() const;
 	/*
 	virtual Tile& operator=(const Tile& right);
 
