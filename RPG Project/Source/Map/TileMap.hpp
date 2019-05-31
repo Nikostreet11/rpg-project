@@ -16,15 +16,17 @@
 class TileMap
 {
 public:
-	explicit TileMap(sf::Vector2u size, float gridSize);
+	explicit TileMap(sf::Vector2f position, sf::Vector2u size, float gridSize);
 	virtual ~TileMap();
 
 	// Functions
-	void update();
+	void update(sf::Vector2f mousePosView);
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
-	void addTile(sf::Vector2u position, unsigned z);
-	void removeTile(sf::Vector2u position, unsigned z);
+	void addTile(sf::Vector2u index, unsigned layer);
+	void addTile(unsigned layer);
+	void removeTile(sf::Vector2u index, unsigned layer);
+	void removeTile(unsigned layer);
 	void selectNextTile();
 	void selectPreviousTile();
 
@@ -32,6 +34,8 @@ public:
 	const sf::Texture& getTileSheet() const;
 	const sf::IntRect& getTileRect() const;
 	void setTileRect(const sf::IntRect& tileRect);
+	const sf::Vector2f& getPosition() const;
+	const sf::Vector2u& getMousePosGrid() const;
 
 	/*
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -61,16 +65,20 @@ private:
 	void initBorder();
 
 	// Resources
-	std::vector< std::vector< std::vector< std::unique_ptr<Tile> > > > map;
+	std::vector< std::vector< std::unique_ptr<Tile> > > map;
 	sf::Texture tileSheet;
 	sf::IntRect tileRect;
 	sf::RectangleShape border;
 
 	// Variables
+	sf::Vector2f position;
+	sf::Vector2u size;
 	sf::Vector2u maxSize;
+	unsigned layers;
 	unsigned maxLayers;
-	//unsigned gridSizeU;
 	float gridSize;
+
+	sf::Vector2u mousePosGrid;
 
 	/*
 	int width;

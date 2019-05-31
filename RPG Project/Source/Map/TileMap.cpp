@@ -7,10 +7,13 @@
 
 #include "TileMap.hpp"
 
-TileMap::TileMap(sf::Vector2u size, float gridSize)
+TileMap::TileMap(sf::Vector2f position, sf::Vector2u size, float gridSize)
 {
 	initVariables();
 
+	this->position = position;
+	this->size = size;
+	this->layers = maxLayers;
 	this->gridSize = gridSize;
 
 	//gridSizeU = static_cast<unsigned>(gridSizeF);
@@ -21,24 +24,16 @@ TileMap::TileMap(sf::Vector2u size, float gridSize)
 	if (size.y > maxSize.y)
 		size.y = maxSize.y;
 
-	map.resize(size.x);
+	map.resize(size.x * size.y);
 	sf::Vector2f tilePosition;
 
-	for (std::size_t x = 0; x < size.x; x++)
+	for (std::size_t index = 0; index < map.size(); index++)
 	{
-		map[x].resize(size.y);
-		//tilePosition.x = gridSize * x;
+		map[index].resize(maxLayers);
 
-		for (std::size_t y = 0; y < size.y; y++)
+		for (std::size_t layer = 0; layer < layers; layer++)
 		{
-			map[x][y].resize(maxLayers);
-			//tilePosition.y = gridSize * y;
-
-			for (std::size_t z = 0; z < maxLayers; z++)
-			{
-				//std::unique_ptr<Tile> tilePtr(new Tile(tilePosition, gridSize));
-				map[x][y][z] = nullptr;//std::move(tilePtr);
-			}
+			map[index][layer] = nullptr;
 		}
 	}
 
@@ -47,6 +42,7 @@ TileMap::TileMap(sf::Vector2u size, float gridSize)
 		std::cout << "ERROR::TILEMAP::FAILED_TO_LOAD_TILETEXTURESHEET" << std::endl;
 	}
 
+	border.setPosition(position);
 	border.setSize(sf::Vector2f(
 			size.x * gridSize,
 			size.y * gridSize));
@@ -59,22 +55,47 @@ TileMap::~TileMap()
 {
 }
 
-void TileMap::update()
+void TileMap::update(sf::Vector2f mousePosView)
 {
+	if (mousePosView.x - position.x < 0)
+	{
+		mousePosGrid.x = 0;
+	}
+	else
+	{
+		mousePosGrid.x =
+				static_cast<unsigned>((mousePosView.x - position.x) / gridSize);
+	}
+
+	if (mousePosView.y - position.y < 0)
+	{
+		mousePosGrid.y = 0;
+	}
+	else
+	{
+		mousePosGrid.y =
+				static_cast<unsigned>((mousePosView.y - position.y) / gridSize);
+	}
+
+	if (mousePosGrid.x >= size.x)
+	{
+		mousePosGrid.x = size.x - 1;
+	}
+	if (mousePosGrid.y >= size.y)
+	{
+		mousePosGrid.y = size.y - 1;
+	}
 }
 
 void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
 {
-	for (auto &x : map)
+	for (auto &tile : map)
 	{
-		for (auto &y : x)
+		for (auto &layer : tile)
 		{
-			for (auto &layer : y)
+			if (layer != nullptr)
 			{
-				if (layer != nullptr)
-				{
-					layer->render(target);
-				}
+				layer->render(target);
 			}
 		}
 	}
@@ -82,38 +103,49 @@ void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
 	target->draw(border);
 }
 
-void TileMap::addTile(sf::Vector2u position, unsigned z)
+void TileMap::addTile(sf::Vector2u index, unsigned layer)
 {
-	if (0 <= position.x && position.x < map.size() &&
-			0 <= position.y && position.y < map[position.x].size() &&
-			0 <= z && z < map[position.x][position.y].size())
+	if (0 <= index.x && index.x < size.x &&
+		0 <= index.y && index.y < size.y &&
+		0 <= layer && layer < layers)
 	{
-		if (map[position.x][position.y][z] == nullptr)
+		if (map[index.y * size.x + index.x][layer] == nullptr)
 		{
 			sf::Vector2f tilePosition;
-			tilePosition.x = position.x * gridSize;
-			tilePosition.y = position.y * gridSize;
+			tilePosition.x = index.x * gridSize + this->position.x;
+			tilePosition.y = index.y * gridSize + this->position.y;
+
 			std::unique_ptr<Tile> tilePtr(new Tile(
 					tilePosition,
 					gridSize,
 					tileSheet,
 					tileRect));
-			map[position.x][position.y][z] = std::move(tilePtr);
+			map[index.y * size.x + index.x][layer] = std::move(tilePtr);
 		}
 	}
 }
 
-void TileMap::removeTile(sf::Vector2u position, unsigned z)
+void TileMap::addTile(unsigned layer)
 {
-	if (0 <= position.x && position.x < map.size() &&
-			0 <= position.y && position.y < map[position.x].size() &&
-			0 <= z && z < map[position.x][position.y].size())
+	addTile(mousePosGrid, layer);
+}
+
+void TileMap::removeTile(sf::Vector2u index, unsigned layer)
+{
+	if (0 <= index.x && index.x < size.x &&
+		0 <= index.y && index.y < size.y &&
+		0 <= layer && layer < layers)
 	{
-		if (map[position.x][position.y][z] != nullptr)
+		if (map[index.y * size.x + index.x][layer] != nullptr)
 		{
-			map[position.x][position.y][z].reset();
+			map[index.y * size.x + index.x][layer].reset();
 		}
 	}
+}
+
+void TileMap::removeTile(unsigned layer)
+{
+	removeTile(mousePosGrid, layer);
 }
 
 void TileMap::selectNextTile()
@@ -161,6 +193,16 @@ void TileMap::initBorder()
 void TileMap::setTileRect(const sf::IntRect& tileRect)
 {
 	this->tileRect = tileRect;
+}
+
+const sf::Vector2f& TileMap::getPosition() const
+{
+	return position;
+}
+
+const sf::Vector2u& TileMap::getMousePosGrid() const
+{
+	return mousePosGrid;
 }
 /*
 bool TileMap::isOutOfBounds(int posX, int posY) const {

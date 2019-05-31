@@ -178,7 +178,7 @@ void GameState::initPlayers()
 
 void GameState::initTileMap()
 {
-	tileMap.reset(new TileMap(sf::Vector2u(15, 15), stateData.gridSize));
+	tileMap.reset(new TileMap(sf::Vector2f(0, 0), sf::Vector2u(15, 15), stateData.gridSize));
 }
 
 void GameState::initPauseMenu()

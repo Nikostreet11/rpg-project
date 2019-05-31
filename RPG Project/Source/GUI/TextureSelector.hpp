@@ -30,7 +30,7 @@ public:
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
 	// Getters / Setters
-	bool getActive() const;
+	bool isActive() const;
 	const sf::IntRect& getTextureRect() const;
 
 private:

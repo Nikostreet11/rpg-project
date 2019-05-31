@@ -44,6 +44,7 @@ void EditorState::update(const float& dt)
 	if (!paused)
 	{
 		// Unpaused update
+		tileMap->update(mousePosView);
 		updateGUI();
 		updateButtons();
 		updateEditorInput();
@@ -82,26 +83,27 @@ void EditorState::updateInput(const float& dt)
 
 void EditorState::updateEditorInput()
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	if (textureSelector->isActive())
 	{
-		if (!textureSelector->getActive())
-		{
-			tileMap->addTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
-		}
-		else
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
 			tileMap->setTileRect(textureSelector->getTextureRect());
 		}
 	}
-
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	else
 	{
-		if (!textureSelector->getActive())
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			tileMap->removeTile(sf::Vector2u(mousePosGrid.x, mousePosGrid.y), 0);
+			tileMap->addTile(0);
+		}
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		{
+			tileMap->removeTile(0);
 		}
 	}
 
+	/*
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		if (!textureSelector->getActive())
@@ -117,23 +119,27 @@ void EditorState::updateEditorInput()
 			tileMap->selectPreviousTile();
 		}
 	}
+	*/
 }
 
 void EditorState::updateGUI()
 {
-	if (!textureSelector->getActive())
+	if (!textureSelector->isActive())
 	{
 		selectorRect.setTexture(&tileMap->getTileSheet());
 		selectorRect.setTextureRect(tileMap->getTileRect());
 		selectorRect.setPosition(
-				mousePosGrid.x * gridSize,
-				mousePosGrid.y * gridSize);
+				tileMap->getMousePosGrid().x * gridSize +
+						tileMap->getPosition().x,
+				tileMap->getMousePosGrid().y * gridSize +
+						tileMap->getPosition().y);
 	}
 
 	std::stringstream cursorString;
 	cursorString <<
 			mousePosView.x << " " << mousePosView.y << '\n' <<
-			mousePosGrid.x << " " << mousePosGrid.y << '\n';
+			tileMap->getMousePosGrid().x << " " <<
+			tileMap->getMousePosGrid().y << '\n';
 	cursorText.setString(cursorString.str());
 	cursorText.setPosition(mousePosView.x, mousePosView.y - 40.f);
 
@@ -181,7 +187,10 @@ void EditorState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
 
 	target->draw(selectorRect);
 
+	target->draw(sidebar);
+
 	textureSelector->render(target);
+
 	target->draw(cursorText);
 }
 
@@ -246,7 +255,7 @@ void EditorState::initBackground()
 
 void EditorState::initTileMap()
 {
-	tileMap.reset(new TileMap(sf::Vector2u(14, 8), stateData.gridSize));
+	tileMap.reset(new TileMap(sf::Vector2f(160, 10), sf::Vector2u(12, 8), stateData.gridSize));
 }
 
 void EditorState::initPauseMenu()
@@ -265,11 +274,18 @@ void EditorState::initGUI()
 	selectorRect.setOutlineColor(sf::Color::Green);
 
 	textureSelector.reset(new gui::TextureSelector(
-			sf::Vector2f(50.f, 50.f),
-			sf::Vector2f(200.f, 200.f),
+			sf::Vector2f(20.f, 50.f),
+			sf::Vector2f(400.f, 400.f),
 			32.f,
 			tileMap->getTileSheet(),
 			font));
+
+	sidebar.setSize(sf::Vector2f(
+			150.f,
+			static_cast<float>(graphicsSettings->resolution.height)));
+	sidebar.setFillColor(sf::Color(50, 50, 50, 255));
+	sidebar.setOutlineThickness(1.f);
+	sidebar.setOutlineColor(sf::Color(80, 80, 80, 255));
 }
 
 void EditorState::initButtons()

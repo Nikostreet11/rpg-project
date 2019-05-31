@@ -42,9 +42,6 @@ void State::updateMousePositions()
 	mousePosScreen = sf::Mouse::getPosition();
 	mousePosWindow = sf::Mouse::getPosition(*window);
 	mousePosView = window->mapPixelToCoords(mousePosWindow);
-	mousePosGrid = sf::Vector2u(
-			static_cast<unsigned>(mousePosView.x / gridSize),
-			static_cast<unsigned>(mousePosView.y / gridSize));
 }
 
 // Getters / Setters

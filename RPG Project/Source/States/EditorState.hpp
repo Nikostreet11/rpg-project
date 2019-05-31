@@ -58,6 +58,7 @@ protected:
 	std::unique_ptr<gui::TextureSelector> textureSelector;
 	sf::Text cursorText;
 	sf::RectangleShape selectorRect;
+	sf::RectangleShape sidebar;
 };
 
 #endif /* STATES_EDITORSTATE_HPP_ */

@@ -180,6 +180,11 @@ void Button::setText(const std::string& text)
 				this->text.getCharacterSize() * 1.3f / 2.f);
 }
 
+sf::FloatRect Button::getGlobalBounds() const
+{
+	return shape.getGlobalBounds();
+}
+
 void gui::Button::initVariables()
 {
 	state = states::Idle;

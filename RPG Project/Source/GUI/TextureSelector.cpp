@@ -18,7 +18,25 @@ TextureSelector::TextureSelector(
 {
 	active = false;
 	this->gridSize = gridSize;
-	hidden = false;
+	hidden = true;
+
+	hideButton.reset(new gui::Button(
+			// Position
+			position,
+			// Size
+			sf::Vector2f(100, 60),
+			// Text options
+			font, "Tile", 30,
+			sf::Color(150, 150, 150, 250),
+			sf::Color(250, 250, 250, 250),
+			sf::Color(220, 220, 220, 250),
+			// Button colors
+			sf::Color(150, 150, 150, 0),
+			sf::Color(250, 250, 250, 0),
+			sf::Color(220, 220, 220, 0)
+			));
+
+	position.y += hideButton->getGlobalBounds().height;
 
 	bounds.setPosition(position);
 	bounds.setSize(size);
@@ -55,23 +73,6 @@ TextureSelector::TextureSelector(
 
 	textureRect.width = gridSize;
 	textureRect.height = gridSize;
-
-	position.x += bounds.getGlobalBounds().width;
-	hideButton.reset(new gui::Button(
-			// Position
-			position,
-			// Size
-			sf::Vector2f(200, 60),
-			// Text options
-			font, "Tile selector", 30,
-			sf::Color(150, 150, 150, 250),
-			sf::Color(250, 250, 250, 250),
-			sf::Color(220, 220, 220, 250),
-			// Button colors
-			sf::Color(150, 150, 150, 0),
-			sf::Color(250, 250, 250, 0),
-			sf::Color(220, 220, 220, 0)
-			));
 }
 
 TextureSelector::~TextureSelector()
@@ -97,8 +98,11 @@ void TextureSelector::update(sf::Vector2i mousePosWindow)
 
 	if (!hidden)
 	{
-		if (bounds.getGlobalBounds().contains(
-				static_cast<sf::Vector2f>(mousePosWindow)))
+		sf::Vector2f mousePosWindowF =
+				static_cast<sf::Vector2f>(mousePosWindow);
+
+		if (bounds.getGlobalBounds().contains(mousePosWindowF) ||
+			hideButton->getGlobalBounds().contains(mousePosWindowF))
 		{
 			active = true;
 		}
@@ -140,7 +144,7 @@ void TextureSelector::render(std::shared_ptr<sf::RenderTarget> target)
 	hideButton->render(target);
 }
 
-bool TextureSelector::getActive() const
+bool TextureSelector::isActive() const
 {
 	return active;
 }

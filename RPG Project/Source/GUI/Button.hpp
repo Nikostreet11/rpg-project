@@ -47,6 +47,7 @@ public:
 	// Getters / Setters
 	const std::string getText() const;
 	void setText(const std::string& text);
+	sf::FloatRect getGlobalBounds() const;
 
 private:
 	// Initialization
