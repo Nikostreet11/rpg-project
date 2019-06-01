@@ -8,7 +8,7 @@
 #ifndef GUI_BUTTON_HPP_
 #define GUI_BUTTON_HPP_
 
-#include "..\PCH\pch.hpp"
+#include "pch.hpp"
 
 namespace gui {
 

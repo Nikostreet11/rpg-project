@@ -10,19 +10,26 @@
 
 #include "pch.hpp"
 
-class Tile {
+class Tile
+{
 public:
+	enum Type {Default = 0, Damaging};
+
 	Tile();
 	explicit Tile(
 			sf::Vector2f position,
 			float gridSize,
 			const sf::Texture& tileTextureSheet,
-			sf::IntRect textureRect);
+			sf::IntRect textureRect,
+			Type type = Type::Default,
+			bool collision = false);
 	virtual ~Tile();
 
 	// Function
 	void update();
 	void render(std::shared_ptr<sf::RenderTarget> target);
+
+	const std::string getAsString() const;
 
 	// Getters / Setters
 	const sf::IntRect& getTextureRect() const;
@@ -36,7 +43,12 @@ public:
 	*/
 
 protected:
+	// Resources
 	sf::RectangleShape shape;
+
+	// Variables
+	Type type;
+	bool collision;
 
 private:
 	/*

@@ -9,14 +9,21 @@
 
 Tile::Tile()
 {
+	type = Type::Default;
+	collision = false;
 }
 
 Tile::Tile(
 		sf::Vector2f position,
 		float gridSize,
 		const sf::Texture& tileTextureSheet,
-		sf::IntRect textureRect)
+		sf::IntRect textureRect,
+		Type type,
+		bool collision) : Tile()
 {
+	this->type = type;
+	this->collision = collision;
+
 	shape.setSize(sf::Vector2f(gridSize, gridSize));
 	shape.setFillColor(sf::Color::White);
 	//shape.setOutlineThickness(1.f);
@@ -36,6 +43,19 @@ void Tile::update()
 void Tile::render(std::shared_ptr<sf::RenderTarget> target)
 {
 	target->draw(shape);
+}
+
+const std::string Tile::getAsString() const
+{
+	std::stringstream stringStream;
+
+	stringStream <<
+			shape.getTextureRect().left / shape.getTextureRect().width << ' ' <<
+			shape.getTextureRect().top / shape.getTextureRect().width << ' ' <<
+			collision << ' ' <<
+			type << '\n';
+
+	return stringStream.str();
 }
 
 const sf::IntRect& Tile::getTextureRect() const

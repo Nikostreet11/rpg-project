@@ -180,7 +180,7 @@ void TileMap::saveToFile(const std::string& fileName)
 	 * textureName
 	 * spriteSize
 	 *
-	 * tileX tileY tileZ spriteX spriteY
+	 * tileX tileY tileZ spriteX spriteY type collision
 	 */
 
 	std::ofstream outFile;
@@ -205,15 +205,12 @@ void TileMap::saveToFile(const std::string& fileName)
 
 				if (map[index][layer] == nullptr)
 				{
-					outFile << "X X" << '\n';
+					outFile << "----------" << '\n';
 				}
 				else
 				{
 					outFile <<
-							map[index][layer]->getTextureRect().left /
-									spriteSize << ' ' <<
-							map[index][layer]->getTextureRect().top /
-									spriteSize << '\n';
+							map[index][layer]->getAsString();
 				}
 			}
 		}
