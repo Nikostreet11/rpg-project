@@ -164,6 +164,11 @@ void EditorState::updatePauseMenu()
 		tileMap->saveToFile("TestTileMap.txt");
 	}
 
+	if (pauseMenu->isButtonPressed("LOAD"))
+	{
+		tileMap->loadFromFile("TestTileMap.txt");
+	}
+
 	if (pauseMenu->isButtonPressed("QUIT"))
 	{
 		endState();
@@ -274,7 +279,8 @@ void EditorState::initPauseMenu()
 {
 	pauseMenu.reset(new gui::PauseMenu(window, font));
 
-	pauseMenu->addButton("SAVE", 600.f, "Save");
+	pauseMenu->addButton("SAVE", 500.f, "Save");
+	pauseMenu->addButton("LOAD", 600.f, "Load");
 	pauseMenu->addButton("QUIT", 800.f, "Quit");
 }
 

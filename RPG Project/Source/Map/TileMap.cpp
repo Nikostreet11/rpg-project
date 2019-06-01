@@ -37,9 +37,9 @@ TileMap::TileMap(
 	map.resize(size.x * size.y);
 	sf::Vector2f tilePosition;
 
-	for (std::size_t index = 0; index < map.size(); index++)
+	for (std::size_t index = 0; index < size.x * size.y; index++)
 	{
-		map[index].resize(maxLayers);
+		map[index].resize(layers);
 
 		for (std::size_t layer = 0; layer < layers; layer++)
 		{
@@ -194,23 +194,18 @@ void TileMap::saveToFile(const std::string& fileName)
 				textureName << '\n' <<
 				spriteSize << '\n';
 
-		for (std::size_t index = 0; index < map.size(); index++)
+		for (std::size_t index = 0; index < size.x * size.y; index++)
 		{
 			for (std::size_t layer = 0; layer < layers; layer++)
 			{
-				outFile <<
-						index % size.x << ' ' <<
-						index / size.x << ' ' <<
-						layer << ' ';
-
-				if (map[index][layer] == nullptr)
-				{
-					outFile << "----------" << '\n';
-				}
-				else
+				if (map[index][layer] != nullptr)
 				{
 					outFile <<
-							map[index][layer]->getAsString();
+							index % size.x << ' ' <<
+							index / size.x << ' ' <<
+							layer << ' ';
+
+					outFile << map[index][layer]->getAsString();
 				}
 			}
 		}
@@ -226,6 +221,79 @@ void TileMap::saveToFile(const std::string& fileName)
 
 void TileMap::loadFromFile(const std::string& fileName)
 {
+	clear();
+
+	std::ifstream inFile;
+
+	inFile.open(filePath + fileName);
+
+	if (inFile.is_open())
+	{
+		inFile >>
+				size.x >> size.y >> layers >>
+				textureName >>
+				spriteSize;
+
+		tileRect.width = spriteSize;
+		tileRect.height = spriteSize;
+
+		if (size.x > maxSize.x)
+			size.x = maxSize.x;
+
+		if (size.y > maxSize.y)
+			size.y = maxSize.y;
+
+		map.resize(size.x * size.y);
+		for (std::size_t index = 0; index < size.x * size.y; index++)
+		{
+			map[index].resize(layers);
+		}
+
+		if (!tileSheet.loadFromFile(texturePath + textureName))
+		{
+			std::cout << "ERROR::TILEMAP::FAILED_TO_LOAD_TILESHEET" << std::endl;
+		}
+
+		std::size_t x, y, layer;
+		sf::Vector2u sprite;
+		short type;
+		bool collision;
+
+		while (inFile
+				>> x
+				>> y
+				>> layer
+				>> sprite.x
+				>> sprite.y
+				>> type
+				>> collision)
+		{
+			sf::Vector2f tilePosition;
+			tilePosition.x = x * gridSize + this->position.x;
+			tilePosition.y = y * gridSize + this->position.y;
+
+			tileRect.left = sprite.x * spriteSize;
+			tileRect.top = sprite.y * spriteSize;
+
+			std::unique_ptr<Tile> tilePtr(new Tile(
+					tilePosition,
+					gridSize,
+					tileSheet,
+					tileRect));
+			map[y * size.x + x][layer] = std::move(tilePtr);
+		}
+
+		border.setSize(sf::Vector2f(
+				size.x * gridSize,
+				size.y * gridSize));
+	}
+	else
+	{
+		std::cout << "ERROR::TILEMAP::COULD_NOT_LOAD_FROM_FILE::FILEPATH: " <<
+				fileName << std::endl;
+	}
+
+	inFile.close();
 }
 
 bool TileMap::isActive() const
@@ -242,6 +310,18 @@ const sf::Texture& TileMap::getTileSheet() const
 const sf::IntRect& TileMap::getTileRect() const
 {
 	return tileRect;
+}
+
+void TileMap::clear()
+{
+
+	for (std::size_t index = 0; index < map.size(); index++)
+	{
+		for (std::size_t layer = 0; layer < map[index].size(); layer++)
+		{
+			map[index][layer] = nullptr;
+		}
+	}
 }
 
 void TileMap::initVariables()

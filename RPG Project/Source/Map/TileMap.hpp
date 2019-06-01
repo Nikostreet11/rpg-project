@@ -66,6 +66,8 @@ public:
 	*/
 
 private:
+	void clear();
+
 	// Initialization
 	void initVariables();
 	void initMap();
