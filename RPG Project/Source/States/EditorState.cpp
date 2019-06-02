@@ -87,7 +87,12 @@ void EditorState::updateEditorInput()
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			tileMap->setTile(textureSelector->getTextureRect());
+			// TODO: make textureSelector a class with a getSpriteIndex method
+			tileMap->setSpriteIndex(sf::Vector2u(
+					textureSelector->getTextureRect().left /
+							tileMap->getSpriteSize(),
+					textureSelector->getTextureRect().top /
+							tileMap->getSpriteSize()));
 		}
 	}
 	else if (tileMap->isActive())
@@ -126,8 +131,13 @@ void EditorState::updateGUI()
 {
 	if (!textureSelector->isActive())
 	{
-		selectorRect.setTexture(&tileMap->getTileSheet());
-		selectorRect.setTextureRect(tileMap->getTileRect());
+		selectorRect.setTexture(&tileMap->getTileset());
+		// TODO: make textureSelector a class with a setSpriteIndex method
+		selectorRect.setTextureRect(sf::IntRect(
+				tileMap->getSpriteIndex().x * tileMap->getSpriteSize(),
+				tileMap->getSpriteIndex().y * tileMap->getSpriteSize(),
+				tileMap->getSpriteSize(),
+				tileMap->getSpriteSize()));
 		selectorRect.setPosition(
 				tileMap->getMousePosGrid().x * gridSize +
 						tileMap->getPosition().x,
@@ -295,8 +305,8 @@ void EditorState::initGUI()
 	textureSelector.reset(new gui::TextureSelector(
 			sf::Vector2f(20.f, 50.f),
 			sf::Vector2f(800.f, 400.f),
-			32.f,
-			tileMap->getTileSheet(),
+			tileMap->getSpriteSize(),
+			tileMap->getTileset(),
 			font));
 
 	sidebar.setSize(sf::Vector2f(

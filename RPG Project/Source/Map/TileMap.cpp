@@ -11,7 +11,7 @@ TileMap::TileMap(
 		sf::Vector2f position,
 		sf::Vector2u size,
 		float gridSize,
-		const std::string& textureName,
+		const std::string& tilesetName,
 		unsigned spriteSize)
 {
 	initVariables();
@@ -20,45 +20,19 @@ TileMap::TileMap(
 	this->size = size;
 	this->layers = maxLayers;
 	this->gridSize = gridSize;
-	this->textureName = textureName;
-	this->spriteSize = spriteSize;
 
-	// tileRect.left = 64;
-	// tileRect.height = 0;
+	this->tilesetName = tilesetName;
+	this->spriteSize = spriteSize;
+	/*
 	tileRect.width = spriteSize;
 	tileRect.height = spriteSize;
+	*/
 
-	if (size.x > maxSize.x)
-		size.x = maxSize.x;
+	checkMaxValues();
 
-	if (size.y > maxSize.y)
-		size.y = maxSize.y;
-
-	map.resize(size.x * size.y);
-	sf::Vector2f tilePosition;
-
-	for (std::size_t index = 0; index < size.x * size.y; index++)
-	{
-		map[index].resize(layers);
-
-		for (std::size_t layer = 0; layer < layers; layer++)
-		{
-			map[index][layer] = nullptr;
-		}
-	}
-
-	if (!tileSheet.loadFromFile(texturePath + textureName))
-	{
-		std::cout << "ERROR::TILEMAP::FAILED_TO_LOAD_TILESHEET" << std::endl;
-	}
-
-	border.setPosition(position);
-	border.setSize(sf::Vector2f(
-			size.x * gridSize,
-			size.y * gridSize));
-	border.setFillColor(sf::Color::Transparent);
-	border.setOutlineThickness(3);
-	border.setOutlineColor(sf::Color::Red);
+	initMap();
+	initTileset();
+	initBorder();
 }
 
 TileMap::~TileMap()
@@ -118,7 +92,8 @@ void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
 		{
 			if (layer != nullptr)
 			{
-				layer->render(target);
+				layer->render(target, border.getTransform());
+				target->draw(border);
 			}
 		}
 	}
@@ -135,15 +110,22 @@ void TileMap::addTile(sf::Vector2u index, unsigned layer)
 		if (map[index.y * size.x + index.x][layer] == nullptr)
 		{
 			sf::Vector2f tilePosition;
-			tilePosition.x = index.x * gridSize + this->position.x;
-			tilePosition.y = index.y * gridSize + this->position.y;
+			tilePosition.x = index.x * gridSize;
+			tilePosition.y = index.y * gridSize;
 
-			std::unique_ptr<Tile> tilePtr(new Tile(
-					tilePosition,
+			map[index.y * size.x + index.x][layer].reset(new Tile(
+					static_cast<sf::Vector2i>(index),
 					gridSize,
-					tileSheet,
-					tileRect));
-			map[index.y * size.x + index.x][layer] = std::move(tilePtr);
+					tileset,
+					spriteIndex,
+					spriteSize
+					/*
+					sf::Vector2u(
+							tileRect.left / tileRect.width,
+							tileRect.top / tileRect.height),
+
+					tileRect.width
+					*/));
 		}
 	}
 }
@@ -191,7 +173,7 @@ void TileMap::saveToFile(const std::string& fileName)
 	{
 		outFile <<
 				size.x << ' ' << size.y << ' ' << layers << '\n' <<
-				textureName << '\n' <<
+				tilesetName << '\n' <<
 				spriteSize << '\n';
 
 		for (std::size_t index = 0; index < size.x * size.y; index++)
@@ -231,11 +213,13 @@ void TileMap::loadFromFile(const std::string& fileName)
 	{
 		inFile >>
 				size.x >> size.y >> layers >>
-				textureName >>
+				tilesetName >>
 				spriteSize;
 
-		tileRect.width = spriteSize;
-		tileRect.height = spriteSize;
+		/*
+		tileRect.width = spritesSize;
+		tileRect.height = spritesSize;
+		*/
 
 		if (size.x > maxSize.x)
 			size.x = maxSize.x;
@@ -249,13 +233,13 @@ void TileMap::loadFromFile(const std::string& fileName)
 			map[index].resize(layers);
 		}
 
-		if (!tileSheet.loadFromFile(texturePath + textureName))
+		if (!tileset.loadFromFile(tilesetPath + tilesetName))
 		{
 			std::cout << "ERROR::TILEMAP::FAILED_TO_LOAD_TILESHEET" << std::endl;
 		}
 
 		std::size_t x, y, layer;
-		sf::Vector2u sprite;
+		//sf::Vector2u spriteIndex;
 		short type;
 		bool collision;
 
@@ -263,23 +247,32 @@ void TileMap::loadFromFile(const std::string& fileName)
 				>> x
 				>> y
 				>> layer
-				>> sprite.x
-				>> sprite.y
+				>> spriteIndex.x
+				>> spriteIndex.y
 				>> type
 				>> collision)
 		{
 			sf::Vector2f tilePosition;
-			tilePosition.x = x * gridSize + this->position.x;
-			tilePosition.y = y * gridSize + this->position.y;
+			tilePosition.x = x * gridSize;
+			tilePosition.y = y * gridSize;
 
-			tileRect.left = sprite.x * spriteSize;
-			tileRect.top = sprite.y * spriteSize;
+			/*
+			tileRect.left = sprite.x * spritesSize;
+			tileRect.top = sprite.y * spritesSize;
+			*/
 
 			std::unique_ptr<Tile> tilePtr(new Tile(
-					tilePosition,
+					sf::Vector2i(x, y),
 					gridSize,
-					tileSheet,
-					tileRect));
+					tileset,
+					spriteIndex,
+					spriteSize
+					/*
+					sf::Vector2u(
+							tileRect.left / tileRect.width,
+							tileRect.top / tileRect.height),
+					tileRect.width
+					*/));
 			map[y * size.x + x][layer] = std::move(tilePtr);
 		}
 
@@ -296,25 +289,62 @@ void TileMap::loadFromFile(const std::string& fileName)
 	inFile.close();
 }
 
+// Getters / Setters
+const sf::Texture& TileMap::getTileset() const
+{
+	return tileset;
+}
+
 bool TileMap::isActive() const
 {
 	return active;
 }
 
-// Getters / Setters
-const sf::Texture& TileMap::getTileSheet() const
+const sf::Vector2u& TileMap::getMousePosGrid() const
 {
-	return tileSheet;
+	return mousePosGrid;
 }
 
-const sf::IntRect& TileMap::getTileRect() const
+const sf::Vector2f& TileMap::getPosition() const
 {
-	return tileRect;
+	return position;
 }
 
+/*
+sf::IntRect TileMap::getTileRect() const
+{
+	return sf::IntRect(
+			spriteIndex.x * spriteSize,
+			spriteIndex.y * spriteSize,
+			spriteSize,
+			spriteSize);
+}
+
+void TileMap::setTileRect(const sf::IntRect& tileRect)
+{
+	spriteIndex.x = tileRect.left / spriteSize;
+	spriteIndex.y = tileRect.top / spriteSize;
+}
+*/
+
+const sf::Vector2u& TileMap::getSpriteIndex() const
+{
+	return spriteIndex;
+}
+
+void TileMap::setSpriteIndex(const sf::Vector2u& spriteIndex)
+{
+	this->spriteIndex = spriteIndex;
+}
+
+unsigned TileMap::getSpriteSize() const
+{
+	return spriteSize;
+}
+
+// Internal
 void TileMap::clear()
 {
-
 	for (std::size_t index = 0; index < map.size(); index++)
 	{
 		for (std::size_t layer = 0; layer < map[index].size(); layer++)
@@ -324,6 +354,20 @@ void TileMap::clear()
 	}
 }
 
+void TileMap::checkMaxValues()
+{
+	if (this->size.x > maxSize.x)
+	{
+		this->size.x = maxSize.x;
+	}
+
+	if (this->size.y > maxSize.y)
+	{
+		this->size.y = maxSize.y;
+	}
+}
+
+// Initialization
 void TileMap::initVariables()
 {
 	active = false;
@@ -333,37 +377,48 @@ void TileMap::initVariables()
 	maxLayers = 1;
 	gridSize = 0;
 
-	texturePath = "Images/Exploration/Tilesets/";
-	textureName = "";
+	tilesetPath = "Images/Exploration/Tilesets/";
+	tilesetName = "";
 	spriteSize = 0;
+
 	filePath = "Data/Tilemaps/";
 }
 
 void TileMap::initMap()
 {
-	// TODO
+	map.resize(size.x * size.y);
+	sf::Vector2f tilePosition;
+
+	for (std::size_t index = 0; index < size.x * size.y; index++)
+	{
+		map[index].resize(layers);
+
+		for (std::size_t layer = 0; layer < layers; layer++)
+		{
+			map[index][layer] = nullptr;
+		}
+	}
+}
+
+void TileMap::initTileset()
+{
+	if (!tileset.loadFromFile(tilesetPath + tilesetName))
+	{
+		std::cout << "ERROR::TILEMAP::FAILED_TO_LOAD_TILESHEET" << std::endl;
+	}
 }
 
 void TileMap::initBorder()
 {
-	// TODO
+	border.setPosition(position);
+	border.setSize(sf::Vector2f(
+			size.x * gridSize,
+			size.y * gridSize));
+	border.setFillColor(sf::Color::Transparent);
+	border.setOutlineThickness(3);
+	border.setOutlineColor(sf::Color::Red);
 }
 
-void TileMap::setTile(const sf::IntRect& tileRect)
-{
-	this->tileRect.left = tileRect.left;
-	this->tileRect.top = tileRect.top;
-}
-
-const sf::Vector2f& TileMap::getPosition() const
-{
-	return position;
-}
-
-const sf::Vector2u& TileMap::getMousePosGrid() const
-{
-	return mousePosGrid;
-}
 /*
 bool TileMap::isOutOfBounds(int posX, int posY) const {
 	if (posX < 0 || posX >= width || posY < 0 || posY >= height)

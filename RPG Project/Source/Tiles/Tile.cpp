@@ -14,23 +14,29 @@ Tile::Tile()
 }
 
 Tile::Tile(
-		sf::Vector2f position,
-		float gridSize,
-		const sf::Texture& tileTextureSheet,
-		sf::IntRect textureRect,
+		sf::Vector2i index,
+		float size,
+		const sf::Texture& tileset,
+		sf::Vector2u spriteIndex,
+		unsigned spriteSize,
 		Type type,
 		bool collision) : Tile()
 {
 	this->type = type;
 	this->collision = collision;
 
-	shape.setSize(sf::Vector2f(gridSize, gridSize));
-	shape.setFillColor(sf::Color::White);
-	//shape.setOutlineThickness(1.f);
-	//shape.setOutlineColor(sf::Color::Black);
-	shape.setPosition(position);
-	shape.setTexture(&tileTextureSheet);
-	shape.setTextureRect(textureRect);
+	sprite.setPosition(sf::Vector2f(
+			index.x * size,
+			index.y * size));
+	sprite.setTexture(tileset);
+	sprite.setTextureRect(sf::IntRect(
+			spriteIndex.x * spriteSize,
+			spriteIndex.y * spriteSize,
+			spriteSize,
+			spriteSize));
+	sprite.setScale(sf::Vector2f(
+			size / spriteSize,
+			size / spriteSize));
 }
 
 Tile::~Tile() {
@@ -40,9 +46,11 @@ void Tile::update()
 {
 }
 
-void Tile::render(std::shared_ptr<sf::RenderTarget> target)
+void Tile::render(
+		std::shared_ptr<sf::RenderTarget> target,
+		const sf::RenderStates& states)
 {
-	target->draw(shape);
+	target->draw(sprite, states);
 }
 
 const std::string Tile::getAsString() const
@@ -50,17 +58,31 @@ const std::string Tile::getAsString() const
 	std::stringstream stringStream;
 
 	stringStream <<
-			shape.getTextureRect().left / shape.getTextureRect().width << ' ' <<
-			shape.getTextureRect().top / shape.getTextureRect().width << ' ' <<
+			getSpriteIndex().x << ' ' <<
+			getSpriteIndex().y << ' ' <<
 			collision << ' ' <<
 			type << '\n';
 
 	return stringStream.str();
 }
 
+sf::Vector2u Tile::getSpriteIndex() const
+{
+	return sf::Vector2u(
+			sprite.getTextureRect().left / sprite.getTextureRect().width,
+			sprite.getTextureRect().top / sprite.getTextureRect().height);
+}
+
+sf::Vector2u Tile::getSpriteSize() const
+{
+	return sf::Vector2u(
+			sprite.getTextureRect().width,
+			sprite.getTextureRect().height);
+}
+
 const sf::IntRect& Tile::getTextureRect() const
 {
-	return shape.getTextureRect();
+	return sprite.getTextureRect();
 }
 /*
 Tile& Tile::operator=(const Tile& entry) {

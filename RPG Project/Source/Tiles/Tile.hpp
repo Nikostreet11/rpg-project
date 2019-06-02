@@ -17,21 +17,26 @@ public:
 
 	Tile();
 	explicit Tile(
-			sf::Vector2f position,
-			float gridSize,
-			const sf::Texture& tileTextureSheet,
-			sf::IntRect textureRect,
+			sf::Vector2i index,
+			float size,
+			const sf::Texture& tileset,
+			sf::Vector2u spriteIndex,
+			unsigned spriteSize,
 			Type type = Type::Default,
 			bool collision = false);
 	virtual ~Tile();
 
 	// Function
 	void update();
-	void render(std::shared_ptr<sf::RenderTarget> target);
+	void render(
+			std::shared_ptr<sf::RenderTarget> target,
+			const sf::RenderStates& states = sf::RenderStates::Default);
 
 	const std::string getAsString() const;
 
 	// Getters / Setters
+	sf::Vector2u getSpriteIndex() const;
+	sf::Vector2u getSpriteSize() const;
 	const sf::IntRect& getTextureRect() const;
 	/*
 	virtual Tile& operator=(const Tile& right);
@@ -44,7 +49,7 @@ public:
 
 protected:
 	// Resources
-	sf::RectangleShape shape;
+	sf::Sprite sprite;
 
 	// Variables
 	Type type;
