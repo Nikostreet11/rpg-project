@@ -11,6 +11,7 @@
 #include "..\Containers\StateData.hpp"
 #include "..\Containers\GraphicsSettings.hpp"
 #include "..\Entities\Player.hpp"
+#include "..\InputButton.hpp"
 
 // class Game;
 
@@ -40,19 +41,13 @@ protected:
 	// Initialization functions
 	virtual void initKeybinds() = 0;
 
-	// Structures
-	struct Key {
-		int code;
-		bool wasPressed = false;
-	};
-
 	// Resources
 	StateData& stateData;
 	std::shared_ptr<GraphicsSettings> graphicsSettings;
 	std::shared_ptr<sf::RenderWindow> window;
 	std::shared_ptr<std::map<std::string, int>> supportedKeys;
 	std::shared_ptr<std::stack<std::unique_ptr<State>>> states;
-	std::map<std::string, Key> keybinds;
+	std::map<std::string, InputButton> keybinds;
 	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 
 	// Variables

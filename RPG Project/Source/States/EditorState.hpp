@@ -59,6 +59,10 @@ protected:
 	sf::Text cursorText;
 	sf::RectangleShape selectorRect;
 	sf::RectangleShape sidebar;
+
+	// Variables
+	bool collision;
+	Tile::Type type;
 };
 
 #endif /* STATES_EDITORSTATE_HPP_ */

@@ -58,26 +58,30 @@ void EditorState::update(const float& dt)
 
 void EditorState::updateInput(const float& dt)
 {
-	Key& key = keybinds.at("CLOSE");
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(key.code)) &&
-			!key.wasPressed)
+	if (keybinds.at("CLOSE").isPressed())
 	{
 		// Key pressed
 		if (!paused)
 			pauseState();
 		else
 			unpauseState();
-
-		key.wasPressed = true;
 	}
 
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(key.code)) &&
-			key.wasPressed)
+	if (keybinds.at("TOGGLE_COLLISION").isPressed())
 	{
-		// Key released
+		if (collision)
+		{
+			collision = false;
+		}
+		else
+		{
+			collision = true;
+		}
+	}
 
-		key.wasPressed = false;
+	if (keybinds.at("NEXT_TYPE").isPressed())
+	{
+		type = static_cast<Tile::Type>(static_cast<short>(type) + 1);
 	}
 }
 
@@ -147,11 +151,13 @@ void EditorState::updateGUI()
 
 	std::stringstream cursorString;
 	cursorString <<
-			mousePosView.x << " " << mousePosView.y << '\n' <<
-			tileMap->getMousePosGrid().x << " " <<
-			tileMap->getMousePosGrid().y << '\n';
+			mousePosView.x << ' ' << mousePosView.y << '\n' <<
+			tileMap->getMousePosGrid().x << ' ' <<
+			tileMap->getMousePosGrid().y << '\n' <<
+			"Collision: " << collision << '\n' <<
+			"Type: " << type << '\n';
 	cursorText.setString(cursorString.str());
-	cursorText.setPosition(mousePosView.x, mousePosView.y - 40.f);
+	cursorText.setPosition(mousePosView.x, mousePosView.y - 80.f);
 
 	textureSelector->update(mousePosWindow);
 }
@@ -230,6 +236,9 @@ void EditorState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
 // Initialization functions
 void EditorState::initVariables()
 {
+	collision = false;
+	type = Tile::Type::Default;
+
 	/*textureRect = sf::IntRect(
 			0,
 			0,
@@ -247,7 +256,7 @@ void EditorState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
-			keybinds[action].code = (*supportedKeys)[key];
+			keybinds[action].setCode((*supportedKeys)[key]);
 		}
 	}
 

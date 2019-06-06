@@ -52,45 +52,35 @@ void GameState::update(const float& dt)
 
 void GameState::updateInput(const float& dt)
 {
-	Key& key = keybinds.at("CLOSE");
+	InputButton& key = keybinds.at("CLOSE");
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(key.code)) &&
-			!key.wasPressed)
+	if (key.isPressed())
 	{
 		// Key pressed
 		if (!paused)
 			pauseState();
 		else
 			unpauseState();
-
-		key.wasPressed = true;
 	}
 
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(key.code)) &&
-			key.wasPressed)
+	if (key.isReleased())
 	{
 		// Key released
-
-		key.wasPressed = false;
 	}
 }
 
 void GameState::updatePlayerInput(const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(
-			keybinds.at("MOVE_LEFT").code)))
+	if (keybinds.at("MOVE_LEFT").isHold())
 		player->move(-1, 0, dt);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(
-			keybinds.at("MOVE_RIGHT").code)))
+	if (keybinds.at("MOVE_RIGHT").isHold())
 		player->move(1, 0, dt);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(
-			keybinds.at("MOVE_UP").code)))
+	if (keybinds.at("MOVE_UP").isHold())
 		player->move(0, -1, dt);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(
-			keybinds.at("MOVE_DOWN").code)))
+	if (keybinds.at("MOVE_DOWN").isHold())
 		player->move(0, 1, dt);
 }
 
@@ -130,7 +120,7 @@ void GameState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
-			keybinds[action].code = (*supportedKeys)[key];
+			keybinds[action].setCode((*supportedKeys)[key]);
 		}
 	}
 
