@@ -30,8 +30,8 @@ MovementComponent::~MovementComponent()
 void MovementComponent::move(const sf::Vector2f& direction, const float& dt)
 {
 	// Acceleration
-	speed.x += acceleration * direction.x;
-	speed.y += acceleration * direction.y;
+	speed.x += acceleration * dt * direction.x;
+	speed.y += acceleration * dt * direction.y;
 }
 
 void MovementComponent::update(const float& dt)
@@ -46,7 +46,7 @@ void MovementComponent::update(const float& dt)
 			speed.x = maxSpeed;
 
 		// Deceleration
-		speed.x -= deceleration;
+		speed.x -= deceleration * dt;
 		if (speed.x < 0)
 			speed.x = 0;
 	}
@@ -58,7 +58,7 @@ void MovementComponent::update(const float& dt)
 			speed.x = -maxSpeed;
 
 		// Deceleration
-		speed.x += deceleration;
+		speed.x += deceleration * dt;
 		if (speed.x > 0)
 			speed.x = 0;
 	}
@@ -71,7 +71,7 @@ void MovementComponent::update(const float& dt)
 			speed.y = maxSpeed;
 
 		// Deceleration
-		speed.y -= deceleration;
+		speed.y -= deceleration * dt;
 		if (speed.y < 0)
 			speed.y = 0;
 	}
@@ -83,7 +83,7 @@ void MovementComponent::update(const float& dt)
 			speed.y = -maxSpeed;
 
 		// Deceleration
-		speed.y += deceleration;
+		speed.y += deceleration * dt;
 		if (speed.y > 0)
 			speed.y = 0;
 	}

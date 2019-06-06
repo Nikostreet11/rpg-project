@@ -44,8 +44,16 @@ TextureSelector::TextureSelector(
 	bounds.setOutlineThickness(1.f);
 	bounds.setOutlineColor(sf::Color(200, 200, 200, 255));
 
-	sheet.setTexture(textureSheet);
+	sheet.setTexture(textureSheet, true);
 	sheet.setPosition(position);
+	sheet.setScale(
+			gridSize / (sheet.getTextureRect().width / 48),
+			gridSize / (sheet.getTextureRect().height / 16));
+	sheet.setTextureRect(sf::IntRect(
+			0,
+			0,
+			bounds.getSize().x / sheet.getScale().x,
+			bounds.getSize().y / sheet.getScale().y));
 
 	if (sheet.getGlobalBounds().width > bounds.getSize().x)
 	{
@@ -122,8 +130,12 @@ void TextureSelector::update(sf::Vector2i mousePosWindow)
 					bounds.getPosition().y + mousePosGrid.y * gridSize));
 		}
 
-		textureRect.left = selector.getPosition().x - bounds.getPosition().x;
-		textureRect.top = selector.getPosition().y - bounds.getPosition().y;
+		textureRect.left =
+				(selector.getPosition().x - bounds.getPosition().x) /
+						sheet.getScale().x;
+		textureRect.top =
+				(selector.getPosition().y - bounds.getPosition().y) /
+						sheet.getScale().y;
 	}
 }
 

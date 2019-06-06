@@ -304,7 +304,7 @@ void EditorState::initGUI()
 
 	textureSelector.reset(new gui::TextureSelector(
 			sf::Vector2f(20.f, 50.f),
-			sf::Vector2f(800.f, 400.f),
+			sf::Vector2f(1536.f, 512.f),
 			tileMap->getSpriteSize(),
 			tileMap->getTileset(),
 			font));
