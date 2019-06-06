@@ -40,7 +40,7 @@ TextureSelector::TextureSelector(
 
 	bounds.setPosition(position);
 	bounds.setSize(size);
-	bounds.setFillColor(sf::Color(50, 50, 50, 50));
+	bounds.setFillColor(sf::Color(50, 50, 50, 255));
 	bounds.setOutlineThickness(1.f);
 	bounds.setOutlineColor(sf::Color(200, 200, 200, 255));
 
