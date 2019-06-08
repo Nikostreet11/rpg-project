@@ -37,10 +37,16 @@ void State::unpauseState()
 }
 
 // Functions
-void State::updateMousePositions()
+void State::updateMousePositions(std::shared_ptr<sf::View> view)
 {
 	mousePosScreen = sf::Mouse::getPosition();
 	mousePosWindow = sf::Mouse::getPosition(*window);
+
+	if (view)
+	{
+		window->setView(*view);
+	}
+
 	mousePosView = window->mapPixelToCoords(mousePosWindow);
 }
 

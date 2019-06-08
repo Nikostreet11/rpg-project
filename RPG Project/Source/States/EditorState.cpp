@@ -11,6 +11,7 @@ EditorState::EditorState(StateData& stateData) :
 		State(stateData)
 {
 	initVariables();
+	initView();
 	initKeybinds();
 	initFonts();
 	initText();
@@ -56,9 +57,9 @@ void EditorState::update(const float& dt)
 	}
 }
 
-void EditorState::updateMousePositions()
+void EditorState::updateMousePositions(std::shared_ptr<sf::View> view)
 {
-	State::updateMousePositions();
+	State::updateMousePositions(view);
 
 	if (tileMap->isActive())
 	{
@@ -138,6 +139,12 @@ void EditorState::updateInput(const float& dt)
 			type = static_cast<Tile::Type>(
 					static_cast<short>(Tile::Type::NumberOfTypes) - 1);
 		}
+	}
+
+	// Move view
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		view.move(10.f, 0.f);
 	}
 }
 
@@ -252,8 +259,10 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 	if (!target)
 		target = window;
 
+	target->setView(view);
 	tileMap->render(target);
 
+	target->setView(target->getDefaultView());
 	renderGUI(target);
 	renderButtons(target);
 
@@ -300,6 +309,17 @@ void EditorState::initVariables()
 			0,
 			static_cast<int>(gridSize),
 			static_cast<int>(gridSize));*/
+}
+
+void EditorState::initView()
+{
+	view.setSize(
+			graphicsSettings->resolution.width,
+			graphicsSettings->resolution.height);
+
+	view.setCenter(
+			graphicsSettings->resolution.width / 2,
+			graphicsSettings->resolution.height / 2);
 }
 
 void EditorState::initKeybinds()

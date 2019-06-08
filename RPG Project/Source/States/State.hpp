@@ -31,7 +31,7 @@ public:
 
 	virtual void update(const float& dt) = 0;
 	virtual void updateInput(const float& dt) = 0;
-	virtual void updateMousePositions();
+	virtual void updateMousePositions(std::shared_ptr<sf::View> view = nullptr);
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr) = 0;
 
 	// Getters / Setters

@@ -29,7 +29,8 @@ public:
 	virtual void endState();
 
 	virtual void update(const float& dt);
-	virtual void updateMousePositions() override;
+	virtual void updateMousePositions(
+			std::shared_ptr<sf::View> view = nullptr) override;
 	virtual void updateInput(const float& dt);
 	virtual void updateEditorInput();
 	virtual void updateGUI();
@@ -42,6 +43,7 @@ public:
 protected:
 	// Initialization functions
 	void initVariables();
+	void initView();
 	virtual void initKeybinds();
 	void initFonts();
 	void initText();
@@ -52,6 +54,7 @@ protected:
 	void initButtons();
 
 	// Resources
+	sf::View view;
 	std::shared_ptr<sf::Font> font;
 	std::unique_ptr<TileMap> tileMap;
 	std::unique_ptr<gui::PauseMenu> pauseMenu;
