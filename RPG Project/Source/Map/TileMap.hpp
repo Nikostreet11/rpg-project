@@ -29,9 +29,14 @@ public:
 	void update(sf::Vector2f mousePosView);
 	void render(std::shared_ptr<sf::RenderTarget> target);
 
-	// TODO: code cleaning
-	void addTile(sf::Vector2u index, unsigned layer);
-	void removeTile(sf::Vector2u index, unsigned layer);
+	void addTile(
+			sf::Vector2u index,
+			unsigned layer,
+			Tile::Type type,
+			bool collision);
+	void removeTile(
+			sf::Vector2u index,
+			unsigned layer);
 
 	// Input / Output
 	void saveToFile(const std::string& fileName);

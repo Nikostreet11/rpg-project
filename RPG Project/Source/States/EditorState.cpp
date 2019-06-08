@@ -116,9 +116,28 @@ void EditorState::updateInput(const float& dt)
 		}
 	}
 
-	if (keybinds.at("NEXT_TYPE").isPressed())
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) &&
+		keybinds.at("NEXT_TYPE").isPressed())
 	{
 		type = static_cast<Tile::Type>(static_cast<short>(type) + 1);
+
+		if (type == Tile::Type::NumberOfTypes)
+		{
+			type = Tile::Type::Default;
+		}
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) &&
+		keybinds.at("NEXT_TYPE").isPressed())
+	{
+		type = static_cast<Tile::Type>(
+				static_cast<short>(type) - 1);
+
+		if (type == Tile::Type::Invalid)
+		{
+			type = static_cast<Tile::Type>(
+					static_cast<short>(Tile::Type::NumberOfTypes) - 1);
+		}
 	}
 }
 
@@ -140,7 +159,7 @@ void EditorState::updateEditorInput()
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			tileMap->addTile(mousePosGrid, 0);
+			tileMap->addTile(mousePosGrid, 0, type, collision);
 		}
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))

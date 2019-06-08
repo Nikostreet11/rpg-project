@@ -13,7 +13,7 @@
 class Tile
 {
 public:
-	enum Type {Default = 0, Damaging};
+	enum Type {Invalid = -1, Default, Damaging, Dangerous, NumberOfTypes};
 
 	Tile();
 	explicit Tile(

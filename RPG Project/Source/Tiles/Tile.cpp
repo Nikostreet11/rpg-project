@@ -60,8 +60,8 @@ const std::string Tile::getAsString() const
 	stringStream <<
 			getSpriteIndex().x << ' ' <<
 			getSpriteIndex().y << ' ' <<
-			collision << ' ' <<
-			type << '\n';
+			type << ' ' <<
+			collision << '\n';
 
 	return stringStream.str();
 }

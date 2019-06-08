@@ -69,7 +69,11 @@ void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
 	target->draw(border);
 }
 
-void TileMap::addTile(sf::Vector2u index, unsigned layer)
+void TileMap::addTile(
+		sf::Vector2u index,
+		unsigned layer,
+		Tile::Type type,
+		bool collision)
 {
 	if (0 <= index.x && index.x < size.x &&
 		0 <= index.y && index.y < size.y &&
@@ -86,14 +90,9 @@ void TileMap::addTile(sf::Vector2u index, unsigned layer)
 					gridSize,
 					tileset,
 					spriteIndex,
-					spriteSize
-					/*
-					sf::Vector2u(
-							tileRect.left / tileRect.width,
-							tileRect.top / tileRect.height),
-
-					tileRect.width
-					*/));
+					spriteSize,
+					type,
+					collision));
 		}
 	}
 }
@@ -224,13 +223,9 @@ void TileMap::loadFromFile(const std::string& fileName)
 					gridSize,
 					tileset,
 					spriteIndex,
-					spriteSize
-					/*
-					sf::Vector2u(
-							tileRect.left / tileRect.width,
-							tileRect.top / tileRect.height),
-					tileRect.width
-					*/));
+					spriteSize,
+					static_cast<Tile::Type>(type),
+					collision));
 			map[y * size.x + x][layer] = std::move(tilePtr);
 		}
 
