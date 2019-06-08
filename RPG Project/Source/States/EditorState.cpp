@@ -48,7 +48,7 @@ void EditorState::update(const float& dt)
 		tileMap->update(mousePosView);
 		updateGUI();
 		updateButtons();
-		updateEditorInput();
+		updateEditorInput(dt);
 	}
 	else
 	{
@@ -104,6 +104,34 @@ void EditorState::updateInput(const float& dt)
 		else
 			unpauseState();
 	}
+}
+
+void EditorState::updateEditorInput(const float& dt)
+{
+	if (textureSelector->isActive())
+	{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			// TODO: make textureSelector a class with a getSpriteIndex method
+			tileMap->setSpriteIndex(sf::Vector2u(
+					textureSelector->getTextureRect().left /
+							tileMap->getSpriteSize(),
+					textureSelector->getTextureRect().top /
+							tileMap->getSpriteSize()));
+		}
+	}
+	else if (tileMap->isActive())
+	{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			tileMap->addTile(mousePosGrid, 0, type, collision);
+		}
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		{
+			tileMap->removeTile(mousePosGrid, 0);
+		}
+	}
 
 	if (keybinds.at("TOGGLE_COLLISION").isPressed())
 	{
@@ -142,56 +170,25 @@ void EditorState::updateInput(const float& dt)
 	}
 
 	// Move view
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	if (keybinds.at("MOVE_CAMERA_UP").isHold())
 	{
-		view.move(10.f, 0.f);
-	}
-}
-
-void EditorState::updateEditorInput()
-{
-	if (textureSelector->isActive())
-	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			// TODO: make textureSelector a class with a getSpriteIndex method
-			tileMap->setSpriteIndex(sf::Vector2u(
-					textureSelector->getTextureRect().left /
-							tileMap->getSpriteSize(),
-					textureSelector->getTextureRect().top /
-							tileMap->getSpriteSize()));
-		}
-	}
-	else if (tileMap->isActive())
-	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			tileMap->addTile(mousePosGrid, 0, type, collision);
-		}
-
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-		{
-			tileMap->removeTile(mousePosGrid, 0);
-		}
+		tileMapView->move(0.f, -cameraSpeed * dt);
 	}
 
-	/*
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (keybinds.at("MOVE_CAMERA_LEFT").isHold())
 	{
-		if (!textureSelector->getActive())
-		{
-			tileMap->selectNextTile();
-		}
+		tileMapView->move(-cameraSpeed * dt, 0.f);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (keybinds.at("MOVE_CAMERA_DOWN").isHold())
 	{
-		if (!textureSelector->getActive())
-		{
-			tileMap->selectPreviousTile();
-		}
+		tileMapView->move(0.f, cameraSpeed * dt);
 	}
-	*/
+
+	if (keybinds.at("MOVE_CAMERA_RIGHT").isHold())
+	{
+		tileMapView->move(cameraSpeed * dt, 0.f);
+	}
 }
 
 void EditorState::updateGUI()
@@ -259,7 +256,7 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 	if (!target)
 		target = window;
 
-	target->setView(view);
+	target->setView(*tileMapView);
 	tileMap->render(target);
 
 	target->setView(target->getDefaultView());
@@ -301,23 +298,21 @@ void EditorState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
 // Initialization functions
 void EditorState::initVariables()
 {
+	cameraSpeed = 100.f;
+
 	collision = false;
 	type = Tile::Type::Default;
-
-	/*textureRect = sf::IntRect(
-			0,
-			0,
-			static_cast<int>(gridSize),
-			static_cast<int>(gridSize));*/
 }
 
 void EditorState::initView()
 {
-	view.setSize(
+	tileMapView = std::make_shared<sf::View>();
+
+	tileMapView->setSize(
 			graphicsSettings->resolution.width,
 			graphicsSettings->resolution.height);
 
-	view.setCenter(
+	tileMapView->setCenter(
 			graphicsSettings->resolution.width / 2,
 			graphicsSettings->resolution.height / 2);
 }

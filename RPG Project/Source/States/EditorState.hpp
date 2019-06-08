@@ -32,7 +32,7 @@ public:
 	virtual void updateMousePositions(
 			std::shared_ptr<sf::View> view = nullptr) override;
 	virtual void updateInput(const float& dt);
-	virtual void updateEditorInput();
+	virtual void updateEditorInput(const float& dt);
 	virtual void updateGUI();
 	virtual void updateButtons();
 	virtual void updatePauseMenu();
@@ -54,7 +54,7 @@ protected:
 	void initButtons();
 
 	// Resources
-	sf::View view;
+	std::shared_ptr<sf::View> tileMapView;
 	std::shared_ptr<sf::Font> font;
 	std::unique_ptr<TileMap> tileMap;
 	std::unique_ptr<gui::PauseMenu> pauseMenu;
@@ -66,6 +66,8 @@ protected:
 
 	// Variables
 	sf::Vector2u mousePosGrid;
+
+	float cameraSpeed;
 
 	bool collision;
 	Tile::Type type;
