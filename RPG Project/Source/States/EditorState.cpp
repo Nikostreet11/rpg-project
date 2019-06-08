@@ -56,6 +56,43 @@ void EditorState::update(const float& dt)
 	}
 }
 
+void EditorState::updateMousePositions()
+{
+	State::updateMousePositions();
+
+	if (tileMap->isActive())
+	{
+		if (mousePosView.x - tileMap->getPosition().x < 0)
+		{
+			mousePosGrid.x = 0;
+		}
+		else
+		{
+			mousePosGrid.x = static_cast<unsigned>(
+					(mousePosView.x - tileMap->getPosition().x) / gridSize);
+		}
+
+		if (mousePosView.y - tileMap->getPosition().y < 0)
+		{
+			mousePosGrid.y = 0;
+		}
+		else
+		{
+			mousePosGrid.y = static_cast<unsigned>(
+					(mousePosView.y - tileMap->getPosition().y) / gridSize);
+		}
+
+		if (mousePosGrid.x >= tileMap->getSize().x)
+		{
+			mousePosGrid.x = tileMap->getSize().x - 1;
+		}
+		if (mousePosGrid.y >= tileMap->getSize().y)
+		{
+			mousePosGrid.y = tileMap->getSize().y - 1;
+		}
+	}
+}
+
 void EditorState::updateInput(const float& dt)
 {
 	if (keybinds.at("CLOSE").isPressed())
@@ -103,12 +140,12 @@ void EditorState::updateEditorInput()
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			tileMap->addTile(0);
+			tileMap->addTile(mousePosGrid, 0);
 		}
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 		{
-			tileMap->removeTile(0);
+			tileMap->removeTile(mousePosGrid, 0);
 		}
 	}
 
@@ -143,17 +180,17 @@ void EditorState::updateGUI()
 				tileMap->getSpriteSize(),
 				tileMap->getSpriteSize()));
 		selectorRect.setPosition(
-				tileMap->getMousePosGrid().x * gridSize +
+				mousePosGrid.x * gridSize +
 						tileMap->getPosition().x,
-				tileMap->getMousePosGrid().y * gridSize +
+				mousePosGrid.y * gridSize +
 						tileMap->getPosition().y);
 	}
 
 	std::stringstream cursorString;
 	cursorString <<
 			mousePosView.x << ' ' << mousePosView.y << '\n' <<
-			tileMap->getMousePosGrid().x << ' ' <<
-			tileMap->getMousePosGrid().y << '\n' <<
+			mousePosGrid.x << ' ' <<
+			mousePosGrid.y << '\n' <<
 			"Collision: " << collision << '\n' <<
 			"Type: " << type << '\n';
 	cursorText.setString(cursorString.str());

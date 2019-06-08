@@ -31,9 +31,7 @@ public:
 
 	// TODO: code cleaning
 	void addTile(sf::Vector2u index, unsigned layer);
-	void addTile(unsigned layer);
 	void removeTile(sf::Vector2u index, unsigned layer);
-	void removeTile(unsigned layer);
 
 	// Input / Output
 	void saveToFile(const std::string& fileName);
@@ -42,8 +40,8 @@ public:
 	// Getters / Setters
 	const sf::Texture& getTileset() const;
 	bool isActive() const;
-	const sf::Vector2u& getMousePosGrid() const;
 	const sf::Vector2f& getPosition() const;
+	const sf::Vector2u& getSize() const;
 
 	// TODO: rework
 	// sf::IntRect getTileRect() const;
@@ -94,7 +92,6 @@ private:
 
 	// Variables
 	bool active;
-	sf::Vector2u mousePosGrid;
 
 	sf::Vector2f position;
 

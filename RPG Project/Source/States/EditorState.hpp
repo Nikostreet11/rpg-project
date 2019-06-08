@@ -29,6 +29,7 @@ public:
 	virtual void endState();
 
 	virtual void update(const float& dt);
+	virtual void updateMousePositions() override;
 	virtual void updateInput(const float& dt);
 	virtual void updateEditorInput();
 	virtual void updateGUI();
@@ -61,6 +62,8 @@ protected:
 	sf::RectangleShape sidebar;
 
 	// Variables
+	sf::Vector2u mousePosGrid;
+
 	bool collision;
 	Tile::Type type;
 };

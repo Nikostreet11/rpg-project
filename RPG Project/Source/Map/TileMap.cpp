@@ -50,38 +50,6 @@ void TileMap::update(sf::Vector2f mousePosView)
 	{
 		active = false;
 	}
-
-	if (active)
-	{
-		if (mousePosView.x - position.x < 0)
-		{
-			mousePosGrid.x = 0;
-		}
-		else
-		{
-			mousePosGrid.x = static_cast<unsigned>(
-					(mousePosView.x - position.x) / gridSize);
-		}
-
-		if (mousePosView.y - position.y < 0)
-		{
-			mousePosGrid.y = 0;
-		}
-		else
-		{
-			mousePosGrid.y = static_cast<unsigned>(
-					(mousePosView.y - position.y) / gridSize);
-		}
-
-		if (mousePosGrid.x >= size.x)
-		{
-			mousePosGrid.x = size.x - 1;
-		}
-		if (mousePosGrid.y >= size.y)
-		{
-			mousePosGrid.y = size.y - 1;
-		}
-	}
 }
 
 void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
@@ -130,11 +98,6 @@ void TileMap::addTile(sf::Vector2u index, unsigned layer)
 	}
 }
 
-void TileMap::addTile(unsigned layer)
-{
-	addTile(mousePosGrid, layer);
-}
-
 void TileMap::removeTile(sf::Vector2u index, unsigned layer)
 {
 	if (0 <= index.x && index.x < size.x &&
@@ -146,11 +109,6 @@ void TileMap::removeTile(sf::Vector2u index, unsigned layer)
 			map[index.y * size.x + index.x][layer].reset();
 		}
 	}
-}
-
-void TileMap::removeTile(unsigned layer)
-{
-	removeTile(mousePosGrid, layer);
 }
 
 void TileMap::saveToFile(const std::string& fileName)
@@ -300,14 +258,14 @@ bool TileMap::isActive() const
 	return active;
 }
 
-const sf::Vector2u& TileMap::getMousePosGrid() const
-{
-	return mousePosGrid;
-}
-
 const sf::Vector2f& TileMap::getPosition() const
 {
 	return position;
+}
+
+const sf::Vector2u& TileMap::getSize() const
+{
+	return size;
 }
 
 /*
