@@ -40,7 +40,7 @@ void EditorState::endState()
 void EditorState::update(const float& dt)
 {
 	updateInput(dt);
-	updateMousePositions();
+	updateMousePositions(tileMapView);
 
 	if (!paused)
 	{
@@ -261,13 +261,13 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 	target->setView(*tileMapView);
 	tileMap->render(target);
 
-	target->setView(target->getDefaultView());
 	renderGUI(target);
 	renderButtons(target);
 
 	if (paused)
 	{
 		// Pause menu render
+		target->setView(target->getDefaultView());
 		pauseMenu->render(window);
 	}
 }
@@ -277,12 +277,14 @@ void EditorState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
 	if (!target)
 		target = window;
 
+	target->setView(*tileMapView);
 	target->draw(selectorRect);
 
+	target->setView(target->getDefaultView());
 	target->draw(sidebar);
-
 	textureSelector->render(target);
 
+	target->setView(*tileMapView);
 	target->draw(cursorText);
 }
 
@@ -290,6 +292,8 @@ void EditorState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
 {
 	if (!target)
 		target = window;
+
+	target->setView(target->getDefaultView());
 
 	for (auto &it : buttons)
 	{

@@ -95,6 +95,7 @@ void MainMenuState::render(std::shared_ptr<sf::RenderTarget> target)
 	if (!target)
 		target = window;
 
+	target->setView(target->getDefaultView());
 	target->draw(background);
 	renderButtons(target);
 
