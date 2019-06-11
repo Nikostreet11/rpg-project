@@ -87,11 +87,11 @@ bool PauseMenu::isButtonPressed(const std::string& key)
 	return buttons[key]->isPressed();
 }
 
-void PauseMenu::update(const sf::Vector2f& mousePos)
+void PauseMenu::update(const sf::Vector2i& mousePosWindow)
 {
 	for (auto &i : buttons)
 	{
-		i.second->update(mousePos);
+		i.second->update(mousePosWindow);
 	}
 }
 

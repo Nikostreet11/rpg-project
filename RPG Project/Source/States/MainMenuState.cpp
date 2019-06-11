@@ -56,7 +56,7 @@ void MainMenuState::updateButtons()
 	/* Updates all the buttons in the state and handles their functionalities */
 	for (auto &it : buttons)
 	{
-		it.second->update(mousePosView);
+		it.second->update(mousePosWindow);
 	}
 
 	// New game

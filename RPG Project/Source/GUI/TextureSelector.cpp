@@ -90,7 +90,7 @@ TextureSelector::~TextureSelector()
 
 void TextureSelector::update(sf::Vector2i mousePosWindow)
 {
-	hideButton->update(static_cast<sf::Vector2f>(mousePosWindow));
+	hideButton->update(mousePosWindow);
 
 	if (hideButton->isPressed())
 	{

@@ -74,12 +74,12 @@ DropDownList::~DropDownList()
 }
 
 // Functions
-void DropDownList::update(const sf::Vector2f& mousePos)
+void DropDownList::update(const sf::Vector2i& mousePosWindow)
 {
 	std::string& activeKey = active.first;
 	Button& activeElement = *(active.second);
 
-	activeElement.update(mousePos);
+	activeElement.update(mousePosWindow);
 
 	if (activeElement.isPressed())
 	{
@@ -95,7 +95,7 @@ void DropDownList::update(const sf::Vector2f& mousePos)
 		{
 			Button& element = *(iterator.second);
 
-			element.update(mousePos);
+			element.update(mousePosWindow);
 
 			if (element.isPressed())
 			{

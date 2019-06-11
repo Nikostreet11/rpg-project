@@ -59,11 +59,12 @@ Button::~Button()
 }
 
 // Functions
-void Button::update(const sf::Vector2f& mousePos)
+void Button::update(const sf::Vector2i& mousePosWindow)
 {
 	/* Update the booleans for hover and pressed */
 
-	if (shape.getGlobalBounds().contains(mousePos)) // Selection
+	if (shape.getGlobalBounds().contains(
+			static_cast<sf::Vector2f>(mousePosWindow))) // Selection
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) // Input
 		{

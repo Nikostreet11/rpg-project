@@ -45,10 +45,12 @@ void EditorState::update(const float& dt)
 	if (!paused)
 	{
 		// Unpaused update
-		tileMap->update(mousePosView);
 		updateGUI();
 		updateButtons();
 		updateEditorInput(dt);
+
+		updateMousePositions(tileMapView);
+		tileMap->update(mousePosView);
 	}
 	else
 	{
@@ -227,13 +229,13 @@ void EditorState::updateButtons()
 	/* Updates all the buttons in the state and handles their functionalities */
 	for (auto &it : buttons)
 	{
-		it.second->update(mousePosView);
+		it.second->update(mousePosWindow);
 	}
 }
 
 void EditorState::updatePauseMenu()
 {
-	pauseMenu->update(mousePosView);
+	pauseMenu->update(mousePosWindow);
 
 	if (pauseMenu->isButtonPressed("SAVE"))
 	{

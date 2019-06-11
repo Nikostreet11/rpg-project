@@ -46,13 +46,13 @@ void SettingsState::updateGUI(const float& dt)
 	// Buttons
 	for (auto &iterator : buttons)
 	{
-		iterator.second->update(mousePosView);
+		iterator.second->update(mousePosWindow);
 	}
 
 	// Drop-down lists
 	for (auto &iterator : dropDownLists)
 	{
-		iterator.second->update(mousePosView);
+		iterator.second->update(mousePosWindow);
 	}
 
 	// Handles the GUI elements' functionalities

@@ -86,7 +86,7 @@ void GameState::updatePlayerInput(const float& dt)
 
 void GameState::updatePauseMenu()
 {
-	pauseMenu->update(mousePosView);
+	pauseMenu->update(mousePosWindow);
 	if (pauseMenu->isButtonPressed("QUIT"))
 		endState();
 }
