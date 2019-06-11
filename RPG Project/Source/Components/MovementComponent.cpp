@@ -88,7 +88,9 @@ void MovementComponent::update(const float& dt)
 			speed.y = 0;
 	}
 
-	sprite.move(speed * dt);
+	sprite.move(
+			std::round(speed.x * dt),
+			std::round(speed.y * dt));
 }
 
 // Getters / Setters

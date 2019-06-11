@@ -54,6 +54,33 @@ void TileMap::update(sf::Vector2f mousePosView)
 
 void TileMap::updateCollisions(std::shared_ptr<Entity> entity)
 {
+	if (entity->getPosition().x < 0.f)
+	{
+		entity->setPosition(sf::Vector2f(
+				0.f,
+				entity->getPosition().y));
+	}
+
+	if (entity->getPosition().x + entity->getSize().x > size.x * gridSize)
+	{
+		entity->setPosition(sf::Vector2f(
+				size.x * gridSize - entity->getSize().x,
+				entity->getPosition().y));
+	}
+
+	if (entity->getPosition().y < 0.f)
+	{
+		entity->setPosition(sf::Vector2f(
+				entity->getPosition().x,
+				0.f));
+	}
+
+	if (entity->getPosition().y + entity->getSize().y > size.y * gridSize)
+	{
+		entity->setPosition(sf::Vector2f(
+				entity->getPosition().x,
+				size.y * gridSize - entity->getSize().y));
+	}
 }
 
 void TileMap::render(sf::RenderTarget& target, std::shared_ptr<Entity> entity)

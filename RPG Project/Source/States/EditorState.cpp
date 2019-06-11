@@ -174,22 +174,22 @@ void EditorState::updateEditorInput(const float& dt)
 	// Move view
 	if (keybinds.at("MOVE_CAMERA_UP").isHold())
 	{
-		tileMapView->move(0.f, -cameraSpeed * dt);
+		tileMapView->move(0.f, -std::round(cameraSpeed * dt));
 	}
 
 	if (keybinds.at("MOVE_CAMERA_LEFT").isHold())
 	{
-		tileMapView->move(-cameraSpeed * dt, 0.f);
+		tileMapView->move(-std::round(cameraSpeed * dt), 0.f);
 	}
 
 	if (keybinds.at("MOVE_CAMERA_DOWN").isHold())
 	{
-		tileMapView->move(0.f, cameraSpeed * dt);
+		tileMapView->move(0.f, std::round(cameraSpeed * dt));
 	}
 
 	if (keybinds.at("MOVE_CAMERA_RIGHT").isHold())
 	{
-		tileMapView->move(cameraSpeed * dt, 0.f);
+		tileMapView->move(std::round(cameraSpeed * dt), 0.f);
 	}
 }
 

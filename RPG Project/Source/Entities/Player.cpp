@@ -23,7 +23,7 @@ Player::Player(sf::Vector2f position, std::shared_ptr<sf::Texture> textureSheet)
 	createHitboxComponent(
 			sprite,
 			sf::Vector2f(20, 10),
-			sf::Vector2f(104, 124));
+			sf::Vector2f(90, 110));
 }
 
 Player::~Player()

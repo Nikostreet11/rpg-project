@@ -51,7 +51,7 @@ private:
 	std::shared_ptr<sf::View> camera;
 	sf::RenderTexture renderTexture;
 	sf::Sprite renderSprite;
-	std::unique_ptr<Player> player;
+	std::shared_ptr<Player> player;
 	std::unique_ptr<TileMap> tileMap;
 	std::unique_ptr<gui::PauseMenu> pauseMenu;
 

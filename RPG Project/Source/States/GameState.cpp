@@ -41,9 +41,11 @@ void GameState::update(const float& dt)
 	if (!paused)
 	{
 		// Unpaused update
-		updateCamera(dt);
 		updatePlayerInput(dt);
 		player->update(dt);
+		tileMap->update(mousePosView);
+		tileMap->updateCollisions(player);
+		updateCamera(dt);
 	}
 	else
 	{
@@ -55,8 +57,8 @@ void GameState::update(const float& dt)
 void GameState::updateCamera(const float& dt)
 {
 	camera->setCenter(sf::Vector2f(
-			player->getPosition().x + player->getSize().x / 2.f,
-			player->getPosition().y + player->getSize().y / 2.f));
+			std::round(player->getPosition().x + player->getSize().x / 2.f),
+			std::round(player->getPosition().y + player->getSize().y / 2.f)));
 }
 
 void GameState::updateInput(const float& dt)
@@ -208,7 +210,9 @@ void GameState::initTextures()
 void GameState::initPlayers()
 {
 	sf::Vector2f position = {0, 0};
-	player.reset(new Player(position, textures["EXPLORATION_PLAYABLE_CHARACTERS"]));
+	player = std::make_shared<Player>(
+			position,
+			textures["EXPLORATION_PLAYABLE_CHARACTERS"]);
 }
 
 void GameState::initTileMap()
