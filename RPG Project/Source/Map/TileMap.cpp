@@ -8,7 +8,6 @@
 #include "TileMap.hpp"
 
 TileMap::TileMap(
-		sf::Vector2f position,
 		sf::Vector2u size,
 		float gridSize,
 		const std::string& tilesetName,
@@ -16,7 +15,7 @@ TileMap::TileMap(
 {
 	initVariables();
 
-	this->position = position;
+	//this->position = position;
 	this->size = size;
 	this->layers = maxLayers;
 	this->gridSize = gridSize;
@@ -33,6 +32,7 @@ TileMap::TileMap(
 	initMap();
 	initTileset();
 	initBorder();
+	initCollisionBox();
 }
 
 TileMap::~TileMap()
@@ -52,7 +52,11 @@ void TileMap::update(sf::Vector2f mousePosView)
 	}
 }
 
-void TileMap::render(sf::RenderTarget& target)
+void TileMap::updateCollisions(std::shared_ptr<Entity> entity)
+{
+}
+
+void TileMap::render(sf::RenderTarget& target, std::shared_ptr<Entity> entity)
 {
 	for (auto &tile : map)
 	{
@@ -60,8 +64,12 @@ void TileMap::render(sf::RenderTarget& target)
 		{
 			if (layer != nullptr)
 			{
-				layer->render(target, border.getTransform());
-				target.draw(border);
+				layer->render(target);
+				if (!layer->isCrossable())
+				{
+					collisionBox.setPosition(layer->getPosition());
+					target.draw(collisionBox);
+				}
 			}
 		}
 	}
@@ -73,7 +81,7 @@ void TileMap::addTile(
 		sf::Vector2u index,
 		unsigned layer,
 		Tile::Type type,
-		bool collision)
+		bool crossable)
 {
 	if (0 <= index.x && index.x < size.x &&
 		0 <= index.y && index.y < size.y &&
@@ -92,7 +100,7 @@ void TileMap::addTile(
 					spriteIndex,
 					spriteSize,
 					type,
-					collision));
+					crossable));
 		}
 	}
 }
@@ -198,7 +206,7 @@ void TileMap::loadFromFile(const std::string& fileName)
 		std::size_t x, y, layer;
 		//sf::Vector2u spriteIndex;
 		short type;
-		bool collision;
+		bool crossable;
 
 		while (inFile
 				>> x
@@ -207,7 +215,7 @@ void TileMap::loadFromFile(const std::string& fileName)
 				>> spriteIndex.x
 				>> spriteIndex.y
 				>> type
-				>> collision)
+				>> crossable)
 		{
 			sf::Vector2f tilePosition;
 			tilePosition.x = x * gridSize;
@@ -225,7 +233,7 @@ void TileMap::loadFromFile(const std::string& fileName)
 					spriteIndex,
 					spriteSize,
 					static_cast<Tile::Type>(type),
-					collision));
+					crossable));
 			map[y * size.x + x][layer] = std::move(tilePtr);
 		}
 
@@ -253,10 +261,12 @@ bool TileMap::isActive() const
 	return active;
 }
 
+/*
 const sf::Vector2f& TileMap::getPosition() const
 {
 	return position;
 }
+*/
 
 const sf::Vector2u& TileMap::getSize() const
 {
@@ -363,7 +373,7 @@ void TileMap::initTileset()
 
 void TileMap::initBorder()
 {
-	border.setPosition(position);
+	//border.setPosition(position);
 	border.setSize(sf::Vector2f(
 			size.x * gridSize,
 			size.y * gridSize));
@@ -372,6 +382,11 @@ void TileMap::initBorder()
 	border.setOutlineColor(sf::Color::Red);
 }
 
+void TileMap::initCollisionBox()
+{
+	collisionBox.setSize(sf::Vector2f(gridSize, gridSize));
+	collisionBox.setFillColor(sf::Color(255, 0, 0, 50));
+}
 /*
 bool TileMap::isOutOfBounds(int posX, int posY) const {
 	if (posX < 0 || posX >= width || posY < 0 || posY >= height)

@@ -10,7 +10,7 @@
 Tile::Tile()
 {
 	type = Type::Default;
-	collision = false;
+	crossable = false;
 }
 
 Tile::Tile(
@@ -20,10 +20,10 @@ Tile::Tile(
 		sf::Vector2u spriteIndex,
 		unsigned spriteSize,
 		Type type,
-		bool collision) : Tile()
+		bool crossable) : Tile()
 {
 	this->type = type;
-	this->collision = collision;
+	this->crossable = crossable;
 
 	sprite.setPosition(sf::Vector2f(
 			index.x * size,
@@ -61,9 +61,26 @@ const std::string Tile::getAsString() const
 			getSpriteIndex().x << ' ' <<
 			getSpriteIndex().y << ' ' <<
 			type << ' ' <<
-			collision << '\n';
+			crossable << '\n';
 
 	return stringStream.str();
+}
+
+bool Tile::isCrossable() const
+{
+	return crossable;
+}
+
+const sf::Vector2f& Tile::getPosition() const
+{
+	return sprite.getPosition();
+}
+
+sf::Vector2f Tile::getSize() const
+{
+	return sf::Vector2f(
+			sprite.getScale().x * sprite.getTextureRect().width,
+			sprite.getScale().y * sprite.getTextureRect().height);
 }
 
 sf::Vector2u Tile::getSpriteIndex() const

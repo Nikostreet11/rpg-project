@@ -65,24 +65,24 @@ void EditorState::updateMousePositions(std::shared_ptr<sf::View> view)
 
 	if (tileMap->isActive())
 	{
-		if (mousePosView.x - tileMap->getPosition().x < 0)
+		if (mousePosView.x < 0)
 		{
 			mousePosGrid.x = 0;
 		}
 		else
 		{
 			mousePosGrid.x = static_cast<unsigned>(
-					(mousePosView.x - tileMap->getPosition().x) / gridSize);
+					mousePosView.x / gridSize);
 		}
 
-		if (mousePosView.y - tileMap->getPosition().y < 0)
+		if (mousePosView.y < 0)
 		{
 			mousePosGrid.y = 0;
 		}
 		else
 		{
 			mousePosGrid.y = static_cast<unsigned>(
-					(mousePosView.y - tileMap->getPosition().y) / gridSize);
+					mousePosView.y / gridSize);
 		}
 
 		if (mousePosGrid.x >= tileMap->getSize().x)
@@ -126,7 +126,7 @@ void EditorState::updateEditorInput(const float& dt)
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			tileMap->addTile(mousePosGrid, 0, type, collision);
+			tileMap->addTile(mousePosGrid, 0, type, crossable);
 		}
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
@@ -137,13 +137,13 @@ void EditorState::updateEditorInput(const float& dt)
 
 	if (keybinds.at("TOGGLE_COLLISION").isPressed())
 	{
-		if (collision)
+		if (crossable)
 		{
-			collision = false;
+			crossable = false;
 		}
 		else
 		{
-			collision = true;
+			crossable = true;
 		}
 	}
 
@@ -205,10 +205,8 @@ void EditorState::updateGUI()
 				tileMap->getSpriteSize(),
 				tileMap->getSpriteSize()));
 		selectorRect.setPosition(
-				mousePosGrid.x * gridSize +
-						tileMap->getPosition().x,
-				mousePosGrid.y * gridSize +
-						tileMap->getPosition().y);
+				mousePosGrid.x * gridSize,
+				mousePosGrid.y * gridSize);
 	}
 
 	std::stringstream cursorString;
@@ -216,7 +214,7 @@ void EditorState::updateGUI()
 			mousePosView.x << ' ' << mousePosView.y << '\n' <<
 			mousePosGrid.x << ' ' <<
 			mousePosGrid.y << '\n' <<
-			"Collision: " << collision << '\n' <<
+			"Crossable: " << std::boolalpha << crossable << '\n' <<
 			"Type: " << type << '\n';
 	cursorText.setString(cursorString.str());
 	cursorText.setPosition(mousePosView.x, mousePosView.y - 80.f);
@@ -306,7 +304,7 @@ void EditorState::initVariables()
 {
 	cameraSpeed = 100.f;
 
-	collision = false;
+	crossable = true;
 	type = Tile::Type::Default;
 }
 
@@ -364,7 +362,6 @@ void EditorState::initBackground()
 void EditorState::initTileMap()
 {
 	tileMap.reset(new TileMap(
-			sf::Vector2f(160, 10),
 			sf::Vector2u(12, 8),
 			stateData.gridSize,
 			"Villages.png",
@@ -401,6 +398,8 @@ void EditorState::initGUI()
 	sidebar.setFillColor(sf::Color(100, 100, 100, 255));
 	sidebar.setOutlineThickness(1.f);
 	sidebar.setOutlineColor(sf::Color(130, 130, 130, 255));
+
+
 }
 
 void EditorState::initButtons()

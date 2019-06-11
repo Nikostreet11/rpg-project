@@ -90,6 +90,20 @@ void Entity::setPosition(const sf::Vector2f& position)
 	sprite.setPosition(position);
 }
 
+const sf::Vector2f Entity::getSize() const
+{
+	return sf::Vector2f(
+			sprite.getGlobalBounds().width,
+			sprite.getGlobalBounds().height);
+}
+
+void Entity::setSize(const sf::Vector2f& size)
+{
+	sprite.setScale(
+			size.x / sprite.getGlobalBounds().width,
+			size.y / sprite.getGlobalBounds().height);
+}
+
 // Initialization functions
 void Entity::initVariables()
 {

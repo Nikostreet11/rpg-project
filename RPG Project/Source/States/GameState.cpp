@@ -54,7 +54,9 @@ void GameState::update(const float& dt)
 
 void GameState::updateCamera(const float& dt)
 {
-	camera->setCenter(player->getPosition());
+	camera->setCenter(sf::Vector2f(
+			player->getPosition().x + player->getSize().x / 2.f,
+			player->getPosition().y + player->getSize().y / 2.f));
 }
 
 void GameState::updateInput(const float& dt)
@@ -212,7 +214,6 @@ void GameState::initPlayers()
 void GameState::initTileMap()
 {
 	tileMap.reset(new TileMap(
-			sf::Vector2f(0, 0),
 			sf::Vector2u(15, 15),
 			stateData.gridSize,
 			"Villages.png",

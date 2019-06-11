@@ -43,6 +43,8 @@ public:
 	// Getters / Setters
 	const sf::Vector2f& getPosition() const;
 	void setPosition(const sf::Vector2f& position);
+	const sf::Vector2f getSize() const;
+	void setSize(const sf::Vector2f& size);
 
 protected:
 	// Initialization functions

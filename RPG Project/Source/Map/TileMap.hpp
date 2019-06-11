@@ -12,13 +12,13 @@
 
 // Project
 #include "..\Tiles\Tile.hpp"
+#include "..\Entities\Entity.hpp"
 
 class TileMap
 {
 public:
 	// Constructor / Destructor
 	explicit TileMap(
-			sf::Vector2f position,
 			sf::Vector2u size,
 			float gridSize,
 			const std::string& tilesetName,
@@ -27,13 +27,16 @@ public:
 
 	// Functions
 	void update(sf::Vector2f mousePosView);
-	void render(sf::RenderTarget& target);
+	void updateCollisions(std::shared_ptr<Entity> entity);
+	void render(
+			sf::RenderTarget& target,
+			std::shared_ptr<Entity> entity = nullptr);
 
 	void addTile(
 			sf::Vector2u index,
 			unsigned layer,
 			Tile::Type type,
-			bool collision);
+			bool crossable);
 	void removeTile(
 			sf::Vector2u index,
 			unsigned layer);
@@ -45,13 +48,7 @@ public:
 	// Getters / Setters
 	const sf::Texture& getTileset() const;
 	bool isActive() const;
-	const sf::Vector2f& getPosition() const;
 	const sf::Vector2u& getSize() const;
-
-	// TODO: rework
-	// sf::IntRect getTileRect() const;
-	// void setTileRect(const sf::IntRect& tileRect);
-	// ----------
 
 	const sf::Vector2u& getSpriteIndex() const;
 	void setSpriteIndex(const sf::Vector2u& spriteIndex);
@@ -88,17 +85,19 @@ private:
 	void initMap();
 	void initTileset();
 	void initBorder();
+	void initCollisionBox();
 
 	// Resources
 	std::vector< std::vector< std::unique_ptr<Tile> > > map;
 	sf::Texture tileset;
 	//sf::IntRect tileRect;
 	sf::RectangleShape border;
+	sf::RectangleShape collisionBox;
 
 	// Variables
 	bool active;
 
-	sf::Vector2f position;
+	//sf::Vector2f position;
 
 	sf::Vector2u size;
 	sf::Vector2u maxSize;

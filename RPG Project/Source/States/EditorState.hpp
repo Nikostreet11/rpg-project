@@ -69,7 +69,7 @@ protected:
 
 	float cameraSpeed;
 
-	bool collision;
+	bool crossable;
 	Tile::Type type;
 };
 

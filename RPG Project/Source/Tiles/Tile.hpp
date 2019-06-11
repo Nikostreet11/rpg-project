@@ -23,7 +23,7 @@ public:
 			sf::Vector2u spriteIndex,
 			unsigned spriteSize,
 			Type type = Type::Default,
-			bool collision = false);
+			bool crossable = true);
 	virtual ~Tile();
 
 	// Function
@@ -35,9 +35,13 @@ public:
 	const std::string getAsString() const;
 
 	// Getters / Setters
+	bool isCrossable() const;
+	const sf::Vector2f& getPosition() const;
+	sf::Vector2f getSize() const;
 	sf::Vector2u getSpriteIndex() const;
 	sf::Vector2u getSpriteSize() const;
 	const sf::IntRect& getTextureRect() const;
+
 	/*
 	virtual Tile& operator=(const Tile& right);
 
@@ -53,7 +57,7 @@ protected:
 
 	// Variables
 	Type type;
-	bool collision;
+	bool crossable;
 
 private:
 	/*
