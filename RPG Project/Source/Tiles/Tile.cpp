@@ -47,10 +47,10 @@ void Tile::update()
 }
 
 void Tile::render(
-		std::shared_ptr<sf::RenderTarget> target,
+		sf::RenderTarget& target,
 		const sf::RenderStates& states)
 {
-	target->draw(sprite, states);
+	target.draw(sprite, states);
 }
 
 const std::string Tile::getAsString() const

@@ -23,7 +23,7 @@ public:
 	bool checkIntersect(const sf::FloatRect& rectangle);
 
 	void update();
-	void render(std::shared_ptr<sf::RenderTarget> target);
+	void render(sf::RenderTarget& target);
 
 private:
 	// Variables

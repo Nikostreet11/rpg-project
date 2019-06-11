@@ -107,12 +107,12 @@ void SettingsState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
 
 	for (auto &iterator : buttons)
 	{
-		iterator.second->render(target);
+		iterator.second->render(*target);
 	}
 
 	for (auto &iterator : dropDownLists)
 	{
-		iterator.second->render(target);
+		iterator.second->render(*target);
 	}
 
 	target->draw(options);

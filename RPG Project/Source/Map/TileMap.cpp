@@ -52,7 +52,7 @@ void TileMap::update(sf::Vector2f mousePosView)
 	}
 }
 
-void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
+void TileMap::render(sf::RenderTarget& target)
 {
 	for (auto &tile : map)
 	{
@@ -61,12 +61,12 @@ void TileMap::render(std::shared_ptr<sf::RenderTarget> target)
 			if (layer != nullptr)
 			{
 				layer->render(target, border.getTransform());
-				target->draw(border);
+				target.draw(border);
 			}
 		}
 	}
 
-	target->draw(border);
+	target.draw(border);
 }
 
 void TileMap::addTile(

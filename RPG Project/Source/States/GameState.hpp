@@ -12,6 +12,7 @@
 
 #include "..\GUI\PauseMenu.hpp"
 #include "..\Map\TileMap.hpp"
+#include "..\Entities\Player.hpp"
 
 class GameState :
 		public State
@@ -27,6 +28,7 @@ public:
 	virtual void endState();
 
 	virtual void update(const float& dt);
+	virtual void updateCamera(const float& dt);
 	virtual void updateInput(const float& dt);
 	virtual void updatePlayerInput(const float& dt);
 	virtual void updatePauseMenu();
@@ -36,6 +38,8 @@ public:
 
 private:
 	// Initialization functions
+	void initDeferredRendering();
+	void initCamera();
 	void initKeybinds();
 	void initFonts();
 	void initTextures();
@@ -44,6 +48,9 @@ private:
 	void initPauseMenu();
 
 	// Resources
+	std::shared_ptr<sf::View> camera;
+	sf::RenderTexture renderTexture;
+	sf::Sprite renderSprite;
 	std::unique_ptr<Player> player;
 	std::unique_ptr<TileMap> tileMap;
 	std::unique_ptr<gui::PauseMenu> pauseMenu;

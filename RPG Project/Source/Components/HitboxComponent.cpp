@@ -37,7 +37,7 @@ void HitboxComponent::update()
 	hitbox.setPosition(sprite.getPosition() + offset);
 }
 
-void HitboxComponent::render(std::shared_ptr<sf::RenderTarget> target)
+void HitboxComponent::render(sf::RenderTarget& target)
 {
-	target->draw(hitbox);
+	target.draw(hitbox);
 }

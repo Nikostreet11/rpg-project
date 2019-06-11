@@ -27,7 +27,7 @@ public:
 
 	// Functions
 	void update(sf::Vector2f mousePosView);
-	void render(std::shared_ptr<sf::RenderTarget> target);
+	void render(sf::RenderTarget& target);
 
 	void addTile(
 			sf::Vector2u index,

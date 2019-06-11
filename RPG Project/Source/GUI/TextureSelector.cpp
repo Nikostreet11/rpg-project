@@ -139,16 +139,16 @@ void TextureSelector::update(sf::Vector2i mousePosWindow)
 	}
 }
 
-void TextureSelector::render(std::shared_ptr<sf::RenderTarget> target)
+void TextureSelector::render(sf::RenderTarget& target)
 {
 	if (!hidden)
 	{
-		target->draw(bounds);
-		target->draw(sheet);
+		target.draw(bounds);
+		target.draw(sheet);
 
 		if (active)
 		{
-			target->draw(selector);
+			target.draw(selector);
 		}
 	}
 

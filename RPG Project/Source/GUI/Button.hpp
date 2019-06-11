@@ -38,7 +38,7 @@ public:
 
 	// Functions
 	void update(const sf::Vector2i& mousePosWindow);
-	void render(std::shared_ptr<sf::RenderTarget> target);
+	void render(sf::RenderTarget& target);
 
 	bool isPressed();
 	bool isHold() const;

@@ -29,7 +29,7 @@ public:
 	// Function
 	void update();
 	void render(
-			std::shared_ptr<sf::RenderTarget> target,
+			sf::RenderTarget& target,
 			const sf::RenderStates& states = sf::RenderStates::Default);
 
 	const std::string getAsString() const;

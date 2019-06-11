@@ -33,7 +33,7 @@ public:
 	bool isButtonPressed(const std::string& key);
 
 	void update(const sf::Vector2i& mousePosWindow);
-	void render(std::shared_ptr<sf::RenderTarget> target);
+	void render(sf::RenderTarget& target);
 
 	// Getters / Setters
 	std::map<std::string, std::unique_ptr<gui::Button>>& getButtons();

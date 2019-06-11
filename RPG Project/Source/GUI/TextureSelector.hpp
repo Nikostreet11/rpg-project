@@ -27,7 +27,7 @@ public:
 
 	// Functions
 	void update(sf::Vector2i mousePosWindow);
-	void render(std::shared_ptr<sf::RenderTarget> target);
+	void render(sf::RenderTarget& target);
 
 	// Getters / Setters
 	bool isActive() const;

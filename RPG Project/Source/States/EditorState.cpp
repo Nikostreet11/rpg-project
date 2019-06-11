@@ -259,7 +259,7 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 		target = window;
 
 	target->setView(*tileMapView);
-	tileMap->render(target);
+	tileMap->render(*target);
 
 	renderGUI(target);
 	renderButtons(target);
@@ -268,7 +268,7 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 	{
 		// Pause menu render
 		target->setView(target->getDefaultView());
-		pauseMenu->render(window);
+		pauseMenu->render(*target);
 	}
 }
 
@@ -282,7 +282,7 @@ void EditorState::renderGUI(std::shared_ptr<sf::RenderTarget> target)
 
 	target->setView(target->getDefaultView());
 	target->draw(sidebar);
-	textureSelector->render(target);
+	textureSelector->render(*target);
 
 	target->setView(*tileMapView);
 	target->draw(cursorText);
@@ -297,7 +297,7 @@ void EditorState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
 
 	for (auto &it : buttons)
 	{
-		it.second->render(target);
+		it.second->render(*target);
 	}
 }
 

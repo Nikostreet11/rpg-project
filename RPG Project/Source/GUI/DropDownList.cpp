@@ -107,7 +107,7 @@ void DropDownList::update(const sf::Vector2i& mousePosWindow)
 	}
 }
 
-void DropDownList::render(std::shared_ptr<sf::RenderTarget> target)
+void DropDownList::render(sf::RenderTarget& target)
 {
 	Button& activeElement = *(active.second);
 

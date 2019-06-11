@@ -10,7 +10,6 @@
 
 #include "..\Containers\StateData.hpp"
 #include "..\Containers\GraphicsSettings.hpp"
-#include "..\Entities\Player.hpp"
 #include "..\InputButton.hpp"
 
 // class Game;

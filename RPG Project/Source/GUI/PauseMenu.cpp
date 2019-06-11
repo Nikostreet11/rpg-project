@@ -95,20 +95,17 @@ void PauseMenu::update(const sf::Vector2i& mousePosWindow)
 	}
 }
 
-void PauseMenu::render(std::shared_ptr<sf::RenderTarget> target)
+void PauseMenu::render(sf::RenderTarget& target)
 {
-	if (target)
+	target.draw(background);
+	target.draw(container);
+
+	for (auto &i : buttons)
 	{
-		target->draw(background);
-		target->draw(container);
-
-		for (auto &i : buttons)
-		{
-			i.second->render(target);
-		}
-
-		target->draw(menuText);
+		i.second->render(target);
 	}
+
+	target.draw(menuText);
 }
 
 std::map<std::string, std::unique_ptr<gui::Button>>& PauseMenu::getButtons()

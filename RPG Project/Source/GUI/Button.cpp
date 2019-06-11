@@ -119,10 +119,10 @@ void Button::update(const sf::Vector2i& mousePosWindow)
 	}
 }
 
-void Button::render(std::shared_ptr<sf::RenderTarget> target)
+void Button::render(sf::RenderTarget& target)
 {
-	target->draw(shape);
-	target->draw(text);
+	target.draw(shape);
+	target.draw(text);
 }
 
 bool Button::isPressed()

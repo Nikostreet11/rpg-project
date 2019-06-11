@@ -12,6 +12,8 @@
 GameState::GameState(StateData& stateData) :
 		State(stateData)
 {
+	initDeferredRendering();
+	initCamera();
 	initKeybinds();
 	initFonts();
 	initTextures();
@@ -33,14 +35,14 @@ void GameState::endState()
 
 void GameState::update(const float& dt)
 {
-	updateMousePositions();
+	updateMousePositions(camera);
 	updateInput(dt);
 
 	if (!paused)
 	{
 		// Unpaused update
+		updateCamera(dt);
 		updatePlayerInput(dt);
-
 		player->update(dt);
 	}
 	else
@@ -48,6 +50,11 @@ void GameState::update(const float& dt)
 		// Paused update
 		updatePauseMenu();
 	}
+}
+
+void GameState::updateCamera(const float& dt)
+{
+	camera->setCenter(player->getPosition());
 }
 
 void GameState::updateInput(const float& dt)
@@ -96,20 +103,56 @@ void GameState::render(std::shared_ptr<sf::RenderTarget> target)
 	if (!target)
 		target = window;
 
-	tileMap->render(target);
+	target->setView(target->getDefaultView());
 
-	player->render(target);
+	renderTexture.clear();
+
+	renderTexture.setView(*camera);
+	tileMap->render(renderTexture);
+	player->render(renderTexture);
 
 	if (paused)
 	{
 		// Pause menu render
-		pauseMenu->render(window);
+		renderTexture.setView(renderTexture.getDefaultView());
+		pauseMenu->render(renderTexture);
 	}
+
+	renderTexture.display();
+
+	target->draw(renderSprite);
 }
 
 // Getters / Setters
 
 // Initialization functions
+void GameState::initDeferredRendering()
+{
+	renderTexture.create(
+			graphicsSettings->resolution.width,
+			graphicsSettings->resolution.height);
+
+	renderSprite.setTexture(renderTexture.getTexture());
+	renderSprite.setTextureRect(sf::IntRect(
+			0,
+			0,
+			graphicsSettings->resolution.width,
+			graphicsSettings->resolution.height));
+}
+
+void GameState::initCamera()
+{
+	camera = std::make_shared<sf::View>();
+
+	camera->setSize(
+			graphicsSettings->resolution.width,
+			graphicsSettings->resolution.height);
+
+	camera->setCenter(
+			graphicsSettings->resolution.width / 2.f,
+			graphicsSettings->resolution.height / 2.f);
+}
+
 void GameState::initKeybinds()
 {
 	std::ifstream ifs("Config/Keybinds/GameState.ini");
@@ -174,6 +217,7 @@ void GameState::initTileMap()
 			stateData.gridSize,
 			"Villages.png",
 			32));
+	tileMap->loadFromFile("testTileMap.txt");
 }
 
 void GameState::initPauseMenu()

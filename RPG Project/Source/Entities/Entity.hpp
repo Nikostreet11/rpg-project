@@ -35,11 +35,14 @@ public:
 			sf::Vector2f size);
 
 	// Functions
-	virtual void setPosition(const sf::Vector2f& position);
 	virtual void move(float dir_x, float dir_y, const float& dt);
 
 	virtual void update(const float& dt);
-	virtual void render(std::shared_ptr<sf::RenderTarget> target);
+	virtual void render(sf::RenderTarget& target);
+
+	// Getters / Setters
+	const sf::Vector2f& getPosition() const;
+	void setPosition(const sf::Vector2f& position);
 
 protected:
 	// Initialization functions
