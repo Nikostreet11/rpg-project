@@ -64,21 +64,6 @@ void Entity::move(float dir_x, float dir_y, const float& dt)
 	}
 }
 
-void Entity::update(const float& dt)
-{
-	if (movementComponent) {
-		movementComponent->update(dt);
-	}
-}
-
-void Entity::render(sf::RenderTarget& target)
-{
-	target.draw(sprite);
-
-	if (hitboxComponent)
-		hitboxComponent->render(target);
-}
-
 // Getters / Setters
 const sf::Vector2f& Entity::getPosition() const
 {

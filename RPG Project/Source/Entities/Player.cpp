@@ -40,6 +40,13 @@ void Player::update(const float& dt)
 	hitboxComponent->update();
 }
 
+void Player::render(sf::RenderTarget& target)
+{
+	target.draw(sprite);
+
+	hitboxComponent->render(target);
+}
+
 void Player::updateAnimations(const float& dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) ||
