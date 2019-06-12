@@ -54,11 +54,13 @@ void TileMap::update(sf::Vector2f mousePosView)
 
 void TileMap::updateCollisions(std::shared_ptr<Entity> entity)
 {
+	// Map bounds collision
 	if (entity->getPosition().x < 0.f)
 	{
 		entity->setPosition(sf::Vector2f(
 				0.f,
 				entity->getPosition().y));
+		//entity->stop(true, false);
 	}
 
 	if (entity->getPosition().x + entity->getSize().x > size.x * gridSize)
@@ -66,6 +68,7 @@ void TileMap::updateCollisions(std::shared_ptr<Entity> entity)
 		entity->setPosition(sf::Vector2f(
 				size.x * gridSize - entity->getSize().x,
 				entity->getPosition().y));
+		//entity->stop(true, false);
 	}
 
 	if (entity->getPosition().y < 0.f)
@@ -73,6 +76,7 @@ void TileMap::updateCollisions(std::shared_ptr<Entity> entity)
 		entity->setPosition(sf::Vector2f(
 				entity->getPosition().x,
 				0.f));
+		//entity->stop(false, true);
 	}
 
 	if (entity->getPosition().y + entity->getSize().y > size.y * gridSize)
@@ -80,7 +84,48 @@ void TileMap::updateCollisions(std::shared_ptr<Entity> entity)
 		entity->setPosition(sf::Vector2f(
 				entity->getPosition().x,
 				size.y * gridSize - entity->getSize().y));
+		//entity->stop(false, true);
 	}
+
+	// Tile collisions
+	sf::Vector2i cullingStart = {
+			static_cast<int>(entity->getPosition().x / gridSize - 1),
+			static_cast<int>(entity->getPosition().y / gridSize - 1)};
+	sf::Vector2i cullingEnd = {
+			static_cast<int>((entity->getPosition().x +
+					entity->getSize().x) / gridSize + 1),
+			static_cast<int>((entity->getPosition().y +
+					entity->getSize().y) / gridSize + 1)};
+
+	if (isOutOfBounds(cullingStart, true, false))
+	{
+		cullingStart.x = 0;
+	}
+	if (isOutOfBounds(cullingStart, false, true))
+	{
+		cullingStart.y = 0;
+	}
+	if (isOutOfBounds(cullingEnd, true, false))
+	{
+		cullingEnd.x = static_cast<int>(size.x);
+	}
+	if (isOutOfBounds(cullingEnd, false, false))
+	{
+		cullingEnd.y = static_cast<int>(size.y);
+	}
+
+	/*
+	for (std::size_t xIndex = from.x; xIndex < to.x; xIndex++)
+	{
+		for (std::size_t yIndex = from.y; yIndex < to.y; yIndex++)
+		{
+			for (std::size_t layer = 0; layer < map[yIndex * size.x + xIndex].size(); layer++)
+			{
+				map[yIndex * size.x + xIndex][layer] = nullptr;
+			}
+		}
+	}
+	*/
 }
 
 void TileMap::render(sf::RenderTarget& target, std::shared_ptr<Entity> entity)
@@ -357,6 +402,23 @@ void TileMap::checkMaxValues()
 	}
 }
 
+bool TileMap::isOutOfBounds(sf::Vector2i index, bool xAxis, bool yAxis) const
+{
+	if (xAxis)
+	{
+		if (index.x < 0 || index.x >= static_cast<int>(size.x))
+			return true;
+	}
+
+	if (yAxis)
+	{
+		if (index.y < 0 || index.y >= static_cast<int>(size.y))
+			return true;
+	}
+
+	return false;
+}
+
 // Initialization
 void TileMap::initVariables()
 {
@@ -414,14 +476,8 @@ void TileMap::initCollisionBox()
 	collisionBox.setSize(sf::Vector2f(gridSize, gridSize));
 	collisionBox.setFillColor(sf::Color(255, 0, 0, 50));
 }
-/*
-bool TileMap::isOutOfBounds(int posX, int posY) const {
-	if (posX < 0 || posX >= width || posY < 0 || posY >= height)
-		return true;
-	else
-		return false;
-}
 
+/*
 const Tile& TileMap::at(int x, int y) {
 	return getTile(x, y);
 }

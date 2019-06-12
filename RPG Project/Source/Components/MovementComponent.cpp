@@ -137,6 +137,10 @@ const sf::Vector2f& MovementComponent::getSpeed() const
 	return speed;
 }
 
+void MovementComponent::setSpeed(const sf::Vector2f& speed) {
+	this->speed = speed;
+}
+
 float MovementComponent::getMaxSpeed() const
 {
 	return maxSpeed;

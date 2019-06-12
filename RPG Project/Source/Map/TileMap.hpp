@@ -66,7 +66,6 @@ public:
 	virtual std::vector<Foe*> getFoes(Party& party) = 0;
 	virtual Battle::Background getBackground() = 0;
 
-	bool isOutOfBounds(int posX, int posY) const;
 	const Tile& at(int x, int y);
 
 	int getHeight() const;
@@ -79,6 +78,10 @@ private:
 	// Internal
 	void clear();
 	void checkMaxValues();
+	bool isOutOfBounds(
+			sf::Vector2i index,
+			bool xAxis = true,
+			bool yAxis = true) const;
 
 	// Initialization
 	void initVariables();

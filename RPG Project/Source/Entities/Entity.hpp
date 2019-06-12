@@ -36,6 +36,7 @@ public:
 
 	// Functions
 	virtual void move(float dir_x, float dir_y, const float& dt);
+	virtual void stop(bool xAxis = true, bool yAxis = true);
 
 	virtual void update(const float& dt) = 0;
 	virtual void render(sf::RenderTarget& target) = 0;
