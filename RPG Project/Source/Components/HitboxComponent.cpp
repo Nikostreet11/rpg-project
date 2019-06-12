@@ -27,11 +27,6 @@ HitboxComponent::~HitboxComponent()
 }
 
 // Functions
-bool HitboxComponent::checkIntersect(const sf::FloatRect& rectangle)
-{
-	return hitbox.getGlobalBounds().intersects(rectangle);
-}
-
 void HitboxComponent::update()
 {
 	hitbox.setPosition(sprite.getPosition() + offset);
@@ -40,4 +35,30 @@ void HitboxComponent::update()
 void HitboxComponent::render(sf::RenderTarget& target)
 {
 	target.draw(hitbox);
+}
+
+bool HitboxComponent::intersect(const sf::FloatRect& rectangle)
+{
+	return hitbox.getGlobalBounds().intersects(rectangle);
+}
+
+const sf::Vector2f& HitboxComponent::getPosition() const
+{
+	return hitbox.getPosition();
+}
+
+void HitboxComponent::setPosition(const sf::Vector2f& position)
+{
+	hitbox.setPosition(position);
+	sprite.setPosition(position - offset);
+}
+
+const sf::Vector2f& HitboxComponent::getSize() const
+{
+	return hitbox.getSize();
+}
+
+void HitboxComponent::setSize(const sf::Vector2f& size)
+{
+	hitbox.setSize(size);
 }

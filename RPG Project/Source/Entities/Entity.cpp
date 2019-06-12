@@ -82,26 +82,54 @@ void Entity::render(sf::RenderTarget& target)
 // Getters / Setters
 const sf::Vector2f& Entity::getPosition() const
 {
-	return sprite.getPosition();
+	if (hitboxComponent)
+	{
+		return hitboxComponent->getPosition();
+	}
+	else
+	{
+		return sprite.getPosition();
+	}
 }
 
 void Entity::setPosition(const sf::Vector2f& position)
 {
-	sprite.setPosition(position);
+	if (hitboxComponent)
+	{
+		hitboxComponent->setPosition(position);
+	}
+	else
+	{
+		sprite.setPosition(position);
+	}
 }
 
 const sf::Vector2f Entity::getSize() const
 {
-	return sf::Vector2f(
-			sprite.getGlobalBounds().width,
-			sprite.getGlobalBounds().height);
+	if (hitboxComponent)
+	{
+		return hitboxComponent->getSize();
+	}
+	else
+	{
+		return sf::Vector2f(
+				sprite.getGlobalBounds().width,
+				sprite.getGlobalBounds().height);
+	}
 }
 
 void Entity::setSize(const sf::Vector2f& size)
 {
-	sprite.setScale(
-			size.x / sprite.getGlobalBounds().width,
-			size.y / sprite.getGlobalBounds().height);
+	if (hitboxComponent)
+	{
+		hitboxComponent->setSize(size);
+	}
+	else
+	{
+		sprite.setScale(
+				size.x / sprite.getGlobalBounds().width,
+				size.y / sprite.getGlobalBounds().height);
+	}
 }
 
 // Initialization functions

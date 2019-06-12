@@ -20,15 +20,23 @@ public:
 	virtual ~HitboxComponent();
 
 	// Functions
-	bool checkIntersect(const sf::FloatRect& rectangle);
-
 	void update();
 	void render(sf::RenderTarget& target);
 
+	bool intersect(const sf::FloatRect& rectangle);
+
+	// Getters / Setters
+	const sf::Vector2f& getPosition() const;
+	void setPosition(const sf::Vector2f& position);
+	const sf::Vector2f& getSize() const;
+	void setSize(const sf::Vector2f& size);
+
 private:
-	// Variables
+	// Resources
 	sf::Sprite& sprite;
 	sf::RectangleShape hitbox;
+
+	// Variables
 	sf::Vector2f offset;
 };
 
