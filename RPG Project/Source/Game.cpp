@@ -37,9 +37,12 @@ void Game::run()
 {
 	while (window->isOpen())
 	{
-		updateDt();
-		update();
-		render();
+		if (window->hasFocus())
+		{
+			updateDt();
+			update();
+			render();
+		}
 	}
 }
 
