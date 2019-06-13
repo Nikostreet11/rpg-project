@@ -99,25 +99,6 @@ void TileMap::updateCollisions(std::shared_ptr<Entity> entity, const float& dt)
 			static_cast<unsigned>((entity->getNextPosition(dt).y +
 					entity->getSize().y) / gridSize)};
 
-	/*
-	if (isOutOfBounds(cullingStart, xAxis))
-	{
-		cullingStart.x = 0;
-	}
-	if (isOutOfBounds(cullingStart, yAxis))
-	{
-		cullingStart.y = 0;
-	}
-	if (isOutOfBounds(cullingEnd, xAxis))
-	{
-		cullingEnd.x = size.x;
-	}
-	if (isOutOfBounds(cullingEnd, yAxis))
-	{
-		cullingEnd.y = size.y;
-	}
-	*/
-
 	for (std::size_t xIndex = cullingStart.x; xIndex <= cullingEnd.x; xIndex++)
 	{
 		for (std::size_t yIndex = cullingStart.y; yIndex <= cullingEnd.y;
