@@ -64,20 +64,26 @@ void Entity::move(float dir_x, float dir_y, const float& dt)
 	}
 }
 
-void Entity::stop(bool xAxis, bool yAxis)
+void Entity::stop(Axis axis)
 {
 	if (movementComponent) {
-		if (xAxis)
+		switch (axis)
 		{
+		case Axis::X:
 			movementComponent->setSpeed(sf::Vector2f(
 					0.f,
 					movementComponent->getSpeed().y));
-		}
-		if (yAxis)
-		{
+			break;
+
+		case Axis::Y:
 			movementComponent->setSpeed(sf::Vector2f(
 					movementComponent->getSpeed().x,
 					0.f));
+			break;
+
+		case Axis::NoAxis:
+			movementComponent->setSpeed(sf::Vector2f(0.f, 0.f));
+			break;
 		}
 	}
 }
@@ -104,6 +110,26 @@ void Entity::setPosition(const sf::Vector2f& position)
 	else
 	{
 		sprite.setPosition(position);
+	}
+}
+
+sf::Vector2f Entity::getNextPosition(const float& dt) const
+{
+	if (movementComponent)
+	{
+		if (hitboxComponent)
+		{
+			return hitboxComponent->getPosition() +
+					movementComponent->getSpeed() * dt;
+		}
+		else
+		{
+			return sprite.getPosition() + movementComponent->getSpeed() * dt;
+		}
+	}
+	else
+	{
+		return sprite.getPosition();
 	}
 }
 

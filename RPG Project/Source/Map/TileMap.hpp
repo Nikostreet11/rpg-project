@@ -13,6 +13,7 @@
 // Project
 #include "..\Tiles\Tile.hpp"
 #include "..\Entities\Entity.hpp"
+#include "Axis.hpp"
 
 class TileMap
 {
@@ -27,7 +28,9 @@ public:
 
 	// Functions
 	void update(sf::Vector2f mousePosView);
-	void updateCollisions(std::shared_ptr<Entity> entity);
+	void updateCollisions(
+			std::shared_ptr<Entity> entity,
+			const float& dt);
 	void render(
 			sf::RenderTarget& target,
 			std::shared_ptr<Entity> entity = nullptr);
@@ -78,10 +81,9 @@ private:
 	// Internal
 	void clear();
 	void checkMaxValues();
-	bool isOutOfBounds(
-			sf::Vector2i index,
-			bool xAxis = true,
-			bool yAxis = true) const;
+	/*bool isOutOfBounds(
+			sf::Vector2u index,
+			Axis axis = noAxis) const;*/
 
 	// Initialization
 	void initVariables();

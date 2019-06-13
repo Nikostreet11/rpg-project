@@ -18,7 +18,7 @@ offset(offset)
 	hitbox.setSize(size);
 
 	hitbox.setFillColor(sf::Color::Transparent);
-	hitbox.setOutlineThickness(1.f);
+	hitbox.setOutlineThickness(-1.f);
 	hitbox.setOutlineColor(sf::Color::Green);
 }
 

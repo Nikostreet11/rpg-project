@@ -42,9 +42,9 @@ void GameState::update(const float& dt)
 	{
 		// Unpaused update
 		updatePlayerInput(dt);
-		player->update(dt);
 		tileMap->update(mousePosView);
-		tileMap->updateCollisions(player);
+		tileMap->updateCollisions(player, dt);
+		player->update(dt);
 		updateCamera(dt);
 	}
 	else
@@ -83,16 +83,24 @@ void GameState::updateInput(const float& dt)
 void GameState::updatePlayerInput(const float& dt)
 {
 	if (keybinds.at("MOVE_LEFT").isHold())
+	{
 		player->move(-1, 0, dt);
+	}
 
 	if (keybinds.at("MOVE_RIGHT").isHold())
+	{
 		player->move(1, 0, dt);
+	}
 
 	if (keybinds.at("MOVE_UP").isHold())
+	{
 		player->move(0, -1, dt);
+	}
 
 	if (keybinds.at("MOVE_DOWN").isHold())
+	{
 		player->move(0, 1, dt);
+	}
 }
 
 void GameState::updatePauseMenu()

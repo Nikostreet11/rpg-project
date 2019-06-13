@@ -52,80 +52,134 @@ void TileMap::update(sf::Vector2f mousePosView)
 	}
 }
 
-void TileMap::updateCollisions(std::shared_ptr<Entity> entity)
+void TileMap::updateCollisions(std::shared_ptr<Entity> entity, const float& dt)
 {
-	// Map bounds collision
-	if (entity->getPosition().x < 0.f)
+	// Map bounds collisions
+	if (entity->getNextPosition(dt).x < 0.f)
 	{
+		entity->stop(Axis::X);
 		entity->setPosition(sf::Vector2f(
 				0.f,
 				entity->getPosition().y));
-		//entity->stop(true, false);
 	}
 
-	if (entity->getPosition().x + entity->getSize().x > size.x * gridSize)
+	if (entity->getNextPosition(dt).x + entity->getSize().x >
+				size.x * gridSize)
 	{
+		entity->stop(Axis::X);
 		entity->setPosition(sf::Vector2f(
 				size.x * gridSize - entity->getSize().x,
 				entity->getPosition().y));
-		//entity->stop(true, false);
 	}
 
-	if (entity->getPosition().y < 0.f)
+	if (entity->getNextPosition(dt).y < 0.f)
 	{
+		entity->stop(Axis::Y);
 		entity->setPosition(sf::Vector2f(
 				entity->getPosition().x,
 				0.f));
-		//entity->stop(false, true);
 	}
 
-	if (entity->getPosition().y + entity->getSize().y > size.y * gridSize)
+	if (entity->getNextPosition(dt).y + entity->getSize().y >
+				size.y * gridSize)
 	{
+		entity->stop(Axis::Y);
 		entity->setPosition(sf::Vector2f(
 				entity->getPosition().x,
 				size.y * gridSize - entity->getSize().y));
-		//entity->stop(false, true);
 	}
 
 	// Tile collisions
-	sf::Vector2i cullingStart = {
-			static_cast<int>(entity->getPosition().x / gridSize - 1),
-			static_cast<int>(entity->getPosition().y / gridSize - 1)};
-	sf::Vector2i cullingEnd = {
-			static_cast<int>((entity->getPosition().x +
-					entity->getSize().x) / gridSize + 1),
-			static_cast<int>((entity->getPosition().y +
-					entity->getSize().y) / gridSize + 1)};
+	sf::Vector2u cullingStart = {
+			static_cast<unsigned>(entity->getNextPosition(dt).x / gridSize),
+			static_cast<unsigned>(entity->getNextPosition(dt).y / gridSize)};
+	sf::Vector2u cullingEnd = {
+			static_cast<unsigned>((entity->getNextPosition(dt).x +
+					entity->getSize().x) / gridSize),
+			static_cast<unsigned>((entity->getNextPosition(dt).y +
+					entity->getSize().y) / gridSize)};
 
-	if (isOutOfBounds(cullingStart, true, false))
+	/*
+	if (isOutOfBounds(cullingStart, xAxis))
 	{
 		cullingStart.x = 0;
 	}
-	if (isOutOfBounds(cullingStart, false, true))
+	if (isOutOfBounds(cullingStart, yAxis))
 	{
 		cullingStart.y = 0;
 	}
-	if (isOutOfBounds(cullingEnd, true, false))
+	if (isOutOfBounds(cullingEnd, xAxis))
 	{
-		cullingEnd.x = static_cast<int>(size.x);
+		cullingEnd.x = size.x;
 	}
-	if (isOutOfBounds(cullingEnd, false, false))
+	if (isOutOfBounds(cullingEnd, yAxis))
 	{
-		cullingEnd.y = static_cast<int>(size.y);
+		cullingEnd.y = size.y;
 	}
+	*/
 
-	/*
-	for (std::size_t xIndex = from.x; xIndex < to.x; xIndex++)
+	for (std::size_t xIndex = cullingStart.x; xIndex <= cullingEnd.x; xIndex++)
 	{
-		for (std::size_t yIndex = from.y; yIndex < to.y; yIndex++)
+		for (std::size_t yIndex = cullingStart.y; yIndex <= cullingEnd.y;
+			yIndex++)
 		{
-			for (std::size_t layer = 0; layer < map[yIndex * size.x + xIndex].size(); layer++)
+			for (std::size_t layer = 0; layer < layers; layer++)
 			{
-				map[yIndex * size.x + xIndex][layer] = nullptr;
+				Tile& tile = *map[yIndex * size.x + xIndex][layer];
+
+				if (!tile.isCrossable())
+				{
+					if (entity->getPosition().x >=
+								tile.getPosition().x + gridSize &&
+						entity->getNextPosition(dt).x <
+								tile.getPosition().x + gridSize)
+					{
+						// Left collision
+						entity->stop(Axis::X);
+						entity->setPosition(sf::Vector2f(
+								tile.getPosition().x + gridSize,
+								entity->getPosition().y));
+					}
+
+					if (entity->getPosition().x + entity->getSize().x <=
+								tile.getPosition().x &&
+						entity->getNextPosition(dt).x + entity->getSize().x >
+								tile.getPosition().x)
+					{
+						// Right collision
+						entity->stop(Axis::X);
+						entity->setPosition(sf::Vector2f(
+								tile.getPosition().x - entity->getSize().x,
+								entity->getPosition().y));
+					}
+
+					if (entity->getPosition().y + entity->getSize().y <=
+								tile.getPosition().y &&
+						entity->getNextPosition(dt).y + entity->getSize().y >
+								tile.getPosition().y)
+					{
+						// Bottom collision
+						entity->stop(Axis::Y);
+						entity->setPosition(sf::Vector2f(
+								entity->getPosition().x,
+								tile.getPosition().y - entity->getSize().y));
+					}
+
+					if (entity->getPosition().y >=
+								tile.getPosition().y + gridSize &&
+						entity->getNextPosition(dt).y <
+								tile.getPosition().y + gridSize)
+					{
+						// Top collision
+						entity->stop(Axis::Y);
+						entity->setPosition(sf::Vector2f(
+								entity->getPosition().x,
+								tile.getPosition().y + gridSize));
+					}
+				}
 			}
 		}
 	}
-	*/
 }
 
 void TileMap::render(sf::RenderTarget& target, std::shared_ptr<Entity> entity)
@@ -402,22 +456,36 @@ void TileMap::checkMaxValues()
 	}
 }
 
-bool TileMap::isOutOfBounds(sf::Vector2i index, bool xAxis, bool yAxis) const
+/*
+bool TileMap::isOutOfBounds(sf::Vector2u index, Axis axis) const
 {
-	if (xAxis)
+	switch (axis)
 	{
-		if (index.x < 0 || index.x >= static_cast<int>(size.x))
+	case xAxis:
+		if (index.x >= size.x)
+		{
 			return true;
-	}
+		}
+		break;
 
-	if (yAxis)
-	{
-		if (index.y < 0 || index.y >= static_cast<int>(size.y))
+	case yAxis:
+		if (index.y >= size.y)
+		{
 			return true;
+		}
+		break;
+
+	case noAxis:
+		if (index.x >= size.x || index.y >= size.y)
+		{
+			return true;
+		}
+		break;
 	}
 
 	return false;
 }
+*/
 
 // Initialization
 void TileMap::initVariables()
