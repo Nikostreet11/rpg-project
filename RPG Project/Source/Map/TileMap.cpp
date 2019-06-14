@@ -128,56 +128,61 @@ void TileMap::updateTilesCollisions(
 			{
 				Tile& tile = *map[y * size.x + x][layer];
 
+				sf::Vector2f entityPos = entity->getPosition();
+				sf::Vector2f entitySize = entity->getSize();
+				sf::Vector2f tilePos = tile.getPosition();
+				sf::Vector2f tileSize = tile.getSize();
+
 				if (!tile.isCrossable() &&
 					entity->getNextGlobalBounds(dt).intersects(
 							tile.getGlobalBounds()))
 				{
-					if (entity->getPosition().x >=
-								tile.getPosition().x + gridSize &&
-						entity->getNextPosition(dt).x <
-								tile.getPosition().x + gridSize)
+					if (entityPos.x > tilePos.x
+						&& entityPos.x + entitySize.x > tilePos.x + tileSize.x
+						&& entityPos.y < tilePos.y + tileSize.y
+						&& entityPos.y + entitySize.y > tilePos.y)
 					{
 						// Left collision
 						entity->stop(Axis::X);
 						entity->setPosition(sf::Vector2f(
-								tile.getPosition().x + gridSize,
-								entity->getPosition().y));
+								tilePos.x + tileSize.x,
+								entityPos.y));
 					}
 
-					if (entity->getPosition().x + entity->getSize().x <=
-								tile.getPosition().x &&
-						entity->getNextPosition(dt).x + entity->getSize().x >
-								tile.getPosition().x)
+					if (entityPos.x < tilePos.x
+						&& entityPos.x + entitySize.x < tilePos.x + tileSize.x
+						&& entityPos.y < tilePos.y + tileSize.y
+						&& entityPos.y + entitySize.y > tilePos.y)
 					{
 						// Right collision
 						entity->stop(Axis::X);
 						entity->setPosition(sf::Vector2f(
-								tile.getPosition().x - entity->getSize().x,
-								entity->getPosition().y));
+								tilePos.x - entitySize.x,
+								entityPos.y));
 					}
 
-					if (entity->getPosition().y >=
-								tile.getPosition().y + gridSize &&
-						entity->getNextPosition(dt).y <
-								tile.getPosition().y + gridSize)
+					if (entityPos.y > tilePos.y
+						&& entityPos.y + entitySize.y > tilePos.y + tileSize.y
+						&& entityPos.x < tilePos.x + tileSize.x
+						&& entityPos.x + entitySize.x > tilePos.x)
 					{
 						// Top collision
 						entity->stop(Axis::Y);
 						entity->setPosition(sf::Vector2f(
-								entity->getPosition().x,
-								tile.getPosition().y + gridSize));
+								entityPos.x,
+								tilePos.y + tileSize.y));
 					}
 
-					if (entity->getPosition().y + entity->getSize().y <=
-								tile.getPosition().y &&
-						entity->getNextPosition(dt).y + entity->getSize().y >
-								tile.getPosition().y)
+					if (entityPos.y < tilePos.y
+						&& entityPos.y + entitySize.y < tilePos.y + tileSize.y
+						&& entityPos.x < tilePos.x + tileSize.x
+						&& entityPos.x + entitySize.x > tilePos.x)
 					{
 						// Bottom collision
 						entity->stop(Axis::Y);
 						entity->setPosition(sf::Vector2f(
-								entity->getPosition().x,
-								tile.getPosition().y - entity->getSize().y));
+								entityPos.x,
+								tilePos.y - entitySize.y));
 					}
 				}
 			}

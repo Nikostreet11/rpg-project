@@ -37,12 +37,9 @@ void Game::run()
 {
 	while (window->isOpen())
 	{
-		if (window->hasFocus())
-		{
-			updateDt();
-			update();
-			render();
-		}
+		updateDt();
+		update();
+		render();
 	}
 }
 
@@ -57,19 +54,22 @@ void Game::update()
 {
 	updateSFMLEvents();
 
-	if (!states->empty())
+	if (window->hasFocus())
 	{
-		states->top()->update(dt);
-
-		if (states->top()->isEnded())
+		if (!states->empty())
 		{
-			states->pop();
+			states->top()->update(dt);
+
+			if (states->top()->isEnded())
+			{
+				states->pop();
+			}
 		}
-	}
-	// Game end
-	else
-	{
-		close();
+		// Game end
+		else
+		{
+			close();
+		}
 	}
 }
 
