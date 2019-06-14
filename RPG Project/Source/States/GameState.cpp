@@ -43,7 +43,8 @@ void GameState::update(const float& dt)
 		// Unpaused update
 		updatePlayerInput(dt);
 		tileMap->update(mousePosView);
-		tileMap->updateCollisions(player, dt);
+		tileMap->updateBoundsCollisions(player, dt);
+		tileMap->updateTilesCollisions(player, dt);
 		player->update(dt);
 		updateCamera(dt);
 	}

@@ -23,7 +23,7 @@ public:
 	void update();
 	void render(sf::RenderTarget& target);
 
-	bool intersect(const sf::FloatRect& rectangle);
+	bool intersects(sf::FloatRect rectangle);
 
 	// Getters / Setters
 	const sf::Vector2f& getPosition() const;

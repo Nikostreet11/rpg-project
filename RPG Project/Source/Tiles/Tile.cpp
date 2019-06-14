@@ -83,6 +83,11 @@ sf::Vector2f Tile::getSize() const
 			sprite.getScale().y * sprite.getTextureRect().height);
 }
 
+sf::FloatRect Tile::getGlobalBounds() const
+{
+	return sprite.getGlobalBounds();
+}
+
 sf::Vector2u Tile::getSpriteIndex() const
 {
 	return sf::Vector2u(
@@ -101,6 +106,7 @@ const sf::IntRect& Tile::getTextureRect() const
 {
 	return sprite.getTextureRect();
 }
+
 /*
 Tile& Tile::operator=(const Tile& entry) {
 	if (this != &entry) {

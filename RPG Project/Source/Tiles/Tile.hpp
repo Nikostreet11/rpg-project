@@ -38,6 +38,7 @@ public:
 	bool isCrossable() const;
 	const sf::Vector2f& getPosition() const;
 	sf::Vector2f getSize() const;
+	sf::FloatRect getGlobalBounds() const;
 	sf::Vector2u getSpriteIndex() const;
 	sf::Vector2u getSpriteSize() const;
 	const sf::IntRect& getTextureRect() const;

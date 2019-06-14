@@ -88,6 +88,18 @@ void Entity::stop(Axis axis)
 	}
 }
 
+bool Entity::intersects(sf::FloatRect rectangle) const
+{
+	if (hitboxComponent)
+	{
+		return hitboxComponent->intersects(rectangle);
+	}
+	else
+	{
+		return sprite.getGlobalBounds().intersects(rectangle);
+	}
+}
+
 // Getters / Setters
 const sf::Vector2f& Entity::getPosition() const
 {
@@ -110,26 +122,6 @@ void Entity::setPosition(const sf::Vector2f& position)
 	else
 	{
 		sprite.setPosition(position);
-	}
-}
-
-sf::Vector2f Entity::getNextPosition(const float& dt) const
-{
-	if (movementComponent)
-	{
-		if (hitboxComponent)
-		{
-			return hitboxComponent->getPosition() +
-					movementComponent->getSpeed() * dt;
-		}
-		else
-		{
-			return sprite.getPosition() + movementComponent->getSpeed() * dt;
-		}
-	}
-	else
-	{
-		return sprite.getPosition();
 	}
 }
 
@@ -158,6 +150,55 @@ void Entity::setSize(const sf::Vector2f& size)
 		sprite.setScale(
 				size.x / sprite.getGlobalBounds().width,
 				size.y / sprite.getGlobalBounds().height);
+	}
+}
+
+sf::Vector2f Entity::getNextPosition(const float& dt) const
+{
+	if (movementComponent)
+	{
+		if (hitboxComponent)
+		{
+			return hitboxComponent->getPosition() +
+					movementComponent->getSpeed() * dt;
+		}
+		else
+		{
+			return sprite.getPosition() + movementComponent->getSpeed() * dt;
+		}
+	}
+	else
+	{
+		return sprite.getPosition();
+	}
+}
+
+sf::FloatRect Entity::getNextGlobalBounds(const float& dt) const
+{
+	if (movementComponent)
+	{
+		if (hitboxComponent)
+		{
+			return sf::FloatRect(
+					hitboxComponent->getPosition().x +
+							movementComponent->getSpeed().x * dt,
+					hitboxComponent->getPosition().y +
+							movementComponent->getSpeed().y * dt,
+					hitboxComponent->getSize().x,
+					hitboxComponent->getSize().y);
+		}
+		else
+		{
+			return sf::FloatRect(
+					sprite.getPosition().x + movementComponent->getSpeed().x * dt,
+					sprite.getPosition().y + movementComponent->getSpeed().y * dt,
+					sprite.getGlobalBounds().width,
+					sprite.getGlobalBounds().height);
+		}
+	}
+	else
+	{
+		return sprite.getGlobalBounds();
 	}
 }
 

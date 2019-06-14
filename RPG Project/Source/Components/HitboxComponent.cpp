@@ -37,7 +37,7 @@ void HitboxComponent::render(sf::RenderTarget& target)
 	target.draw(hitbox);
 }
 
-bool HitboxComponent::intersect(const sf::FloatRect& rectangle)
+bool HitboxComponent::intersects(sf::FloatRect rectangle)
 {
 	return hitbox.getGlobalBounds().intersects(rectangle);
 }

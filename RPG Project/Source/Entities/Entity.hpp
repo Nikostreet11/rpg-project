@@ -38,6 +38,7 @@ public:
 	// Functions
 	virtual void move(float dir_x, float dir_y, const float& dt);
 	virtual void stop(Axis axis = Axis::NoAxis);
+	virtual bool intersects(sf::FloatRect rectangle) const;
 
 	virtual void update(const float& dt) = 0;
 	virtual void render(sf::RenderTarget& target) = 0;
@@ -45,9 +46,10 @@ public:
 	// Getters / Setters
 	const sf::Vector2f& getPosition() const;
 	void setPosition(const sf::Vector2f& position);
-	sf::Vector2f getNextPosition(const float& dt) const;
 	const sf::Vector2f getSize() const;
 	void setSize(const sf::Vector2f& size);
+	sf::Vector2f getNextPosition(const float& dt) const;
+	sf::FloatRect getNextGlobalBounds(const float& dt) const;
 
 protected:
 	// Initialization functions
