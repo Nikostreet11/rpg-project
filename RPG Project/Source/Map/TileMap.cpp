@@ -148,8 +148,7 @@ void TileMap::updateTilesCollisions(
 								tilePos.x + tileSize.x,
 								entityPos.y));
 					}
-
-					if (entityPos.x < tilePos.x
+					else if (entityPos.x < tilePos.x
 						&& entityPos.x + entitySize.x < tilePos.x + tileSize.x
 						&& entityPos.y < tilePos.y + tileSize.y
 						&& entityPos.y + entitySize.y > tilePos.y)
@@ -172,8 +171,7 @@ void TileMap::updateTilesCollisions(
 								entityPos.x,
 								tilePos.y + tileSize.y));
 					}
-
-					if (entityPos.y < tilePos.y
+					else if (entityPos.y < tilePos.y
 						&& entityPos.y + entitySize.y < tilePos.y + tileSize.y
 						&& entityPos.x < tilePos.x + tileSize.x
 						&& entityPos.x + entitySize.x > tilePos.x)
