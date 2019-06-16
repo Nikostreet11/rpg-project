@@ -62,9 +62,9 @@ void MainMenuState::updateButtons()
 	// New game
 	if (buttons["GAME_STATE"]->isReleased())
 	{
-		std::unique_ptr<State> gameStatePtr(
+		std::unique_ptr<State> explorationStatePtr(
 				new GameState(stateData));
-		states->push(move(gameStatePtr));
+		states->push(move(explorationStatePtr));
 	}
 
 	// Editor

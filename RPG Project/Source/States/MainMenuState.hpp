@@ -9,8 +9,8 @@
 #define STATES_MAINMENUSTATE_HPP_
 
 #include "../GUI/Button.hpp"
-#include "GameState.hpp"
 #include "EditorState.hpp"
+#include "ExplorationState.hpp"
 #include "SettingsState.hpp"
 
 class MainMenuState:

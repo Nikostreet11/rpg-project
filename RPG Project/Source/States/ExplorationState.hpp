@@ -5,8 +5,8 @@
  *      Author: nicop
  */
 
-#ifndef STATES_GAMESTATE_HPP_
-#define STATES_GAMESTATE_HPP_
+#ifndef STATES_EXPLORATIONSTATE_HPP_
+#define STATES_EXPLORATIONSTATE_HPP_
 
 #include "State.hpp"
 
@@ -59,4 +59,4 @@ private:
 
 };
 
-#endif /* STATES_GAMESTATE_HPP_ */
+#endif /* STATES_EXPLORATIONSTATE_HPP_ */

@@ -5,7 +5,7 @@
  *      Author: nicop
  */
 
-#include "GameState.hpp"
+#include "ExplorationState.hpp"
 // Static functions
 
 // Constructors / Destructors
