@@ -8,9 +8,10 @@
 #ifndef ENTITIES_ENTITY_HPP_
 #define ENTITIES_ENTITY_HPP_
 
-#include "../Components/AnimationComponent.hpp"
-#include "../Components/MovementComponent.hpp"
-#include "../Components/HitboxComponent.hpp"
+#include "..\Components\AnimationComponent.hpp"
+#include "..\Components\MovementComponent.hpp"
+#include "..\Components\HitboxComponent.hpp"
+#include "..\Map\Axis.hpp"
 
 class Entity
 {
@@ -35,11 +36,20 @@ public:
 			sf::Vector2f size);
 
 	// Functions
-	virtual void setPosition(const sf::Vector2f& position);
 	virtual void move(float dir_x, float dir_y, const float& dt);
+	virtual void stop(Axis axis = Axis::NoAxis);
+	virtual bool intersects(sf::FloatRect rectangle) const;
 
-	virtual void update(const float& dt);
-	virtual void render(std::shared_ptr<sf::RenderTarget> target);
+	virtual void update(const float& dt) = 0;
+	virtual void render(sf::RenderTarget& target) = 0;
+
+	// Getters / Setters
+	const sf::Vector2f& getPosition() const;
+	void setPosition(const sf::Vector2f& position);
+	const sf::Vector2f getSize() const;
+	void setSize(const sf::Vector2f& size);
+	sf::Vector2f getNextPosition(const float& dt) const;
+	sf::FloatRect getNextGlobalBounds(const float& dt) const;
 
 protected:
 	// Initialization functions

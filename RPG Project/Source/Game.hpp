@@ -8,11 +8,8 @@
 #ifndef GAME_HPP_
 #define GAME_HPP_
 
-/*#include "GraphicEngine.h"
-#include "ServiceLocator.h"
-#include "NavigationEntry.h"
-#include "State.h"*/
-
+#include "Containers\StateData.hpp"
+#include "Containers\GraphicsSettings.hpp"
 #include "States/MainMenuState.hpp"
 
 class Game {
@@ -36,33 +33,34 @@ public:
 	// --Render
 	void render();
 
-	/*void start();
-
-	void changeState(State* newState);*/
-
 private:
-	/*void draw();
-	void manageInput();*/
 
 	// Initialization functions
 	void initVariables();
+	void initGraphicsSettings();
 	void initWindow();
 	void initKeys();
 	void initStates();
+	void initStateData();
+
+	void start();
+
+	// Resources
+	StateData stateData;
+
+	std::shared_ptr<GraphicsSettings> graphicsSettings;
+	std::shared_ptr<sf::RenderWindow> window;
+	std::shared_ptr<std::map<std::string, int>> supportedKeys;
+	std::shared_ptr<std::stack<std::unique_ptr<State>>> states;
+
+	sf::Event sfEvent;
+	sf::Clock dtClock;
+
 
 	// Variables
-	std::shared_ptr<sf::RenderWindow> window;
-	sf::Event sfEvent;
-	std::vector<sf::VideoMode> videomodes;
-	sf::ContextSettings windowSettings;
-	bool fullscreen;
-
-	sf::Clock dtClock;
 	float dt;
+	float gridSize;
 
-	std::shared_ptr<std::stack<std::unique_ptr<State>>> states;
-	std::shared_ptr<std::map<std::string, int>> supportedKeys;
-	// State* state;
 };
 
 #endif /* GAME_HPP_ */

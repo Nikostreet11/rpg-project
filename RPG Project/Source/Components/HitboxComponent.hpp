@@ -8,24 +8,7 @@
 #ifndef COMPONENTS_HITBOXCOMPONENT_HPP_
 #define COMPONENTS_HITBOXCOMPONENT_HPP_
 
-// Streams
-#include <iostream>
-
-// Time (legacy)
-#include <ctime>
-
-// General utilities (legacy)
-#include <cstdlib>
-
-// Smart pointers
-#include <memory>
-
-// SFML libraries
-#include "SFML/System.hpp"
-#include "SFML/Window.hpp"
-#include "SFML/Graphics.hpp"
-#include "SFML/Audio.hpp"
-//#include "SFML/Network.hpp"
+#include "..\PCH\pch.hpp"
 
 class HitboxComponent
 {
@@ -37,15 +20,23 @@ public:
 	virtual ~HitboxComponent();
 
 	// Functions
-	bool checkIntersect(const sf::FloatRect& rectangle);
-
 	void update();
-	void render(std::shared_ptr<sf::RenderTarget> target);
+	void render(sf::RenderTarget& target);
+
+	bool intersects(sf::FloatRect rectangle);
+
+	// Getters / Setters
+	const sf::Vector2f& getPosition() const;
+	void setPosition(const sf::Vector2f& position);
+	const sf::Vector2f& getSize() const;
+	void setSize(const sf::Vector2f& size);
 
 private:
-	// Variables
+	// Resources
 	sf::Sprite& sprite;
 	sf::RectangleShape hitbox;
+
+	// Variables
 	sf::Vector2f offset;
 };
 

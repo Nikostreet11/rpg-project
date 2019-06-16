@@ -8,31 +8,7 @@
 #ifndef COMPONENTS_MOVEMENTCOMPONENT_HPP_
 #define COMPONENTS_MOVEMENTCOMPONENT_HPP_
 
-// Streams
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
-// Time (legacy)
-#include <ctime>
-
-// General utilities (legacy)
-#include <cstdlib>
-
-// Data structures
-#include <vector>
-#include <stack>
-#include <map>
-
-// Smart pointers
-#include <memory>
-
-// SFML libraries
-#include "SFML/System.hpp"
-#include "SFML/Window.hpp"
-#include "SFML/Graphics.hpp"
-#include "SFML/Audio.hpp"
-//#include "SFML/Network.hpp"
+#include "..\PCH\pch.hpp"
 
 class MovementComponent {
 public:
@@ -62,6 +38,7 @@ public:
 
 	// Getters / Setters
 	const sf::Vector2f& getSpeed() const;
+	void setSpeed(const sf::Vector2f& speed);
 	bool isState(State state) const;
 	float getMaxSpeed() const;
 

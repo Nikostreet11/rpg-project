@@ -9,7 +9,11 @@
 #define STATES_EDITORSTATE_HPP_
 
 #include "State.hpp"
-#include "../Resources/Button.hpp"
+
+#include "..\Map\TileMap.hpp"
+#include "..\GUI\Button.hpp"
+#include "..\GUI\PauseMenu.hpp"
+#include "..\GUI\TextureSelector.hpp"
 
 class EditorState :
 		public State
@@ -17,35 +21,56 @@ class EditorState :
 public:
 	// Static functions
 
-	// Constructors / Destructors
-	explicit EditorState(
-			std::shared_ptr<sf::RenderWindow> window,
-			std::shared_ptr<std::map<std::string, int>> supportedKeys,
-			std::shared_ptr<std::stack<std::unique_ptr<State>>> states);
+	// Constructor / Destructor
+	explicit EditorState(StateData& stateData);
 	virtual ~EditorState();
 
 	// Functions
 	virtual void endState();
 
 	virtual void update(const float& dt);
+	virtual void updateMousePositions(
+			std::shared_ptr<sf::View> view = nullptr) override;
 	virtual void updateInput(const float& dt);
-	void updateButtons();
+	virtual void updateEditorInput(const float& dt);
+	virtual void updateGUI();
+	virtual void updateButtons();
+	virtual void updatePauseMenu();
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
-	void renderButtons(std::shared_ptr<sf::RenderTarget> target = nullptr);
+	virtual void renderGUI(std::shared_ptr<sf::RenderTarget> target = nullptr);
+	virtual void renderButtons(std::shared_ptr<sf::RenderTarget> target = nullptr);
 
 protected:
 	// Initialization functions
 	void initVariables();
+	void initView();
 	virtual void initKeybinds();
 	void initFonts();
+	void initText();
 	void initBackground();
+	void initTileMap();
+	void initPauseMenu();
+	void initGUI();
 	void initButtons();
 
-	// Variables
+	// Resources
+	std::shared_ptr<sf::View> tileMapView;
 	std::shared_ptr<sf::Font> font;
+	std::unique_ptr<TileMap> tileMap;
+	std::unique_ptr<gui::PauseMenu> pauseMenu;
+	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
+	std::unique_ptr<gui::TextureSelector> textureSelector;
+	sf::Text cursorText;
+	sf::RectangleShape selectorRect;
+	sf::RectangleShape sidebar;
 
-	std::map<std::string, std::unique_ptr<Button>> buttons;
+	// Variables
+	sf::Vector2u mousePosGrid;
 
+	float cameraSpeed;
+
+	bool crossable;
+	Tile::Type type;
 };
 
 #endif /* STATES_EDITORSTATE_HPP_ */

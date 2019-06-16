@@ -7,17 +7,107 @@
 
 #include "Tile.hpp"
 
-Tile::Tile() : /*texture(villages), */tileType(TileType::nullType) {
-	updateInfo(/*texture, */tileType);
+Tile::Tile()
+{
+	type = Type::Default;
+	crossable = false;
 }
 
-Tile::Tile(/*Texture texture, */TileType tileType) :
-		/*texture(texture), */tileType(tileType) {
-	updateInfo(/*texture, */tileType);
+Tile::Tile(
+		sf::Vector2i index,
+		float size,
+		const sf::Texture& tileset,
+		sf::Vector2u spriteIndex,
+		unsigned spriteSize,
+		Type type,
+		bool crossable) : Tile()
+{
+	this->type = type;
+	this->crossable = crossable;
+
+	sprite.setPosition(sf::Vector2f(
+			index.x * size,
+			index.y * size));
+	sprite.setTexture(tileset);
+	sprite.setTextureRect(sf::IntRect(
+			spriteIndex.x * spriteSize,
+			spriteIndex.y * spriteSize,
+			spriteSize,
+			spriteSize));
+	sprite.setScale(sf::Vector2f(
+			size / spriteSize,
+			size / spriteSize));
 }
 
-Tile::~Tile() {}
+Tile::~Tile() {
+}
 
+void Tile::update()
+{
+}
+
+void Tile::render(
+		sf::RenderTarget& target,
+		const sf::RenderStates& states)
+{
+	target.draw(sprite, states);
+}
+
+const std::string Tile::getAsString() const
+{
+	std::stringstream stringStream;
+
+	stringStream <<
+			getSpriteIndex().x << ' ' <<
+			getSpriteIndex().y << ' ' <<
+			type << ' ' <<
+			crossable << '\n';
+
+	return stringStream.str();
+}
+
+bool Tile::isCrossable() const
+{
+	return crossable;
+}
+
+const sf::Vector2f& Tile::getPosition() const
+{
+	return sprite.getPosition();
+}
+
+sf::Vector2f Tile::getSize() const
+{
+	return sf::Vector2f(
+			sprite.getScale().x * sprite.getTextureRect().width,
+			sprite.getScale().y * sprite.getTextureRect().height);
+}
+
+sf::FloatRect Tile::getGlobalBounds() const
+{
+	return sprite.getGlobalBounds();
+}
+
+sf::Vector2u Tile::getSpriteIndex() const
+{
+	return sf::Vector2u(
+			sprite.getTextureRect().left / sprite.getTextureRect().width,
+			sprite.getTextureRect().top / sprite.getTextureRect().height);
+}
+
+sf::Vector2u Tile::getSpriteSize() const
+{
+	return sf::Vector2u(
+			sprite.getTextureRect().width,
+			sprite.getTextureRect().height);
+}
+
+const sf::IntRect& Tile::getTextureRect() const
+{
+	return sprite.getTextureRect();
+}
+
+/*
 Tile& Tile::operator=(const Tile& entry) {
 	if (this != &entry) {
 		//texture = entry.getTexture();
@@ -32,7 +122,7 @@ bool Tile::isCrossable() const {
 	return crossable;
 }
 
-bool Tile::updateInfo(/*Texture texture, */TileType tileType) {
+bool Tile::updateInfo(Texture texture, TileType tileType) {
 	crossable = true;
 	dangerous = false;
 
@@ -59,9 +149,9 @@ bool Tile::updateInfo(/*Texture texture, */TileType tileType) {
 	return true;
 }
 
-/*Texture Tile::getTexture() const {
+Texture Tile::getTexture() const {
 	return texture;
-}*/
+}
 
 const TileType Tile::getTileType() const {
 	return tileType;
@@ -70,3 +160,4 @@ const TileType Tile::getTileType() const {
 bool Tile::isDangerous() const {
 	return dangerous;
 }
+*/

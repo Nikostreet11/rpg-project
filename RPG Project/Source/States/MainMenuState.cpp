@@ -15,11 +15,8 @@
 
 //MainMenu* MainMenu::instance = nullptr;
 
-MainMenuState::MainMenuState(
-		std::shared_ptr<sf::RenderWindow> window,
-		std::shared_ptr<std::map<std::string, int>> supportedKeys,
-		std::shared_ptr<std::stack<std::unique_ptr<State>>> states) :
-State(window, supportedKeys, states)
+MainMenuState::MainMenuState(StateData& stateData) :
+		State(stateData)
 {
 	initVariables();
 	initKeybinds();
@@ -59,35 +56,35 @@ void MainMenuState::updateButtons()
 	/* Updates all the buttons in the state and handles their functionalities */
 	for (auto &it : buttons)
 	{
-		it.second->update(mousePosView);
+		it.second->update(mousePosWindow);
 	}
 
 	// New game
-	if (buttons["GAME_STATE"]->isPressed())
+	if (buttons["GAME_STATE"]->isReleased())
 	{
 		std::unique_ptr<State> gameStatePtr(
-				new GameState(window, supportedKeys, states));
+				new GameState(stateData));
 		states->push(move(gameStatePtr));
 	}
 
 	// Editor
-	if (buttons["EDITOR_STATE"]->isPressed())
+	if (buttons["EDITOR_STATE"]->isReleased())
 	{
 		std::unique_ptr<State> editorStatePtr(
-				new EditorState(window, supportedKeys, states));
+				new EditorState(stateData));
 		states->push(move(editorStatePtr));
 	}
 
 	// Settings
-	if (buttons["SETTINGS_STATE"]->isPressed())
+	if (buttons["SETTINGS_STATE"]->isReleased())
 	{
 		std::unique_ptr<State> settingsStatePtr(
-				new SettingsState(window, supportedKeys, states));
+				new SettingsState(stateData));
 		states->push(move(settingsStatePtr));
 	}
 
 	// Quit the game
-	if (buttons["EXIT"]->isPressed())
+	if (buttons["EXIT"]->isReleased())
 	{
 		endState();
 	}
@@ -98,6 +95,7 @@ void MainMenuState::render(std::shared_ptr<sf::RenderTarget> target)
 	if (!target)
 		target = window;
 
+	target->setView(target->getDefaultView());
 	target->draw(background);
 	renderButtons(target);
 
@@ -118,39 +116,11 @@ void MainMenuState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
 	if (!target)
 		target = window;
 
-	for (auto &it : buttons)
+	for (auto &iterator : buttons)
 	{
-		it.second->render(target);
+		iterator.second->render(*target);
 	}
 }
-
-/*MainMenu* MainMenu::getInstance() {
-	if (instance == nullptr) {
-		instance = new MainMenu();
-	}
-	return instance;
-}*/
-
-/*void MainMenu::draw() {
-	GraphicService* graphicService = ServiceLocator::getGraphicService();
-	graphicService->drawMainMenu(this);
-}
-
-void MainMenu::keyPressed_W(Game& game) {
-	shiftBackwardActive();
-}
-
-void MainMenu::keyPressed_A(Game& game) {}
-
-void MainMenu::keyPressed_S(Game& game) {
-	shiftForwardActive();
-}
-
-void MainMenu::keyPressed_D(Game& game) {}
-
-void MainMenu::keyPressed_Enter(Game& game) {
-	entriesList.at(activeEntry)->action(game);
-}*/
 
 // Initialization functions
 void MainMenuState::initVariables()
@@ -167,7 +137,7 @@ void MainMenuState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
-			keybinds[action].code = (*supportedKeys)[key];
+			keybinds[action].setCode((*supportedKeys)[key]);
 		}
 	}
 
@@ -201,7 +171,7 @@ void MainMenuState::initBackground()
 
 void MainMenuState::initButtons()
 {
-	buttons["GAME_STATE"].reset(new Button(
+	buttons["GAME_STATE"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(100, 100),
 			// Size
@@ -217,7 +187,7 @@ void MainMenuState::initButtons()
 			sf::Color(220, 220, 220, 0)
 			));
 
-	buttons["EDITOR_STATE"].reset(new Button(
+	buttons["EDITOR_STATE"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(100, 225),
 			// Size
@@ -233,7 +203,7 @@ void MainMenuState::initButtons()
 			sf::Color(220, 220, 220, 0)
 			));
 
-	buttons["SETTINGS_STATE"].reset(new Button(
+	buttons["SETTINGS_STATE"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(100, 350),
 			// Size
@@ -249,7 +219,7 @@ void MainMenuState::initButtons()
 			sf::Color(220, 220, 220, 0)
 			));
 
-	buttons["EXIT"].reset(new Button(
+	buttons["EXIT"].reset(new gui::Button(
 			// Position
 			sf::Vector2f(100, 475),
 			// Size

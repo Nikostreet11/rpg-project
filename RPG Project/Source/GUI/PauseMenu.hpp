@@ -8,34 +8,12 @@
 #ifndef GUI_PAUSEMENU_HPP_
 #define GUI_PAUSEMENU_HPP_
 
+#include "..\PCH\pch.hpp"
+
 // Project
-#include "../Resources/Button.hpp"
+#include "Button.hpp"
 
-// Streams
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
-// Time (legacy)
-#include <ctime>
-
-// General utilities (legacy)
-#include <cstdlib>
-
-// Data structures
-#include <vector>
-#include <stack>
-#include <map>
-
-// Smart pointers
-#include <memory>
-
-// SFML libraries
-#include "SFML/System.hpp"
-#include "SFML/Window.hpp"
-#include "SFML/Graphics.hpp"
-#include "SFML/Audio.hpp"
-//#include "SFML/Network.hpp"
+namespace gui {
 
 class PauseMenu
 {
@@ -54,11 +32,11 @@ public:
 
 	bool isButtonPressed(const std::string& key);
 
-	void update(const sf::Vector2f& mousePos);
-	void render(std::shared_ptr<sf::RenderTarget> target);
+	void update(const sf::Vector2i& mousePosWindow);
+	void render(sf::RenderTarget& target);
 
 	// Getters / Setters
-	std::map<std::string, std::unique_ptr<Button>>& getButtons();
+	std::map<std::string, std::unique_ptr<gui::Button>>& getButtons();
 
 private:
 	// Resources
@@ -68,7 +46,9 @@ private:
 	std::shared_ptr<sf::Font> font;
 	sf::Text menuText;
 
-	std::map<std::string, std::unique_ptr<Button>> buttons;
+	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
 };
+
+} /* namespace gui */
 
 #endif /* GUI_PAUSEMENU_HPP_ */

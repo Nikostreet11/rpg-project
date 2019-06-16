@@ -19,7 +19,9 @@ public:
 	virtual ~Player();
 
 	// Functions
-	virtual void update(const float& dt) override;
+	virtual void update(const float& dt);
+	virtual void render(sf::RenderTarget& target);
+
 	void updateAnimations(const float& dt);
 
 private:

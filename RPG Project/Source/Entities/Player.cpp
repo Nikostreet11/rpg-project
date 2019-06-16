@@ -15,7 +15,7 @@ Player::Player(sf::Vector2f position, std::shared_ptr<sf::Texture> textureSheet)
 	setTexture(textureSheet);
 	setPosition(position);
 
-	createMovement(350.f, 15.f, 5.f);
+	createMovement(350.f, 1500.f, 500.f);
 
 	createAnimationComponent(textureSheet);
 	initAnimations();
@@ -23,7 +23,7 @@ Player::Player(sf::Vector2f position, std::shared_ptr<sf::Texture> textureSheet)
 	createHitboxComponent(
 			sprite,
 			sf::Vector2f(20, 10),
-			sf::Vector2f(104, 124));
+			sf::Vector2f(90, 110));
 }
 
 Player::~Player()
@@ -38,6 +38,13 @@ void Player::update(const float& dt)
 	updateAnimations(dt);
 
 	hitboxComponent->update();
+}
+
+void Player::render(sf::RenderTarget& target)
+{
+	target.draw(sprite);
+
+	hitboxComponent->render(target);
 }
 
 void Player::updateAnimations(const float& dt)

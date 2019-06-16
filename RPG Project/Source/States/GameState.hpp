@@ -10,7 +10,9 @@
 
 #include "State.hpp"
 
-#include "../GUI/PauseMenu.hpp"
+#include "..\GUI\PauseMenu.hpp"
+#include "..\Map\TileMap.hpp"
+#include "..\Entities\Player.hpp"
 
 class GameState :
 		public State
@@ -19,38 +21,42 @@ public:
 	// Static functions
 
 	// Constructors / Destructors
-	explicit GameState(
-			std::shared_ptr<sf::RenderWindow> window,
-			std::shared_ptr<std::map<std::string, int>> supportedKeys,
-			std::shared_ptr<std::stack<std::unique_ptr<State>>> states);
+	explicit GameState(StateData& stateData);
 	virtual ~GameState();
 
 	// Functions
 	virtual void endState();
 
 	virtual void update(const float& dt);
+	virtual void updateCamera(const float& dt);
 	virtual void updateInput(const float& dt);
 	virtual void updatePlayerInput(const float& dt);
-	virtual void updatePauseMenuButtons();
+	virtual void updatePauseMenu();
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
 
 	// Getters / Setters
 
 private:
 	// Initialization functions
+	void initDeferredRendering();
+	void initCamera();
 	void initKeybinds();
 	void initFonts();
 	void initTextures();
 	void initPlayers();
+	void initTileMap();
 	void initPauseMenu();
 
 	// Resources
-	std::unique_ptr<Player> player;
-	std::unique_ptr<PauseMenu> pauseMenu;
+	std::shared_ptr<sf::View> camera;
+	sf::RenderTexture renderTexture;
+	sf::Sprite renderSprite;
+	std::shared_ptr<Player> player;
+	std::unique_ptr<TileMap> tileMap;
+	std::unique_ptr<gui::PauseMenu> pauseMenu;
+
 	std::shared_ptr<sf::Font> font;
 
-	// Variables
-	bool wasButtonPressed;
 };
 
 #endif /* STATES_GAMESTATE_HPP_ */

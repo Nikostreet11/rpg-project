@@ -8,9 +8,10 @@
 #ifndef STATES_SETTINGSSTATE_HPP_
 #define STATES_SETTINGSSTATE_HPP_
 
+#include "../GUI/Button.hpp"
+#include "../GUI/DropDownList.hpp"
 #include "State.hpp"
 
-#include "../Resources/Button.hpp"
 
 class SettingsState :
 	public State
@@ -19,10 +20,7 @@ public:
 	// Static functions
 
 	// Constructors / Destructors
-	explicit SettingsState(
-			std::shared_ptr<sf::RenderWindow> window,
-			std::shared_ptr<std::map<std::string, int>> supportedKeys,
-			std::shared_ptr<std::stack<std::unique_ptr<State>>> states);
+	explicit SettingsState(StateData& stateData);
 	virtual ~SettingsState();
 
 	// Functions
@@ -30,9 +28,9 @@ public:
 
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
-	void updateButtons();
+	void updateGUI(const float& dt);
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
-	void renderButtons(std::shared_ptr<sf::RenderTarget> target = nullptr);
+	void renderGUI(std::shared_ptr<sf::RenderTarget> target = nullptr);
 
 protected:
 	// Initialization functions
@@ -40,16 +38,17 @@ protected:
 	virtual void initKeybinds();
 	void initFonts();
 	void initBackground();
-	void initButtons();
-
-	// Variables
-	sf::RectangleShape background;
-	std::shared_ptr<sf::Font> font;
-
-	std::map<std::string, std::unique_ptr<Button>> buttons;
+	void initGUI();
+	void initOptions();
 
 	// Resources
+	sf::RectangleShape background;
 	sf::Texture backgroundTexture;
+	std::shared_ptr<sf::Font> font;
+	std::map<std::string, std::unique_ptr<gui::Button>> buttons;
+	std::map<std::string, std::unique_ptr<gui::DropDownList>> dropDownLists;
+	sf::Text options;
+	std::vector<sf::VideoMode> videoModes;
 };
 
 #endif /* STATES_SETTINGSSTATE_HPP_ */

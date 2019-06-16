@@ -7,6 +7,8 @@
 
 #include "PauseMenu.hpp"
 
+namespace gui {
+
 PauseMenu::PauseMenu(
 		std::shared_ptr<sf::RenderWindow> window,
 		std::shared_ptr<sf::Font> font) :
@@ -63,7 +65,7 @@ void PauseMenu::addButton(
 	float x = container.getPosition().x + container.getSize().x / 2.f -
 			size.x / 2.f;
 
-	buttons[key].reset(new Button(
+	buttons[key].reset(new gui::Button(
 			// Position
 			sf::Vector2f(x, y),
 			// Size
@@ -85,31 +87,31 @@ bool PauseMenu::isButtonPressed(const std::string& key)
 	return buttons[key]->isPressed();
 }
 
-void PauseMenu::update(const sf::Vector2f& mousePos)
+void PauseMenu::update(const sf::Vector2i& mousePosWindow)
 {
 	for (auto &i : buttons)
 	{
-		i.second->update(mousePos);
+		i.second->update(mousePosWindow);
 	}
 }
 
-void PauseMenu::render(std::shared_ptr<sf::RenderTarget> target)
+void PauseMenu::render(sf::RenderTarget& target)
 {
-	if (target)
+	target.draw(background);
+	target.draw(container);
+
+	for (auto &i : buttons)
 	{
-		target->draw(background);
-		target->draw(container);
-
-		for (auto &i : buttons)
-		{
-			i.second->render(target);
-		}
-
-		target->draw(menuText);
+		i.second->render(target);
 	}
+
+	target.draw(menuText);
 }
 
-std::map<std::string, std::unique_ptr<Button>>& PauseMenu::getButtons()
+std::map<std::string, std::unique_ptr<gui::Button>>& PauseMenu::getButtons()
 {
 	return buttons;
 }
+
+} /* namespace gui */
+

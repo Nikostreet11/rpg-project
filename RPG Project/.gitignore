@@ -12,9 +12,9 @@
 *.o
 *.obj
 
-# Precompiled Headers
-*.gch
-*.pch
+# Precompiled Headers [do not ignore]
+# *.gch
+# *.pch
 
 # Compiled Dynamic libraries
 *.so
@@ -106,3 +106,6 @@ local.properties
 .sts4-cache/
 
 # End of https://www.gitignore.io/api/c++,eclipse
+/Debug/
+/Release/
+/SFML-2.5.0/
