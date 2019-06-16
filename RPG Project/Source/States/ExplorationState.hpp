@@ -14,15 +14,13 @@
 #include "..\Map\TileMap.hpp"
 #include "..\Entities\Player.hpp"
 
-class GameState :
+class ExplorationState :
 		public State
 {
 public:
-	// Static functions
-
 	// Constructors / Destructors
-	explicit GameState(StateData& stateData);
-	virtual ~GameState();
+	explicit ExplorationState(StateData& stateData);
+	virtual ~ExplorationState();
 
 	// Functions
 	virtual void endState();

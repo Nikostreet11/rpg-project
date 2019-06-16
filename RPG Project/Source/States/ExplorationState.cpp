@@ -9,7 +9,7 @@
 // Static functions
 
 // Constructors / Destructors
-GameState::GameState(StateData& stateData) :
+ExplorationState::ExplorationState(StateData& stateData) :
 		State(stateData)
 {
 	initDeferredRendering();
@@ -22,18 +22,18 @@ GameState::GameState(StateData& stateData) :
 	initPauseMenu();
 }
 
-GameState::~GameState()
+ExplorationState::~ExplorationState()
 {
 }
 
 // Functions
-void GameState::endState()
+void ExplorationState::endState()
 {
 	std::cout << "Ending GameState" << std::endl;
 	ended = true;
 }
 
-void GameState::update(const float& dt)
+void ExplorationState::update(const float& dt)
 {
 	updateMousePositions(camera);
 	updateInput(dt);
@@ -55,14 +55,14 @@ void GameState::update(const float& dt)
 	}
 }
 
-void GameState::updateCamera(const float& dt)
+void ExplorationState::updateCamera(const float& dt)
 {
 	camera->setCenter(sf::Vector2f(
 			std::round(player->getPosition().x + player->getSize().x / 2.f),
 			std::round(player->getPosition().y + player->getSize().y / 2.f)));
 }
 
-void GameState::updateInput(const float& dt)
+void ExplorationState::updateInput(const float& dt)
 {
 	InputButton& key = keybinds.at("CLOSE");
 
@@ -81,7 +81,7 @@ void GameState::updateInput(const float& dt)
 	}
 }
 
-void GameState::updatePlayerInput(const float& dt)
+void ExplorationState::updatePlayerInput(const float& dt)
 {
 	if (keybinds.at("MOVE_LEFT").isHold())
 	{
@@ -104,14 +104,14 @@ void GameState::updatePlayerInput(const float& dt)
 	}
 }
 
-void GameState::updatePauseMenu()
+void ExplorationState::updatePauseMenu()
 {
 	pauseMenu->update(mousePosWindow);
 	if (pauseMenu->isButtonPressed("QUIT"))
 		endState();
 }
 
-void GameState::render(std::shared_ptr<sf::RenderTarget> target)
+void ExplorationState::render(std::shared_ptr<sf::RenderTarget> target)
 {
 	if (!target)
 		target = window;
@@ -139,7 +139,7 @@ void GameState::render(std::shared_ptr<sf::RenderTarget> target)
 // Getters / Setters
 
 // Initialization functions
-void GameState::initDeferredRendering()
+void ExplorationState::initDeferredRendering()
 {
 	renderTexture.create(
 			graphicsSettings->resolution.width,
@@ -153,7 +153,7 @@ void GameState::initDeferredRendering()
 			graphicsSettings->resolution.height));
 }
 
-void GameState::initCamera()
+void ExplorationState::initCamera()
 {
 	camera = std::make_shared<sf::View>();
 
@@ -166,7 +166,7 @@ void GameState::initCamera()
 			graphicsSettings->resolution.height / 2.f);
 }
 
-void GameState::initKeybinds()
+void ExplorationState::initKeybinds()
 {
 	std::ifstream ifs("Config/Keybinds/GameState.ini");
 
@@ -189,7 +189,7 @@ void GameState::initKeybinds()
 	keybinds["MOVE_DOWN"] = supportedKeys->at("S");*/
 }
 
-void GameState::initFonts()
+void ExplorationState::initFonts()
 {
 	font = std::make_shared<sf::Font>();
 
@@ -199,7 +199,7 @@ void GameState::initFonts()
 	}
 }
 
-void GameState::initTextures()
+void ExplorationState::initTextures()
 {
 	textures["EXPLORATION_PLAYABLE_CHARACTERS"] =
 			std::make_shared<sf::Texture>();
@@ -216,7 +216,7 @@ void GameState::initTextures()
 	}
 }
 
-void GameState::initPlayers()
+void ExplorationState::initPlayers()
 {
 	sf::Vector2f position = {0, 0};
 	player = std::make_shared<Player>(
@@ -224,7 +224,7 @@ void GameState::initPlayers()
 			textures["EXPLORATION_PLAYABLE_CHARACTERS"]);
 }
 
-void GameState::initTileMap()
+void ExplorationState::initTileMap()
 {
 	tileMap.reset(new TileMap(
 			sf::Vector2u(15, 15),
@@ -234,7 +234,7 @@ void GameState::initTileMap()
 	tileMap->loadFromFile("testTileMap.txt");
 }
 
-void GameState::initPauseMenu()
+void ExplorationState::initPauseMenu()
 {
 	pauseMenu.reset(new gui::PauseMenu(window, font));
 
