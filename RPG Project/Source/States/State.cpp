@@ -15,6 +15,7 @@ State::State(StateData& stateData) :
 		graphicsSettings(stateData.graphicsSettings),
 		window(stateData.window),
 		supportedKeys(stateData.supportedKeys),
+		supportedMouseButtons(stateData.supportedMouseButtons),
 		states(stateData.states),
 		gridSize(stateData.gridSize)
 {

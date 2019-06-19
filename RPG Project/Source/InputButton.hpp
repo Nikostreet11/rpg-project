@@ -13,8 +13,17 @@
 class InputButton
 {
 public:
+	enum Type
+	{
+		noType,
+		keyboardKey,
+		mouseButton
+		// joystickButton
+	};
+
 	// Constructor / Destructor
 	InputButton();
+	InputButton(Type type);
 	virtual ~InputButton();
 
 	bool isPressed();
@@ -22,12 +31,20 @@ public:
 	bool isReleased();
 
 	// Getters / Setters
+	Type getType() const;
+	void setType(Type type);
 	short getCode() const;
 	void setCode(short code);
 
 private:
+	// Internal
+	bool isButtonPressed() const;
+
+	// Initialization
 	void initVariables();
 
+	// Variables
+	Type type;
 	short code;
 	bool wasPressed;
 };

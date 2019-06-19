@@ -38,7 +38,7 @@ private:
 	// Initialization functions
 	void initDeferredRendering();
 	void initCamera();
-	void initKeybinds();
+	void initBindings();
 	void initFonts();
 	void initTextures();
 	void initPlayers();

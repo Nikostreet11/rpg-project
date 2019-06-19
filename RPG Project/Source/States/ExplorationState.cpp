@@ -14,7 +14,7 @@ ExplorationState::ExplorationState(StateData& stateData) :
 {
 	initDeferredRendering();
 	initCamera();
-	initKeybinds();
+	initBindings();
 	initFonts();
 	initTextures();
 	initPlayers();
@@ -166,7 +166,7 @@ void ExplorationState::initCamera()
 			graphicsSettings->resolution.height / 2.f);
 }
 
-void ExplorationState::initKeybinds()
+void ExplorationState::initBindings()
 {
 	std::ifstream ifs("Config/Keybinds/GameState.ini");
 
@@ -176,6 +176,7 @@ void ExplorationState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
+			keybinds[action].setType(InputButton::Type::keyboardKey);
 			keybinds[action].setCode((*supportedKeys)[key]);
 		}
 	}

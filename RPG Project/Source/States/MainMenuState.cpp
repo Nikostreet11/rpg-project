@@ -19,7 +19,7 @@ MainMenuState::MainMenuState(StateData& stateData) :
 		State(stateData)
 {
 	initVariables();
-	initKeybinds();
+	initBindings();
 	initFonts();
 	initBackground();
 	initButtons();
@@ -127,7 +127,7 @@ void MainMenuState::initVariables()
 {
 }
 
-void MainMenuState::initKeybinds()
+void MainMenuState::initBindings()
 {
 	std::ifstream ifs("Config/Keybinds/MainMenuState.ini");
 
@@ -137,6 +137,7 @@ void MainMenuState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
+			keybinds[action].setType(InputButton::Type::keyboardKey);
 			keybinds[action].setCode((*supportedKeys)[key]);
 		}
 	}

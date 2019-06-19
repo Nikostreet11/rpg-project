@@ -35,7 +35,7 @@ public:
 protected:
 	// Initialization functions
 	void initVariables();
-	virtual void initKeybinds();
+	virtual void initBindings();
 	void initFonts();
 	void initBackground();
 	void initButtons();

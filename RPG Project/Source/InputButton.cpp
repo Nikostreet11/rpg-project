@@ -12,13 +12,19 @@ InputButton::InputButton()
 	initVariables();
 }
 
+InputButton::InputButton(Type type) :
+		InputButton()
+{
+	this->type = type;
+}
+
 InputButton::~InputButton()
 {
 }
 
 bool InputButton::isPressed()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(code)))
+	if (isButtonPressed())
 	{
 		if (!wasPressed)
 		{
@@ -39,7 +45,7 @@ bool InputButton::isPressed()
 
 bool InputButton::isHold()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(code)))
+	if (isButtonPressed())
 	{
 		return true;
 	}
@@ -51,7 +57,7 @@ bool InputButton::isHold()
 
 bool InputButton::isReleased()
 {
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key(code)))
+	if (!isButtonPressed())
 	{
 		if (wasPressed)
 		{
@@ -70,6 +76,16 @@ bool InputButton::isReleased()
 	}
 }
 
+// Getters / Setters
+
+InputButton::Type InputButton::getType() const {
+	return type;
+}
+
+void InputButton::setType(Type type) {
+	this->type = type;
+}
+
 short InputButton::getCode() const
 {
 	return code;
@@ -80,8 +96,24 @@ void InputButton::setCode(short code)
 	this->code = code;
 }
 
+bool InputButton::isButtonPressed() const
+{
+	switch (type)
+	{
+	case keyboardKey:
+		return sf::Keyboard::isKeyPressed(sf::Keyboard::Key(code));
+
+	case mouseButton:
+		return sf::Mouse::isButtonPressed(sf::Mouse::Button(code));
+
+	default:
+		return false;
+	}
+}
+
 void InputButton::initVariables()
 {
+	this->type = Type::noType;
 	code = -1;
 	wasPressed = false;
 }

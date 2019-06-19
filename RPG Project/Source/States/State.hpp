@@ -38,15 +38,17 @@ public:
 
 protected:
 	// Initialization functions
-	virtual void initKeybinds() = 0;
+	virtual void initBindings() = 0;
 
 	// Resources
 	StateData& stateData;
 	std::shared_ptr<GraphicsSettings> graphicsSettings;
 	std::shared_ptr<sf::RenderWindow> window;
 	std::shared_ptr<std::map<std::string, int>> supportedKeys;
+	std::shared_ptr<std::map<std::string, int>> supportedMouseButtons;
 	std::shared_ptr<std::stack<std::unique_ptr<State>>> states;
 	std::map<std::string, InputButton> keybinds;
+	std::map<std::string, InputButton> mousebinds;
 	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 
 	// Variables

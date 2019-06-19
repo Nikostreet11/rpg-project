@@ -44,7 +44,7 @@ protected:
 	// Initialization functions
 	void initVariables();
 	void initView();
-	virtual void initKeybinds();
+	virtual void initBindings();
 	void initFonts();
 	void initText();
 	void initBackground();

@@ -12,7 +12,7 @@ EditorState::EditorState(StateData& stateData) :
 {
 	initVariables();
 	initView();
-	initKeybinds();
+	initBindings();
 	initFonts();
 	initText();
 	initBackground();
@@ -321,9 +321,11 @@ void EditorState::initView()
 			graphicsSettings->resolution.height / 2);
 }
 
-void EditorState::initKeybinds()
+void EditorState::initBindings()
 {
-	std::ifstream ifs("Config/Keybinds/EditorState.ini");
+	std::ifstream ifs;
+
+	ifs.open("Config/Keybinds/EditorState.ini");
 
 	if (ifs.is_open())
 	{
@@ -331,7 +333,23 @@ void EditorState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
+			keybinds[action].setType(InputButton::Type::keyboardKey);
 			keybinds[action].setCode((*supportedKeys)[key]);
+		}
+	}
+
+	ifs.close();
+
+	ifs.open("Config/Mousebinds/EditorState.ini");
+
+	if (ifs.is_open())
+	{
+		std::string action, button;
+
+		while (ifs >> action >> button)
+		{
+			mousebinds[action].setType(InputButton::Type::mouseButton);
+			mousebinds[action].setCode((*supportedMouseButtons)[button]);
 		}
 	}
 
