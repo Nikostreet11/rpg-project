@@ -98,7 +98,7 @@ void EditorState::updateMousePositions(std::shared_ptr<sf::View> view)
 
 void EditorState::updateInput(const float& dt)
 {
-	if (keybinds.at("CLOSE").isPressed())
+	if (keybinds.at("PAUSE").isPressed())
 	{
 		// Key pressed
 		if (!paused)

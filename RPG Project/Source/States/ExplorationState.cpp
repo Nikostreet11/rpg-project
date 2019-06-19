@@ -64,20 +64,13 @@ void ExplorationState::updateCamera(const float& dt)
 
 void ExplorationState::updateInput(const float& dt)
 {
-	InputButton& key = keybinds.at("CLOSE");
-
-	if (key.isPressed())
+	if (keybinds.at("PAUSE").isPressed())
 	{
 		// Key pressed
 		if (!paused)
 			pauseState();
 		else
 			unpauseState();
-	}
-
-	if (key.isReleased())
-	{
-		// Key released
 	}
 }
 
@@ -107,6 +100,7 @@ void ExplorationState::updatePlayerInput(const float& dt)
 void ExplorationState::updatePauseMenu()
 {
 	pauseMenu->update(mousePosWindow);
+
 	if (pauseMenu->isButtonPressed("QUIT"))
 		endState();
 }
@@ -183,12 +177,6 @@ void ExplorationState::initBindings()
 	}
 
 	ifs.close();
-
-	/*keybinds["CLOSE"] = supportedKeys->at("Escape");
-	keybinds["MOVE_LEFT"] = supportedKeys->at("A");
-	keybinds["MOVE_RIGHT"] = supportedKeys->at("D");
-	keybinds["MOVE_UP"] = supportedKeys->at("W");
-	keybinds["MOVE_DOWN"] = supportedKeys->at("S");*/
 }
 
 void ExplorationState::initFonts()

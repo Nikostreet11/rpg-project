@@ -23,11 +23,6 @@ MainMenuState::MainMenuState(StateData& stateData) :
 	initFonts();
 	initBackground();
 	initButtons();
-
-	/*addEntry("New Game", Exploration::getInstance());
-	addEntry("Load Game");
-	addEntry("Options");
-	addEntry("Exit");*/
 }
 
 MainMenuState::~MainMenuState() {/*
@@ -63,7 +58,8 @@ void MainMenuState::updateButtons()
 	if (buttons["GAME_STATE"]->isReleased())
 	{
 		std::unique_ptr<State> explorationStatePtr(
-				new ExplorationState(stateData));
+				// TODO: fix
+				new BattleState(stateData));
 		states->push(move(explorationStatePtr));
 	}
 
@@ -98,17 +94,6 @@ void MainMenuState::render(std::shared_ptr<sf::RenderTarget> target)
 	target->setView(target->getDefaultView());
 	target->draw(background);
 	renderButtons(target);
-
-	// TODO: remove later
-	/*sf::Text mouseText;
-	mouseText.setPosition(mousePosView.x, mousePosView.y - 12);
-	mouseText.setFont(*font);
-	mouseText.setCharacterSize(12);
-	std::stringstream ss;
-	ss << mousePosView.x << " " << mousePosView.y;
-	mouseText.setString(ss.str());
-
-	target->draw(mouseText);*/
 }
 
 void MainMenuState::renderButtons(std::shared_ptr<sf::RenderTarget> target)

@@ -11,6 +11,7 @@
 #include "../GUI/Button.hpp"
 #include "EditorState.hpp"
 #include "ExplorationState.hpp"
+#include "BattleState.hpp"
 #include "SettingsState.hpp"
 
 class MainMenuState:

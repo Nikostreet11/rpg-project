@@ -10,6 +10,8 @@
 
 #include "State.hpp"
 
+#include "..\GUI\PauseMenu.hpp"
+
 class BattleState:
 		public State
 {
@@ -25,7 +27,6 @@ public:
 
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
-	virtual void updatePlayerInput(const float& dt);
 	virtual void updatePauseMenu();
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
 
@@ -34,14 +35,18 @@ public:
 private:
 	// Initialization functions
 	void initDeferredRendering();
-	void initKeybinds();
+	void initBindings();
 	void initFonts();
 	void initTextures();
-	void initPlayers();
-	//void initTileMap();
+	void initBackground();
 	void initPauseMenu();
 
 	// Resources
+	sf::RenderTexture renderTexture;
+	sf::Sprite renderSprite;
+	std::shared_ptr<sf::Font> font;
+	sf::Sprite background;
+	std::unique_ptr<gui::PauseMenu> pauseMenu;
 
 	// Variables
 };
