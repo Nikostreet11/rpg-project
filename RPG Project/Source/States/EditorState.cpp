@@ -112,7 +112,7 @@ void EditorState::updateEditorInput(const float& dt)
 {
 	if (textureSelector->isActive())
 	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (mousebinds.at("SELECT_TILE").isPressed())
 		{
 			// TODO: make textureSelector a class with a getSpriteIndex method
 			tileMap->setSpriteIndex(sf::Vector2u(
@@ -124,26 +124,14 @@ void EditorState::updateEditorInput(const float& dt)
 	}
 	else if (tileMap->isActive())
 	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (mousebinds.at("ADD_TILE").isPressed())
 		{
-			tileMap->addTile(mousePosGrid, 0, type, crossable);
+			tileMap->addTile(mousePosGrid, type, closeness, crossable);
 		}
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		if (mousebinds.at("REMOVE_TILE").isPressed())
 		{
-			tileMap->removeTile(mousePosGrid, 0);
-		}
-	}
-
-	if (keybinds.at("TOGGLE_COLLISION").isPressed())
-	{
-		if (crossable)
-		{
-			crossable = false;
-		}
-		else
-		{
-			crossable = true;
+			tileMap->removeTile(mousePosGrid);
 		}
 	}
 
@@ -168,6 +156,31 @@ void EditorState::updateEditorInput(const float& dt)
 		{
 			type = static_cast<Tile::Type>(
 					static_cast<short>(Tile::Type::NumberOfTypes) - 1);
+		}
+	}
+
+	if (keybinds.at("NEXT_CLOSENESS").isPressed())
+	{
+		if (closeness == Tile::Closeness::background)
+		{
+			closeness = Tile::Closeness::foreground;
+		}
+		else
+		{
+			closeness = Tile::Closeness::background;
+		}
+	}
+
+
+	if (keybinds.at("TOGGLE_COLLISION").isPressed())
+	{
+		if (crossable)
+		{
+			crossable = false;
+		}
+		else
+		{
+			crossable = true;
 		}
 	}
 
@@ -214,8 +227,10 @@ void EditorState::updateGUI()
 			mousePosView.x << ' ' << mousePosView.y << '\n' <<
 			mousePosGrid.x << ' ' <<
 			mousePosGrid.y << '\n' <<
-			"Crossable: " << std::boolalpha << crossable << '\n' <<
-			"Type: " << type << '\n';
+			"Type: " << type << '\n' <<
+			"Closeness: " << closeness << '\n' <<
+			"Crossable: " << std::boolalpha << crossable << '\n';
+
 	cursorText.setString(cursorString.str());
 	cursorText.setPosition(mousePosView.x, mousePosView.y - 80.f);
 
@@ -257,7 +272,8 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 		target = window;
 
 	target->setView(*tileMapView);
-	tileMap->render(*target);
+	tileMap->render(*target, Tile::Closeness::background);
+	tileMap->render(*target, Tile::Closeness::foreground);
 
 	renderGUI(target);
 	renderButtons(target);
@@ -304,8 +320,9 @@ void EditorState::initVariables()
 {
 	cameraSpeed = 100.f;
 
-	crossable = true;
 	type = Tile::Type::Default;
+	closeness = Tile::Closeness::background;
+	crossable = true;
 }
 
 void EditorState::initView()
@@ -380,7 +397,7 @@ void EditorState::initBackground()
 void EditorState::initTileMap()
 {
 	tileMap.reset(new TileMap(
-			sf::Vector2u(12, 8),
+			sf::Vector2u(12, 8), 3,
 			stateData.gridSize,
 			"Villages.png",
 			32));

@@ -182,7 +182,7 @@ void Game::initMouseButtons()
 
 		while (ifs >> button >> code)
 		{
-			(*supportedKeys)[button] = code;
+			(*supportedMouseButtons)[button] = code;
 		}
 	}
 

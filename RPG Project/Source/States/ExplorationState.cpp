@@ -121,8 +121,9 @@ void ExplorationState::render(std::shared_ptr<sf::RenderTarget> target)
 	renderTexture.clear();
 
 	renderTexture.setView(*camera);
-	tileMap->render(renderTexture);
+	tileMap->render(renderTexture, Tile::Closeness::background);
 	player->render(renderTexture);
+	tileMap->render(renderTexture, Tile::Closeness::foreground);
 
 	if (paused)
 	{
@@ -228,7 +229,7 @@ void ExplorationState::initPlayers()
 void ExplorationState::initTileMap()
 {
 	tileMap.reset(new TileMap(
-			sf::Vector2u(15, 15),
+			sf::Vector2u(15, 15), 3,
 			stateData.gridSize,
 			"Villages.png",
 			32));
