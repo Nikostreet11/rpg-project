@@ -58,7 +58,6 @@ private:
 	sf::Event sfEvent;
 	sf::Clock dtClock;
 
-
 	// Variables
 	float dt;
 	float gridSize;

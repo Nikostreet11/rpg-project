@@ -38,7 +38,7 @@ public:
 
 private:
 	// Internal
-	bool isButtonPressed() const;
+	bool isBeingPressed() const;
 
 	// Initialization
 	void initVariables();

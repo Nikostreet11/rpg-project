@@ -24,7 +24,7 @@ InputButton::~InputButton()
 
 bool InputButton::isPressed()
 {
-	if (isButtonPressed())
+	if (isBeingPressed())
 	{
 		if (!wasPressed)
 		{
@@ -45,7 +45,7 @@ bool InputButton::isPressed()
 
 bool InputButton::isHold()
 {
-	if (isButtonPressed())
+	if (isBeingPressed())
 	{
 		return true;
 	}
@@ -57,7 +57,7 @@ bool InputButton::isHold()
 
 bool InputButton::isReleased()
 {
-	if (!isButtonPressed())
+	if (!isBeingPressed())
 	{
 		if (wasPressed)
 		{
@@ -96,7 +96,7 @@ void InputButton::setCode(short code)
 	this->code = code;
 }
 
-bool InputButton::isButtonPressed() const
+bool InputButton::isBeingPressed() const
 {
 	switch (type)
 	{
