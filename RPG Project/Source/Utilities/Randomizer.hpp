@@ -5,10 +5,11 @@
  *      Author: Nikostreet11
  */
 
-#ifndef EXCLUDE_RANDOMIZER_H_
-#define EXCLUDE_RANDOMIZER_H_
+#ifndef UTILITIES_RANDOMIZER_HPP_
+#define UTILITIES_RANDOMIZER_HPP_
 
-class Randomizer {
+class Randomizer
+{
 public:
 	static Randomizer& getInstance();
 	virtual ~Randomizer();
@@ -22,4 +23,4 @@ protected:
 	static Randomizer* instance;
 };
 
-#endif /* EXCLUDE_RANDOMIZER_H_ */
+#endif /* UTILITIES_RANDOMIZER_HPP_ */

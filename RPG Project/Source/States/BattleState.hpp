@@ -10,6 +10,9 @@
 
 #include "State.hpp"
 
+#include "..\Entities\Character.hpp"
+#include "..\Entities\Monster.hpp"
+
 #include "..\GUI\PauseMenu.hpp"
 
 class BattleState:
@@ -19,7 +22,10 @@ public:
 	// Enumerators
 
 	// Constructor / Destructor
-	explicit BattleState(StateData& stateData);
+	explicit BattleState(
+			StateData& stateData/*,
+			std::vector<std::shared_ptr<Character>> party,
+			std::vector<std::shared_ptr<Character>> enemies*/);
 	virtual ~BattleState();
 
 	// Functions
@@ -28,7 +34,9 @@ public:
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
 	virtual void updatePauseMenu();
-	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
+	virtual void render(
+			std::shared_ptr<sf::RenderTarget> target = nullptr);
+	virtual void renderCharacters(sf::RenderTarget& target);
 
 	// Getters / Setters
 
@@ -39,6 +47,7 @@ private:
 	void initFonts();
 	void initTextures();
 	void initBackground();
+	void initCharacters();
 	void initPauseMenu();
 
 	// Resources
@@ -47,6 +56,9 @@ private:
 	std::shared_ptr<sf::Font> font;
 	sf::Sprite background;
 	std::unique_ptr<gui::PauseMenu> pauseMenu;
+
+	std::vector<std::shared_ptr<Character>> party;
+	std::vector<std::shared_ptr<Character>> enemies;
 
 	// Variables
 };

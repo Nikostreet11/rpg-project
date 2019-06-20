@@ -5,7 +5,7 @@
  *      Author: Nikostreet11
  */
 
-#include "Exclude/Randomizer.h"
+#include "Randomizer.hpp"
 
 #include <cstdlib>
 #include <ctime>

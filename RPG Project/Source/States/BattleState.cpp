@@ -8,14 +8,20 @@
 #include "BattleState.hpp"
 
 // Constructor / Destructor
-BattleState::BattleState(StateData& stateData) :
-		State(stateData)
+BattleState::BattleState(
+		StateData& stateData/*,
+		std::vector<std::shared_ptr<Character>> party,
+		std::vector<std::shared_ptr<Character>> enemies*/) :
+		State(stateData)/*,
+		party(party),
+		enemies(enemies)*/
 {
 	initDeferredRendering();
 	initBindings();
 	initFonts();
 	initTextures();
 	initBackground();
+	initCharacters();
 	initPauseMenu();
 }
 
@@ -76,6 +82,7 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 	renderTexture.clear();
 
 	renderTexture.draw(background);
+	renderCharacters(renderTexture);
 
 	if (paused)
 	{
@@ -87,6 +94,19 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 	renderTexture.display();
 
 	target->draw(renderSprite);
+}
+
+void BattleState::renderCharacters(sf::RenderTarget& target)
+{
+	for (auto &enemy : enemies)
+	{
+		enemy->render(target);
+	}
+
+	for (auto &hero : party)
+	{
+		hero->render(target);
+	}
 }
 
 void BattleState::initDeferredRendering()
@@ -169,6 +189,35 @@ void BattleState::initBackground()
 	background.setScale(
 			graphicsSettings->resolution.width / 512.f,
 			graphicsSettings->resolution.height / 312.f);
+}
+
+void BattleState::initCharacters()
+{
+	sf::Vector2f leftStart(700.f, 200.f);
+	sf::Vector2f leftStep(-80.f, 100.f);
+
+	for (size_t index = 0; index < 8; index++)
+	{
+		enemies.push_back(std::move(std::make_shared<Monster>(
+			sf::Vector2f(
+					leftStart.x + leftStep.x * index,
+					leftStart.y + leftStep.y * (index % 4)),
+			sf::Vector2f(200, 200),
+			*textures["FOES"])));
+	}
+
+	sf::Vector2f rightStart(1200, 200);
+	sf::Vector2f rightStep(80, 100);
+
+	for (std::size_t index = 0; index < 4; index++)
+	{
+		party.push_back(std::move(std::make_shared<Character>(
+			sf::Vector2f(
+					rightStart.x + rightStep.x * index,
+					rightStart.y + rightStep.y * (index % 4)),
+			sf::Vector2f(180, 180),
+			*textures["WARRIOR"])));
+	}
 }
 
 void BattleState::initPauseMenu()
