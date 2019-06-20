@@ -8,9 +8,9 @@
 #ifndef STATES_STATE_HPP_
 #define STATES_STATE_HPP_
 
+#include "../Utilities/InputButton.hpp"
 #include "..\Containers\StateData.hpp"
 #include "..\Containers\GraphicsSettings.hpp"
-#include "..\InputButton.hpp"
 
 // class Game;
 

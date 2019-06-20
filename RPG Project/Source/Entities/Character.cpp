@@ -12,14 +12,10 @@ Character::Character(
 		sf::Vector2f size,
 		const sf::Texture& spriteset)
 {
-	sprite.setPosition(position);
-	sprite.setTexture(spriteset);
-	sprite.setTextureRect(sf::IntRect(80, 16, 48, 48));
-	sprite.setScale(
-			size.x / sprite.getTextureRect().width,
-			size.y / sprite.getTextureRect().height);
-
 	initVariables();
+	initStats();
+	initSprite(position, size, spriteset);
+
 }
 
 Character::~Character() {}
@@ -92,6 +88,14 @@ const std::string& Character::getName() const
 }
 void Character::initVariables()
 {
+	spriteOffset = sf::Vector2u(16, 16);
+	spriteSize = sf::Vector2u(48, 48);
+	spriteSpacing = sf::Vector2u(16, 16);
+	spriteIndex = sf::Vector2u(1, 0);
+}
+
+void Character::initStats()
+{
 	name = "Default";
 	level = 1;
 	maxHealth = 100;
@@ -108,6 +112,23 @@ void Character::initVariables()
 	intelligence = 1;
 	agility = 1;
 	luck = 1;
+}
+
+void Character::initSprite(
+		sf::Vector2f position,
+		sf::Vector2f size,
+		const sf::Texture& spriteset)
+{
+	sprite.setPosition(position);
+	sprite.setTexture(spriteset);
+	sprite.setTextureRect(sf::IntRect(
+			spriteOffset.x + (spriteSpacing.x + spriteSize.x) * spriteIndex.x,
+			spriteOffset.y + (spriteSpacing.y + spriteSize.y) * spriteIndex.y,
+			spriteSize.x,
+			spriteSize.y));
+	sprite.setScale(
+			size.x / sprite.getTextureRect().width,
+			size.y / sprite.getTextureRect().height);
 }
 
 /*bool Character::move(Direction direction) {

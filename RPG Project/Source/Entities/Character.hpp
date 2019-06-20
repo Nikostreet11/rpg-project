@@ -26,8 +26,8 @@ public:
 	virtual float attack(Character& target);
 	//bool move(Direction direction);
 
-	void update(const float& dt);
-	void render(sf::RenderTarget& target);
+	virtual void update(const float& dt);
+	virtual void render(sf::RenderTarget& target);
 
 	// Getters / Setters
 	int getAgility() const;
@@ -39,10 +39,17 @@ public:
 	const std::string& getName() const;
 
 protected:
+	// Internal
+
 	//void updateStatistics();
 
 	// Initialization
-	void initVariables();
+	virtual void initVariables();
+	void initStats();
+	void initSprite(
+			sf::Vector2f position,
+			sf::Vector2f size,
+			const sf::Texture& spriteset);
 
 	// Resources
 	sf::Sprite sprite;
@@ -66,6 +73,11 @@ protected:
 	int intelligence;
 	int agility;
 	int luck;
+
+	sf::Vector2u spriteOffset;
+	sf::Vector2u spriteSize;
+	sf::Vector2u spriteSpacing;
+	sf::Vector2u spriteIndex;
 };
 
-#endif /* CHARACTER_H_ */
+#endif /* ENTITIES_CHARACTER_HPP_ */

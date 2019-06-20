@@ -5,26 +5,16 @@
  *      Author: nicop
  */
 
-#include "../Exclude/Graphics/Selection.hpp"
-
-#include <iostream>
-#include "../Exclude/GraphicEngine.h"
-#include "../Exclude/ServiceLocator.h"
-
+#include "Selection.hpp"
 
 Selection::Selection() :
-entries(0),
+entries(0)/*,
 textColor(sf::Color::Black),
 markerColor(sf::Color::Black),
 scrollsColor(sf::Color::Black),
 textSize(30),
 markerSize(20),
-scrollsSize(20) {
-	// get the font
-	// TODO: rework GraphicEngine getter system
-	/*GraphicService* graphicService = ServiceLocator::getGraphicService();
-	GraphicEngine& graphicEngine = dynamic_cast<GraphicEngine&>(*graphicService);
-	font = graphicEngine.getArial();*/
+scrollsSize(20)*/ {
 
 	markerIndex = sf::Vector2i(-1, -1);
 
@@ -33,6 +23,7 @@ scrollsSize(20) {
 
 Selection::~Selection() {}
 
+/*
 void Selection::onDraw(sf::RenderTarget& target, sf::RenderStates states) const {
 	for (auto text = texts.begin(); text != texts.end(); text++) {
 		target.draw(*text, states);
@@ -50,9 +41,10 @@ void Selection::onDraw(sf::RenderTarget& target, sf::RenderStates states) const 
 	if (viewIndex.y + viewSize.y < fieldSize.y)
 		target.draw(bottomScroll, states);
 }
+*/
 
 void Selection::update() {
-
+/*
 	if (viewSize.x > 1)
 		spacing.x = (size.x - offset.x * 2) / viewSize.x;
 	else
@@ -124,8 +116,18 @@ void Selection::update() {
 	bottomScroll.setPosition(sf::Vector2f(
 			size.x / 2 - scrollsSize / 2,
 			size.y - scrollsSize));
+			*/
 }
 
+void Selection::render(sf::RenderTarget& target)
+{
+	for (auto &entry : entries)
+	{
+		target.draw(entry);
+	}
+}
+
+/*
 void Selection::setEntries(const std::vector<std::string>& entries) {
 	this->entries = entries;
 	update();
@@ -156,7 +158,7 @@ const sf::Vector2i& Selection::getViewSize() const {
 void Selection::setViewSize(const sf::Vector2i& viewSize) {
 	this->viewSize = viewSize;
 	update();
-}
+}*/
 
 const sf::Vector2i& Selection::getMarkerIndex() const {
 	return markerIndex;
@@ -173,21 +175,21 @@ void Selection::moveMarkerIndex(Direction direction) {
 	if (markerIndex.x != -1 && markerIndex.y != -1) {
 		switch (direction) {
 
-		case Direction::left:
+		case Direction::Left:
 			if (markerIndex.x > 0)
 				markerIndex.x--;
 			else if (viewIndex.x > 0)
 				viewIndex.x--;
 			break;
 
-		case Direction::up:
+		case Direction::Up:
 			if (markerIndex.y > 0)
 				markerIndex.y--;
 			else if (viewIndex.y > 0)
 				viewIndex.y--;
 			break;
 
-		case Direction::right:
+		case Direction::Right:
 			if (markerIndex.x < viewSize.x - 1)
 				markerIndex.x++;
 			else if (viewIndex.x + viewSize.x < fieldSize.x) {
@@ -199,7 +201,7 @@ void Selection::moveMarkerIndex(Direction direction) {
 			}
 			break;
 
-		case Direction::down:
+		case Direction::Down:
 			if (markerIndex.y < viewSize.y - 1) {
 				markerIndex.y++;
 			}
@@ -219,6 +221,7 @@ void Selection::moveMarkerIndex(Direction direction) {
 	}
 }
 
+/*
 const sf::Vector2f& Selection::getSize() const {
 	return size;
 }
@@ -281,3 +284,4 @@ void Selection::setTextSize(int textSize) {
 	this->textSize = textSize;
 	update();
 }
+*/

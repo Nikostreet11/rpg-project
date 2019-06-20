@@ -55,6 +55,7 @@ private:
 	sf::Sprite renderSprite;
 	std::shared_ptr<sf::Font> font;
 	sf::Sprite background;
+	//std::unique_ptr<gui::Selection> Selection;
 	std::unique_ptr<gui::PauseMenu> pauseMenu;
 
 	std::vector<std::shared_ptr<Character>> party;

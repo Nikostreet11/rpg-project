@@ -5,29 +5,28 @@
  *      Author: nicop
  */
 
-#ifndef SOURCE_GRAPHICS_SELECTION_HPP_
-#define SOURCE_GRAPHICS_SELECTION_HPP_
+#ifndef GUI_SELECTION_HPP_
+#define GUI_SELECTION_HPP_
 
-#include <vector>
-#include <string>
+#include "pch.hpp"
 
-#include <SFML/Graphics.hpp>
-#include "../Exclude/directionsEnum.h"
-#include "../Exclude/Graphics/Angle.hpp"
-#include "../Exclude/Graphics/Caret.hpp"
-#include "../Exclude/Graphics/Node.hpp"
-#include "../Exclude/MenuContainer.h"
+#include "../Direction.hpp"
+//#include "../Exclude/Graphics/Angle.hpp"
+//#include "../Exclude/Graphics/Caret.hpp"
+//#include "../Exclude/MenuContainer.h"
 
-class Selection: public Node {
+class Selection
+{
 public:
 	Selection();
 	virtual ~Selection();
 
-	void virtual onDraw(sf::RenderTarget& target, sf::RenderStates states) const;
-
 	void update();
+	void render(sf::RenderTarget& target);
+
 
 	// data
+	/*
 	void setEntries(const std::vector<std::string>& entries);
 	// logical
 	const sf::Vector2i& getFieldSize() const;
@@ -36,10 +35,12 @@ public:
 	void setViewIndex(const sf::Vector2i& viewIndex);
 	const sf::Vector2i& getViewSize() const;
 	void setViewSize(const sf::Vector2i& viewSize);
+	*/
 	const sf::Vector2i& getMarkerIndex() const;
 	void setMarkerIndex(const sf::Vector2i& markerIndex);
 	void moveMarkerIndex(Direction direction);
 	// graphical
+	/*
 	const sf::Vector2f& getSize() const;
 	void setSize(const sf::Vector2f& size);
 	const sf::Vector2f& getOffset() const;
@@ -56,10 +57,11 @@ public:
 	void setFont(const sf::Font& font);
 	int getTextSize() const;
 	void setTextSize(int textSize);
+	*/
 
 private:
 	// data
-	std::vector<std::string> entries;
+	//std::vector<std::string> entries;
 
 	// logical
 	sf::Vector2i fieldSize;
@@ -74,9 +76,11 @@ private:
 	sf::Vector2f offset;
 
 	// colors
+	/*
 	sf::Color textColor;
 	sf::Color markerColor;
 	sf::Color scrollsColor;
+	*/
 
 	// preferences
 	sf::Font font;
@@ -85,12 +89,14 @@ private:
 	float scrollsSize;
 
 	// objects
-	std::vector<sf::Text> texts;
+	std::vector<sf::Text> entries;
+	/*
 	icons::Caret marker;
 	icons::Angle leftScroll;
 	icons::Angle topScroll;
 	icons::Angle rightScroll;
 	icons::Angle bottomScroll;
+	*/
 };
 
-#endif /* SOURCE_GRAPHICS_SELECTION_HPP_ */
+#endif /* GUI_SELECTION_HPP_ */

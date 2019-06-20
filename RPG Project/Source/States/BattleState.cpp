@@ -193,7 +193,7 @@ void BattleState::initBackground()
 
 void BattleState::initCharacters()
 {
-	sf::Vector2f leftStart(700.f, 200.f);
+	sf::Vector2f leftStart(700.f, 180.f);
 	sf::Vector2f leftStep(-80.f, 100.f);
 
 	for (size_t index = 0; index < 8; index++)
@@ -203,7 +203,8 @@ void BattleState::initCharacters()
 					leftStart.x + leftStep.x * index,
 					leftStart.y + leftStep.y * (index % 4)),
 			sf::Vector2f(200, 200),
-			*textures["FOES"])));
+			*textures["FOES"],
+			Monster::WargWolf)));
 	}
 
 	sf::Vector2f rightStart(1200, 200);

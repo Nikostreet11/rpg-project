@@ -5,8 +5,8 @@
  *      Author: nicop
  */
 
-#ifndef INPUTBUTTON_HPP_
-#define INPUTBUTTON_HPP_
+#ifndef UTILITIES_INPUTBUTTON_HPP_
+#define UTILITIES_INPUTBUTTON_HPP_
 
 #include "pch.hpp"
 
@@ -49,4 +49,4 @@ private:
 	bool wasPressed;
 };
 
-#endif /* INPUTBUTTON_HPP_ */
+#endif /* UTILITIES_INPUTBUTTON_HPP_ */
