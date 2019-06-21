@@ -36,10 +36,15 @@ public:
 	void update();
 	void render(sf::RenderTarget& target);
 
+	void moveMarker(Direction direction);
 	void addEntry(std::string name);
 	void removeEntry();
 
-	// data
+	// Getters / Setters
+	const std::string getSelectedEntry() const;
+	//const sf::Vector2u& getMarkerIndex() const;
+	//void setMarkerIndex(const sf::Vector2u& markerIndex);
+
 	/*
 	void setEntries(const std::vector<std::string>& entries);
 	// logical
@@ -50,14 +55,6 @@ public:
 	const sf::Vector2i& getViewSize() const;
 	void setViewSize(const sf::Vector2i& viewSize);
 	*/
-
-	/*
-	const sf::Vector2i& getMarkerIndex() const;
-	void setMarkerIndex(const sf::Vector2i& markerIndex);
-	void moveMarkerIndex(Direction direction);
-	// graphical
-	*/
-
 
 	/*
 	const sf::Vector2f& getSize() const;
@@ -79,9 +76,13 @@ public:
 	*/
 
 private:
+	// Internal
+	void updateEntriesPosition();
+
 	// Initialization
 	void initVariables();
 	void initContainer();
+	void initMarker();
 
 	// Resources
 	sf::RectangleShape container;
@@ -89,6 +90,13 @@ private:
 	std::shared_ptr<sf::Font> font;
 	//std::vector<std::string> entries;
 	icons::Caret marker;
+
+	/*
+	icons::Angle leftScroll;
+	icons::Angle topScroll;
+	icons::Angle rightScroll;
+	icons::Angle bottomScroll;
+	*/
 
 	// Variables
 	sf::Vector2f position;
@@ -112,11 +120,6 @@ private:
 
 	float markerSize;
 	float scrollsSize;
-
-	icons::Angle leftScroll;
-	icons::Angle topScroll;
-	icons::Angle rightScroll;
-	icons::Angle bottomScroll;
 	*/
 };
 

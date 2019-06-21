@@ -19,7 +19,7 @@ Caret::~Caret() {}
 
 void Caret::render(sf::RenderTarget& target)
 {
-	target.draw(vertexArray);
+	target.draw(vertexArray, this->getTransform());
 }
 
 void Caret::update()

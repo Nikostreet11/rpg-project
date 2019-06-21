@@ -35,10 +35,7 @@ scrollsSize(20)*/
 
 	initVariables();
 	initContainer();
-
-	marker.setPosition(position);
-	marker.setSize(textSize);
-	marker.setColor(sf::Color::White);
+	initMarker();
 }
 
 Selection::~Selection() {}
@@ -161,7 +158,78 @@ void Selection::render(sf::RenderTarget& target)
 		}
 	}
 
-	marker.render(target);
+	if (entries.size() > 0)
+	{
+		marker.render(target);
+	}
+}
+
+void Selection::moveMarker(Direction direction)
+{
+	std::size_t index =
+			(viewIndex.y + markerIndex.y) * fieldSize.x +
+			viewIndex.x + markerIndex.x;
+
+	switch (direction)
+	{
+	case Direction::Left:
+		if (markerIndex.x > 0)
+		{
+			markerIndex.x--;
+		}
+		else if (viewIndex.x > 0)
+		{
+			viewIndex.x--;
+		}
+		break;
+
+	case Direction::Up:
+		if (markerIndex.y > 0)
+		{
+			markerIndex.y--;
+		}
+		else if (viewIndex.y > 0)
+		{
+			viewIndex.y--;
+		}
+		break;
+
+	case Direction::Right:
+		if (index + 1 < entries.size())
+		{
+			if (markerIndex.x < viewSize.x - 1)
+			{
+				markerIndex.x++;
+			}
+			else if (viewIndex.x + viewSize.x < fieldSize.x)
+			{
+				viewIndex.x++;
+			}
+		}
+		break;
+
+	case Direction::Down:
+		if (index + fieldSize.x < entries.size())
+		{
+			if (markerIndex.y < viewSize.y - 1) {
+				markerIndex.y++;
+			}
+			else if (viewIndex.y + viewSize.y < fieldSize.y)
+			{
+					viewIndex.y++;
+			}
+		}
+		break;
+
+	default:
+		break;
+	}
+
+	marker.setPosition(
+			position.x + offset.x + spacing.x * markerIndex.x,
+			position.y + offset.y + spacing.y * markerIndex.y);
+
+	updateEntriesPosition();
 }
 
 void Selection::addEntry(std::string name)
@@ -172,8 +240,9 @@ void Selection::addEntry(std::string name)
 	entry.setString(name);
 	entry.setPosition(
 			position.x + offset.x + spacing.x * (entries.size() % fieldSize.x)
-			+ markerSpacing,
-			position.y + offset.y + spacing.y * (entries.size() / fieldSize.x));
+					+ markerSpacing,
+			position.y + offset.y + spacing.y * (entries.size() / fieldSize.x)
+					- textSize * 0.2f);
 	entry.setFillColor(sf::Color::White);
 
 	entries.push_back(entry);
@@ -186,6 +255,26 @@ void Selection::removeEntry()
 		entries.pop_back();
 	}
 }
+
+// Getters / Setters
+const std::string Selection::getSelectedEntry() const
+{
+	return entries[(viewIndex.y + markerIndex.y) * fieldSize.x
+				   + viewIndex.x + markerIndex.x].getString();
+}
+
+/*
+const sf::Vector2u& Selection::getMarkerIndex() const {
+	return markerIndex;
+}
+
+void Selection::setMarkerIndex(const sf::Vector2u& markerIndex) {
+	if (markerIndex.x < viewSize.x && markerIndex.y < viewSize.y) {
+		this->markerIndex = markerIndex;
+		update();
+	}
+}
+*/
 
 /*
 void Selection::setEntries(const std::vector<std::string>& entries) {
@@ -220,76 +309,34 @@ void Selection::setViewSize(const sf::Vector2i& viewSize) {
 	update();
 }*/
 
-/*
-const sf::Vector2i& Selection::getMarkerIndex() const {
-	return markerIndex;
-}
+// Internal
+void Selection::updateEntriesPosition()
+{
+	for (size_t y = 0; y < viewSize.y; y++)
+	{
+		for (size_t x = 0; x < viewSize.x; x++)
+		{
+			std::size_t index =
+					(viewIndex.y + y) * fieldSize.x +
+					viewIndex.x + x;
 
-void Selection::setMarkerIndex(const sf::Vector2i& markerIndex) {
-	if (markerIndex.x < viewSize.x && markerIndex.y < viewSize.y) {
-		this->markerIndex = markerIndex;
-		update();
-	}
-}
-
-void Selection::moveMarkerIndex(Direction direction) {
-	if (markerIndex.x != -1 && markerIndex.y != -1) {
-		switch (direction) {
-
-		case Direction::Left:
-			if (markerIndex.x > 0)
-				markerIndex.x--;
-			else if (viewIndex.x > 0)
-				viewIndex.x--;
-			break;
-
-		case Direction::Up:
-			if (markerIndex.y > 0)
-				markerIndex.y--;
-			else if (viewIndex.y > 0)
-				viewIndex.y--;
-			break;
-
-		case Direction::Right:
-			if (markerIndex.x < viewSize.x - 1)
-				markerIndex.x++;
-			else if (viewIndex.x + viewSize.x < fieldSize.x) {
-				std::size_t entriesIndex =
-						(viewIndex.y + markerIndex.y) * fieldSize.x +
-						viewIndex.x + markerIndex.x + 1;
-				if (entriesIndex < entries.size())
-					viewIndex.x++;
-			}
-			break;
-
-		case Direction::Down:
-			if (markerIndex.y < viewSize.y - 1) {
-				markerIndex.y++;
-			}
-			else if (viewIndex.y + viewSize.y < fieldSize.y) {
-				std::size_t entriesIndex =
-						(viewIndex.y + markerIndex.y + 1) * fieldSize.x +
-						viewIndex.x + markerIndex.x;
-				if (entriesIndex < entries.size())
-					viewIndex.y++;
-			}
-			break;
-
-		default:
-			break;
+			entries[index].setPosition(
+					position.x + offset.x + spacing.x * x
+							+ markerSpacing,
+					position.y + offset.y + spacing.y * y
+							- textSize * 0.2f);
 		}
-		update();
 	}
 }
-*/
 
+// Initialization
 void Selection::initVariables()
 {
 	markerSpacing = textSize;
 
 	this->spacing = {
 			(size.x - offset.x * 2) / viewSize.x,
-			(size.y - offset.y * 2 - textSize * 1.3f) / (viewSize.y - 1)};
+			(size.y - offset.y * 2 - textSize) / (viewSize.y - 1)};
 
 	viewIndex = {0, 0};
 	markerIndex = {0, 0};
@@ -303,6 +350,16 @@ void Selection::initContainer()
 	container.setOutlineThickness(-3);
 	container.setOutlineColor(sf::Color::White);
 }
+
+void gui::Selection::initMarker()
+{
+	marker.setPosition(
+			position.x + offset.x + spacing.x * markerIndex.x,
+			position.y + offset.y + spacing.y * markerIndex.y);
+	marker.setSize(textSize * 0.8f);
+	marker.setColor(sf::Color::White);
+}
+
 /*
 const sf::Vector2f& Selection::getSize() const {
 	return size;

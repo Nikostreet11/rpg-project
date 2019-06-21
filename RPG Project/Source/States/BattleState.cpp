@@ -64,6 +64,26 @@ void BattleState::updateInput(const float& dt)
 		else
 			unpauseState();
 	}
+
+	if (keybinds["SELECT_UP"].isPressed())
+	{
+		actionMenu->moveMarker(Direction::Up);
+	}
+
+	if (keybinds["SELECT_LEFT"].isPressed())
+	{
+		actionMenu->moveMarker(Direction::Left);
+	}
+
+	if (keybinds["SELECT_DOWN"].isPressed())
+	{
+		actionMenu->moveMarker(Direction::Down);
+	}
+
+	if (keybinds["SELECT_RIGHT"].isPressed())
+	{
+		actionMenu->moveMarker(Direction::Right);
+	}
 }
 
 void BattleState::updatePauseMenu()
@@ -128,7 +148,7 @@ void BattleState::initDeferredRendering()
 
 void BattleState::initBindings()
 {
-	std::ifstream ifs("Config/Keybinds/GameState.ini");
+	std::ifstream ifs("Config/Keybinds/BattleState.ini");
 
 	if (ifs.is_open())
 	{
@@ -228,9 +248,9 @@ void BattleState::initActionMenu()
 {
 	actionMenu.reset(new gui::Selection(
 			sf::Vector2f(1200, 700),
-			sf::Vector2f(600, 300),
+			sf::Vector2f(600, 270),
 			sf::Vector2f(30, 50),
-			sf::Vector2u(2, 2),
+			sf::Vector2u(3, 3),
 			sf::Vector2u(2, 2),
 			50,
 			font));
@@ -239,6 +259,10 @@ void BattleState::initActionMenu()
 	actionMenu->addEntry("MAGIC");
 	actionMenu->addEntry("OBJECT");
 	actionMenu->addEntry("FLEE");
+	actionMenu->addEntry("TEST 1");
+	actionMenu->addEntry("TEST 2");
+	actionMenu->addEntry("TEST 3");
+	actionMenu->addEntry("TEST 4");
 }
 
 void BattleState::initPauseMenu()
