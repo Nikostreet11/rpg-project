@@ -5,15 +5,16 @@
  *      Author: nicop
  */
 
-#ifndef SOURCE_GRAPHICS_ICON_HPP_
-#define SOURCE_GRAPHICS_ICON_HPP_
+#ifndef ICONS_ICON_HPP_
+#define ICONS_ICON_HPP_
 
-#include <SFML/Graphics.hpp>
+#include "pch.hpp"
 
-class Icon: public sf::Transformable, public sf::Drawable {
+class Icon:
+		public sf::Transformable
+{
 public:
-
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
+	virtual void render(sf::RenderTarget& target) = 0;
 
 	float getSize() const;
 	//void setSize(const sf::Vector2f& size);
@@ -31,4 +32,4 @@ protected:
 	sf::Color color;
 };
 
-#endif /* SOURCE_GRAPHICS_ICON_HPP_ */
+#endif /* ICONS_ICON_HPP_ */

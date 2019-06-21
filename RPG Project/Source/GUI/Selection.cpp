@@ -35,6 +35,10 @@ scrollsSize(20)*/
 
 	initVariables();
 	initContainer();
+
+	marker.setPosition(position);
+	marker.setSize(textSize);
+	marker.setColor(sf::Color::White);
 }
 
 Selection::~Selection() {}
@@ -156,6 +160,8 @@ void Selection::render(sf::RenderTarget& target)
 			}
 		}
 	}
+
+	marker.render(target);
 }
 
 void Selection::addEntry(std::string name)

@@ -10,7 +10,8 @@
 
 #include "pch.hpp"
 
-#include "../Direction.hpp"
+#include "..\Direction.hpp"
+#include "..\Icons\Caret.hpp"
 //#include "../Exclude/Graphics/Angle.hpp"
 //#include "../Exclude/Graphics/Caret.hpp"
 //#include "../Exclude/MenuContainer.h"
@@ -87,6 +88,7 @@ private:
 	std::vector<sf::Text> entries;
 	std::shared_ptr<sf::Font> font;
 	//std::vector<std::string> entries;
+	icons::Caret marker;
 
 	// Variables
 	sf::Vector2f position;
@@ -111,7 +113,6 @@ private:
 	float markerSize;
 	float scrollsSize;
 
-	icons::Caret marker;
 	icons::Angle leftScroll;
 	icons::Angle topScroll;
 	icons::Angle rightScroll;

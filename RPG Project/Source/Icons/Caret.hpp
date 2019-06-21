@@ -5,19 +5,22 @@
  *      Author: nicop
  */
 
-#ifndef SOURCE_GRAPHICS_CARET_HPP_
-#define SOURCE_GRAPHICS_CARET_HPP_
+#ifndef ICONS_CARET_HPP_
+#define ICONS_CARET_HPP_
 
-#include "../Exclude/Graphics/Icon.hpp"
+#include "Icon.hpp"
 
-namespace icons {
+namespace icons
+{
 
-class Caret: public Icon {
+class Caret:
+		public Icon
+{
 public:
 	Caret();
 	virtual ~Caret();
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void render(sf::RenderTarget& target);
 
 	//virtual void setSize(float size) override;
 
@@ -31,4 +34,4 @@ private:
 
 } /* namespace icons */
 
-#endif /* SOURCE_GRAPHICS_CARET_HPP_ */
+#endif /* ICONS_CARET_HPP_ */

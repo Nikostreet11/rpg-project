@@ -5,17 +5,21 @@
  *      Author: nicop
  */
 
-#include "../Exclude/Graphics/Icon.hpp"
+#include "Icon.hpp"
 
-Icon::Icon() {
+Icon::Icon()
+{
 	//aspectRatio = 1;
 	size = 0;
 	color = sf::Color::Black;
 }
 
-Icon::~Icon() {}
+Icon::~Icon()
+{
+}
 
-float Icon::getSize() const {
+float Icon::getSize() const
+{
 	return size;
 }
 
@@ -24,16 +28,19 @@ float Icon::getSize() const {
 	update();
 }*/
 
-void Icon::setSize(float size) {
+void Icon::setSize(float size)
+{
 	this->size = size;//sf::Vector2f(size * aspectRatio, size);
 	update();
 }
 
-const sf::Color& Icon::getColor() const {
+const sf::Color& Icon::getColor() const
+{
 	return color;
 }
 
-void Icon::setColor(const sf::Color& color) {
+void Icon::setColor(const sf::Color& color)
+{
 	this->color = color;
 	update();
 }

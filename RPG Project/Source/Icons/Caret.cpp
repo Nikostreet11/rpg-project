@@ -5,22 +5,25 @@
  *      Author: nicop
  */
 
-#include "../Exclude/Graphics/Caret.hpp"
+#include "Caret.hpp"
 
-namespace icons {
+namespace icons
+{
 
-Caret::Caret() {
+Caret::Caret()
+{
 	update();
 }
 
 Caret::~Caret() {}
 
-void Caret::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	states.transform *= this->getTransform();
-	target.draw(vertexArray, states);
+void Caret::render(sf::RenderTarget& target)
+{
+	target.draw(vertexArray);
 }
 
-void Caret::update() {
+void Caret::update()
+{
 	loadVertexArray();
 
 	// sf::FloatRect bounds = vertexArray.getBounds();
@@ -32,7 +35,8 @@ void Caret::update() {
 	}
 }
 
-void Caret::loadVertexArray() {
+void Caret::loadVertexArray()
+{
 	vertexArray.setPrimitiveType(sf::TriangleStrip);
 	vertexArray.resize(5);
 
