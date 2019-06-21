@@ -12,6 +12,7 @@
 
 #include "..\Direction.hpp"
 #include "..\Icons\Caret.hpp"
+#include "..\Icons\Angle.hpp"
 //#include "../Exclude/Graphics/Angle.hpp"
 //#include "../Exclude/Graphics/Caret.hpp"
 //#include "../Exclude/MenuContainer.h"
@@ -35,6 +36,10 @@ public:
 	// Functions
 	void update();
 	void render(sf::RenderTarget& target);
+	void renderContainer(sf::RenderTarget& target);
+	void renderEntries(sf::RenderTarget& target);
+	void renderMarker(sf::RenderTarget& target);
+	void renderScrolls(sf::RenderTarget& target);
 
 	void moveMarker(Direction direction);
 	void addEntry(std::string name);
@@ -83,6 +88,7 @@ private:
 	void initVariables();
 	void initContainer();
 	void initMarker();
+	void initScrolls();
 
 	// Resources
 	sf::RectangleShape container;
@@ -91,12 +97,10 @@ private:
 	//std::vector<std::string> entries;
 	icons::Caret marker;
 
-	/*
 	icons::Angle leftScroll;
 	icons::Angle topScroll;
 	icons::Angle rightScroll;
 	icons::Angle bottomScroll;
-	*/
 
 	// Variables
 	sf::Vector2f position;
@@ -104,6 +108,7 @@ private:
 	sf::Vector2f offset;
 	sf::Vector2f spacing;
 	float markerSpacing;
+	float scrollsSize;
 	//sf::Vector2f markerSpacing;
 
 	sf::Vector2u fieldSize;

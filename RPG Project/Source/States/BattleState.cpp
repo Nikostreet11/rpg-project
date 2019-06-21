@@ -249,8 +249,8 @@ void BattleState::initActionMenu()
 	actionMenu.reset(new gui::Selection(
 			sf::Vector2f(1200, 700),
 			sf::Vector2f(600, 270),
-			sf::Vector2f(30, 50),
-			sf::Vector2u(3, 3),
+			sf::Vector2f(40, 50),
+			sf::Vector2u(2, 2),
 			sf::Vector2u(2, 2),
 			50,
 			font));
@@ -259,10 +259,6 @@ void BattleState::initActionMenu()
 	actionMenu->addEntry("MAGIC");
 	actionMenu->addEntry("OBJECT");
 	actionMenu->addEntry("FLEE");
-	actionMenu->addEntry("TEST 1");
-	actionMenu->addEntry("TEST 2");
-	actionMenu->addEntry("TEST 3");
-	actionMenu->addEntry("TEST 4");
 }
 
 void BattleState::initPauseMenu()

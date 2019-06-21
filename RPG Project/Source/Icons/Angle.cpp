@@ -5,22 +5,27 @@
  *      Author: nicop
  */
 
-#include "../Exclude/Graphics/Angle.hpp"
+#include "Angle.hpp"
 
-namespace icons {
+namespace icons
+{
 
-Angle::Angle() {
+Angle::Angle()
+{
 	update();
 }
 
 Angle::~Angle() {}
 
-void Angle::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void Angle::render(sf::RenderTarget& target)
+{
+	sf::RenderStates states;
 	states.transform *= this->getTransform();
 	target.draw(vertexArray, states);
 }
 
-void Angle::update() {
+void Angle::update()
+{
 	loadVertexArray();
 
 	/*sf::FloatRect bounds = vertexArray.getBounds();
@@ -32,7 +37,8 @@ void Angle::update() {
 	}
 }
 
-void Angle::loadVertexArray() {
+void Angle::loadVertexArray()
+{
 	vertexArray.setPrimitiveType(sf::TriangleStrip);
 	vertexArray.resize(6);
 

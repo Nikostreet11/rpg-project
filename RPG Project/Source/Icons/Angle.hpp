@@ -5,19 +5,22 @@
  *      Author: nicop
  */
 
-#ifndef SOURCE_GRAPHICS_ANGLE_HPP_
-#define SOURCE_GRAPHICS_ANGLE_HPP_
+#ifndef ICONS_ANGLE_HPP_
+#define ICONS_ANGLE_HPP_
 
-#include "../Exclude/Graphics/Icon.hpp"
+#include "Icon.hpp"
 
-namespace icons {
+namespace icons
+{
 
-class Angle: public Icon {
+class Angle:
+		public Icon
+{
 public:
 	Angle();
 	virtual ~Angle();
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void render(sf::RenderTarget& target);
 
 	//virtual void setSize(float size) override;
 
@@ -31,4 +34,4 @@ private:
 
 } /* namespace icons */
 
-#endif /* SOURCE_GRAPHICS_ANGLE_HPP_ */
+#endif /* ICONS_ANGLE_HPP_ */

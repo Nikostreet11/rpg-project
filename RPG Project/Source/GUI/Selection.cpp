@@ -36,6 +36,7 @@ scrollsSize(20)*/
 	initVariables();
 	initContainer();
 	initMarker();
+	initScrolls();
 }
 
 Selection::~Selection() {}
@@ -49,14 +50,6 @@ void Selection::onDraw(sf::RenderTarget& target, sf::RenderStates states) const 
 	if (markerIndex != sf::Vector2i(-1, -1))
 		target.draw(marker, states);
 
-	if (viewIndex.x > 0)
-		target.draw(leftScroll, states);
-	if (viewIndex.y > 0)
-		target.draw(topScroll, states);
-	if (viewIndex.x + viewSize.x < fieldSize.x)
-		target.draw(rightScroll, states);
-	if (viewIndex.y + viewSize.y < fieldSize.y)
-		target.draw(bottomScroll, states);
 }
 */
 
@@ -105,41 +98,24 @@ void Selection::update() {
 				offset.x + markerIndex.x * spacing.x - marker.getSize(),
 				offset.y + markerIndex.y * spacing.y + textSize - marker.getSize()));
 	}
-
-	leftScroll.setSize(scrollsSize);
-	leftScroll.setColor(scrollsColor);
-	leftScroll.setOrigin(sf::Vector2f(scrollsSize, scrollsSize));
-	leftScroll.setRotation(180);
-	leftScroll.setPosition(sf::Vector2f(0, size.y / 2 - scrollsSize / 2));
-
-	topScroll.setSize(scrollsSize);
-	topScroll.setColor(scrollsColor);
-	topScroll.setOrigin(sf::Vector2f(scrollsSize, 0));
-	topScroll.setRotation(270);
-	topScroll.setPosition(sf::Vector2f(size.x / 2 - scrollsSize / 2, 0));
-
-	rightScroll.setSize(scrollsSize);
-	rightScroll.setColor(scrollsColor);
-	rightScroll.setOrigin(sf::Vector2f(0, 0));
-	rightScroll.setRotation(0);
-	rightScroll.setPosition(sf::Vector2f(
-			size.x - scrollsSize,
-			size.y / 2 - scrollsSize / 2));
-
-	bottomScroll.setSize(scrollsSize);
-	bottomScroll.setColor(scrollsColor);
-	bottomScroll.setOrigin(sf::Vector2f(0, scrollsSize));
-	bottomScroll.setRotation(90);
-	bottomScroll.setPosition(sf::Vector2f(
-			size.x / 2 - scrollsSize / 2,
-			size.y - scrollsSize));
-			*/
+	*/
 }
 
 void Selection::render(sf::RenderTarget& target)
 {
-	target.draw(container);
+	renderContainer(target);
+	renderEntries(target);
+	renderMarker(target);
+	renderScrolls(target);
+}
 
+void Selection::renderContainer(sf::RenderTarget& target)
+{
+	target.draw(container);
+}
+
+void Selection::renderEntries(sf::RenderTarget& target)
+{
 	for (unsigned y = 0; y < viewSize.y; y++)
 	{
 		for (unsigned x = 0; x < viewSize.x; x++)
@@ -157,10 +133,36 @@ void Selection::render(sf::RenderTarget& target)
 			}
 		}
 	}
+}
 
+void Selection::renderMarker(sf::RenderTarget& target)
+{
 	if (entries.size() > 0)
 	{
 		marker.render(target);
+	}
+}
+
+void Selection::renderScrolls(sf::RenderTarget& target)
+{
+	if (viewIndex.y > 0)
+	{
+		topScroll.render(target);
+	}
+
+	if (viewIndex.x > 0)
+	{
+		leftScroll.render(target);
+	}
+
+	if (viewIndex.y + viewSize.y < fieldSize.y)
+	{
+		bottomScroll.render(target);
+	}
+
+	if (viewIndex.x + viewSize.x < fieldSize.x)
+	{
+		rightScroll.render(target);
 	}
 }
 
@@ -320,11 +322,14 @@ void Selection::updateEntriesPosition()
 					(viewIndex.y + y) * fieldSize.x +
 					viewIndex.x + x;
 
-			entries[index].setPosition(
-					position.x + offset.x + spacing.x * x
-							+ markerSpacing,
-					position.y + offset.y + spacing.y * y
-							- textSize * 0.2f);
+			if (index < entries.size())
+			{
+				entries[index].setPosition(
+						position.x + offset.x + spacing.x * x
+								+ markerSpacing,
+						position.y + offset.y + spacing.y * y
+								- textSize * 0.2f);
+			}
 		}
 	}
 }
@@ -332,7 +337,9 @@ void Selection::updateEntriesPosition()
 // Initialization
 void Selection::initVariables()
 {
-	markerSpacing = textSize;
+	markerSpacing = textSize * 0.8;
+
+	scrollsSize = textSize * 0.8f;
 
 	this->spacing = {
 			(size.x - offset.x * 2) / viewSize.x,
@@ -358,6 +365,41 @@ void gui::Selection::initMarker()
 			position.y + offset.y + spacing.y * markerIndex.y);
 	marker.setSize(textSize * 0.8f);
 	marker.setColor(sf::Color::White);
+}
+
+void Selection::initScrolls()
+{
+	topScroll.setPosition(sf::Vector2f(
+			position.x + size.x / 2 - scrollsSize / 2,
+			position.y));
+	topScroll.setSize(scrollsSize);
+	topScroll.setColor(sf::Color::White);
+	topScroll.setOrigin(sf::Vector2f(scrollsSize, 0));
+	topScroll.setRotation(270);
+
+	leftScroll.setPosition(sf::Vector2f(
+			position.x,
+			position.y + size.y / 2.f - scrollsSize / 2.f));
+	leftScroll.setSize(scrollsSize);
+	leftScroll.setColor(sf::Color::White);
+	leftScroll.setOrigin(sf::Vector2f(scrollsSize, scrollsSize));
+	leftScroll.setRotation(180);
+
+	bottomScroll.setPosition(sf::Vector2f(
+			position.x + size.x / 2 - scrollsSize / 2,
+			position.y + size.y - scrollsSize));
+	bottomScroll.setSize(scrollsSize);
+	bottomScroll.setColor(sf::Color::White);
+	bottomScroll.setOrigin(sf::Vector2f(0, scrollsSize));
+	bottomScroll.setRotation(90);
+
+	rightScroll.setPosition(sf::Vector2f(
+			position.x + size.x - scrollsSize,
+			position.y + size.y / 2 - scrollsSize / 2));
+	rightScroll.setSize(scrollsSize);
+	rightScroll.setColor(sf::Color::White);
+	rightScroll.setOrigin(sf::Vector2f(0, 0));
+	rightScroll.setRotation(0);
 }
 
 /*
