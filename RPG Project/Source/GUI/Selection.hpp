@@ -15,15 +15,28 @@
 //#include "../Exclude/Graphics/Caret.hpp"
 //#include "../Exclude/MenuContainer.h"
 
+namespace gui
+{
+
 class Selection
 {
 public:
-	Selection();
+	explicit Selection(
+			sf::Vector2f position,
+			sf::Vector2f size,
+			sf::Vector2f offset,
+			sf::Vector2u fieldSize,
+			sf::Vector2u viewSize,
+			unsigned textSize,
+			std::shared_ptr<sf::Font> font);
 	virtual ~Selection();
 
+	// Functions
 	void update();
 	void render(sf::RenderTarget& target);
 
+	void addEntry(std::string name);
+	void removeEntry();
 
 	// data
 	/*
@@ -36,10 +49,15 @@ public:
 	const sf::Vector2i& getViewSize() const;
 	void setViewSize(const sf::Vector2i& viewSize);
 	*/
+
+	/*
 	const sf::Vector2i& getMarkerIndex() const;
 	void setMarkerIndex(const sf::Vector2i& markerIndex);
 	void moveMarkerIndex(Direction direction);
 	// graphical
+	*/
+
+
 	/*
 	const sf::Vector2f& getSize() const;
 	void setSize(const sf::Vector2f& size);
@@ -60,37 +78,39 @@ public:
 	*/
 
 private:
-	// data
+	// Initialization
+	void initVariables();
+	void initContainer();
+
+	// Resources
+	sf::RectangleShape container;
+	std::vector<sf::Text> entries;
+	std::shared_ptr<sf::Font> font;
 	//std::vector<std::string> entries;
 
-	// logical
-	sf::Vector2i fieldSize;
-	sf::Vector2i viewIndex;
-	sf::Vector2i viewSize;
-	sf::Vector2i markerIndex;
-
-	// graphic
+	// Variables
+	sf::Vector2f position;
 	sf::Vector2f size;
-	sf::Vector2f spacing;
-	//sf::Vector2f markerSpacing;
 	sf::Vector2f offset;
+	sf::Vector2f spacing;
+	float markerSpacing;
+	//sf::Vector2f markerSpacing;
 
-	// colors
+	sf::Vector2u fieldSize;
+	sf::Vector2u viewIndex;
+	sf::Vector2u viewSize;
+	sf::Vector2u markerIndex;
+
+	unsigned textSize;
+
 	/*
 	sf::Color textColor;
 	sf::Color markerColor;
 	sf::Color scrollsColor;
-	*/
 
-	// preferences
-	sf::Font font;
-	int textSize;
 	float markerSize;
 	float scrollsSize;
 
-	// objects
-	std::vector<sf::Text> entries;
-	/*
 	icons::Caret marker;
 	icons::Angle leftScroll;
 	icons::Angle topScroll;
@@ -98,5 +118,7 @@ private:
 	icons::Angle bottomScroll;
 	*/
 };
+
+} /* namespace gui */
 
 #endif /* GUI_SELECTION_HPP_ */

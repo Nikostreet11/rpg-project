@@ -22,6 +22,7 @@ BattleState::BattleState(
 	initTextures();
 	initBackground();
 	initCharacters();
+	initActionMenu();
 	initPauseMenu();
 }
 
@@ -44,6 +45,7 @@ void BattleState::update(const float& dt)
 	if (!paused)
 	{
 		// Unpaused update
+		actionMenu->update();
 	}
 	else
 	{
@@ -83,6 +85,7 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 
 	renderTexture.draw(background);
 	renderCharacters(renderTexture);
+	actionMenu->render(renderTexture);
 
 	if (paused)
 	{
@@ -219,6 +222,23 @@ void BattleState::initCharacters()
 			sf::Vector2f(180, 180),
 			*textures["WARRIOR"])));
 	}
+}
+
+void BattleState::initActionMenu()
+{
+	actionMenu.reset(new gui::Selection(
+			sf::Vector2f(1200, 700),
+			sf::Vector2f(600, 300),
+			sf::Vector2f(30, 50),
+			sf::Vector2u(2, 2),
+			sf::Vector2u(2, 2),
+			50,
+			font));
+
+	actionMenu->addEntry("ATTACK");
+	actionMenu->addEntry("MAGIC");
+	actionMenu->addEntry("OBJECT");
+	actionMenu->addEntry("FLEE");
 }
 
 void BattleState::initPauseMenu()

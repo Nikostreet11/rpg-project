@@ -7,18 +7,34 @@
 
 #include "Selection.hpp"
 
-Selection::Selection() :
-entries(0)/*,
+namespace gui
+{
+
+Selection::Selection(
+		sf::Vector2f position,
+		sf::Vector2f size,
+		sf::Vector2f offset,
+		sf::Vector2u fieldSize,
+		sf::Vector2u viewSize,
+		unsigned textSize,
+		std::shared_ptr<sf::Font> font) :
+		font(std::move(font))/*,
 textColor(sf::Color::Black),
 markerColor(sf::Color::Black),
 scrollsColor(sf::Color::Black),
 textSize(30),
 markerSize(20),
-scrollsSize(20)*/ {
+scrollsSize(20)*/
+{
+	this->position = position;
+	this->size = size;
+	this->offset = offset;
+	this->fieldSize = fieldSize;
+	this->viewSize = viewSize;
+	this->textSize = textSize;
 
-	markerIndex = sf::Vector2i(-1, -1);
-
-	update();
+	initVariables();
+	initContainer();
 }
 
 Selection::~Selection() {}
@@ -121,9 +137,47 @@ void Selection::update() {
 
 void Selection::render(sf::RenderTarget& target)
 {
-	for (auto &entry : entries)
+	target.draw(container);
+
+	for (unsigned y = 0; y < viewSize.y; y++)
 	{
-		target.draw(entry);
+		for (unsigned x = 0; x < viewSize.x; x++)
+		{
+			std::size_t index =
+					(viewIndex.y + y) * fieldSize.x + viewIndex.x + x;
+
+			if (index < entries.size()
+				/*&& viewIndex.x + xIndex >= 0
+				&& viewIndex.y + yIndex >= 0
+				&& viewIndex.x + xIndex < fieldSize.x
+				&& viewIndex.y + yIndex < fieldSize.y*/)
+			{
+				target.draw(entries[index]);
+			}
+		}
+	}
+}
+
+void Selection::addEntry(std::string name)
+{
+	sf::Text entry;
+	entry.setFont(*font);
+	entry.setCharacterSize(textSize);
+	entry.setString(name);
+	entry.setPosition(
+			position.x + offset.x + spacing.x * (entries.size() % fieldSize.x)
+			+ markerSpacing,
+			position.y + offset.y + spacing.y * (entries.size() / fieldSize.x));
+	entry.setFillColor(sf::Color::White);
+
+	entries.push_back(entry);
+}
+
+void Selection::removeEntry()
+{
+	if (entries.size() > 0)
+	{
+		entries.pop_back();
 	}
 }
 
@@ -160,6 +214,7 @@ void Selection::setViewSize(const sf::Vector2i& viewSize) {
 	update();
 }*/
 
+/*
 const sf::Vector2i& Selection::getMarkerIndex() const {
 	return markerIndex;
 }
@@ -220,7 +275,28 @@ void Selection::moveMarkerIndex(Direction direction) {
 		update();
 	}
 }
+*/
 
+void Selection::initVariables()
+{
+	markerSpacing = textSize;
+
+	this->spacing = {
+			(size.x - offset.x * 2) / viewSize.x,
+			(size.y - offset.y * 2 - textSize * 1.3f) / (viewSize.y - 1)};
+
+	viewIndex = {0, 0};
+	markerIndex = {0, 0};
+}
+
+void Selection::initContainer()
+{
+	container.setPosition(position);
+	container.setSize(size);
+	container.setFillColor(sf::Color::Blue);
+	container.setOutlineThickness(-3);
+	container.setOutlineColor(sf::Color::White);
+}
 /*
 const sf::Vector2f& Selection::getSize() const {
 	return size;
@@ -285,3 +361,5 @@ void Selection::setTextSize(int textSize) {
 	update();
 }
 */
+
+} /* namespace gui */

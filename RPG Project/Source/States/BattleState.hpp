@@ -13,6 +13,7 @@
 #include "..\Entities\Character.hpp"
 #include "..\Entities\Monster.hpp"
 
+#include "..\GUI\Selection.hpp"
 #include "..\GUI\PauseMenu.hpp"
 
 class BattleState:
@@ -48,6 +49,7 @@ private:
 	void initTextures();
 	void initBackground();
 	void initCharacters();
+	void initActionMenu();
 	void initPauseMenu();
 
 	// Resources
@@ -55,7 +57,7 @@ private:
 	sf::Sprite renderSprite;
 	std::shared_ptr<sf::Font> font;
 	sf::Sprite background;
-	//std::unique_ptr<gui::Selection> Selection;
+	std::unique_ptr<gui::Selection> actionMenu;
 	std::unique_ptr<gui::PauseMenu> pauseMenu;
 
 	std::vector<std::shared_ptr<Character>> party;
