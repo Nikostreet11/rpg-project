@@ -16,13 +16,15 @@ BattleState::BattleState(
 		party(party),
 		enemies(enemies)*/
 {
+	initVariables();
 	initDeferredRendering();
 	initBindings();
 	initFonts();
 	initTextures();
 	initBackground();
 	initCharacters();
-	initActionMenu();
+	initDialogueMenu();
+	initActionMenu(Empty);
 	initPauseMenu();
 }
 
@@ -45,7 +47,9 @@ void BattleState::update(const float& dt)
 	if (!paused)
 	{
 		// Unpaused update
-		actionMenu->update();
+		updateBattleInput(dt);
+		//dialogueMenu->update();
+		//actionMenu->update();
 	}
 	else
 	{
@@ -64,25 +68,101 @@ void BattleState::updateInput(const float& dt)
 		else
 			unpauseState();
 	}
+}
 
-	if (keybinds["SELECT_UP"].isPressed())
+void BattleState::updateBattleInput(const float& dt)
+{
+	switch (phase)
 	{
-		actionMenu->moveMarker(Direction::Up);
+
+	case InitialPhase:
+
+		if (keybinds["CONFIRM"].isPressed())
+		{
+			dialogueMenu->setNextLine();
+
+			if (dialogueMenu->isEnded())
+			{
+				changePhase(ActionSelect);
+			}
+		}
+		break;
+
+	case ActionSelect:
+
+		if (keybinds["CONFIRM"].isPressed())
+		{
+			updateActionMenu(actionMenu->getSelectedEntry());
+		}
+
+		if (keybinds["SELECT_UP"].isPressed())
+		{
+			actionMenu->moveMarker(Direction::Up);
+		}
+
+		if (keybinds["SELECT_LEFT"].isPressed())
+		{
+			actionMenu->moveMarker(Direction::Left);
+		}
+
+		if (keybinds["SELECT_DOWN"].isPressed())
+		{
+			actionMenu->moveMarker(Direction::Down);
+		}
+
+		if (keybinds["SELECT_RIGHT"].isPressed())
+		{
+			actionMenu->moveMarker(Direction::Right);
+		}
+		break;
+
+	case TargetSelect:
+
+		if (keybinds["CONFIRM"].isPressed())
+		{
+			changePhase(ActionResults);
+		}
+		break;
+
+	case ActionResults:
+
+		if (keybinds["CONFIRM"].isPressed())
+		{
+			changePhase(ActionSelect);
+		}
+		break;
+
+	case EndPhase:
+
+		if (keybinds["CONFIRM"].isPressed())
+		{
+			endState();
+		}
+		break;
 	}
+}
 
-	if (keybinds["SELECT_LEFT"].isPressed())
+void BattleState::updateActionMenu(const std::string& entry)
+{
+	if (entry == "ATTACK")
 	{
-		actionMenu->moveMarker(Direction::Left);
+		changePhase(TargetSelect);
 	}
-
-	if (keybinds["SELECT_DOWN"].isPressed())
+	else if (entry == "MAGIC")
 	{
-		actionMenu->moveMarker(Direction::Down);
+		initActionMenu(MagicMenu);
 	}
-
-	if (keybinds["SELECT_RIGHT"].isPressed())
+	else if (entry == "OBJECT")
 	{
-		actionMenu->moveMarker(Direction::Right);
+		initActionMenu(ObjectMenu);
+	}
+	else if (entry == "FLEE")
+	{
+		endState();
+	}
+	else
+	{
+		changePhase(TargetSelect);
 	}
 }
 
@@ -105,12 +185,59 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 
 	renderTexture.draw(background);
 	renderCharacters(renderTexture);
-	actionMenu->render(renderTexture);
+	dialogueMenu->render(renderTexture);
+
+	// TODO: remove later
+	sf::Text hoverText;
+	hoverText.setFont(*font);
+	hoverText.setCharacterSize(70);
+	hoverText.setFillColor(sf::Color::White);
+	hoverText.setPosition(
+			0,
+			(graphicsSettings->resolution.height - 70 * 1.3f) / 2.f);
+
+	switch (phase)
+	{
+	case InitialPhase:
+		break;
+
+	case ActionSelect:
+		actionMenu->render(renderTexture);
+		break;
+
+	case TargetSelect:
+		hoverText.setString("TARGET SELECT PHASE");
+		hoverText.setPosition(
+				(graphicsSettings->resolution.width
+						- hoverText.getGlobalBounds().width) / 2.f,
+				hoverText.getPosition().y);
+		actionMenu->render(renderTexture);
+		renderTexture.draw(hoverText);
+		break;
+
+	case ActionResults:
+		hoverText.setString("ACTION RESULTS PHASE");
+		hoverText.setPosition(
+				(graphicsSettings->resolution.width
+						- hoverText.getGlobalBounds().width) / 2.f,
+				hoverText.getPosition().y);
+		renderTexture.draw(hoverText);
+		break;
+
+	case EndPhase:
+		hoverText.setString("END PHASE");
+		hoverText.setPosition(
+				(graphicsSettings->resolution.width
+						- hoverText.getGlobalBounds().width) / 2.f,
+				hoverText.getPosition().y);
+		renderTexture.draw(hoverText);
+		break;
+
+	}
 
 	if (paused)
 	{
 		// Pause menu render
-		renderTexture.setView(renderTexture.getDefaultView());
 		pauseMenu->render(renderTexture);
 	}
 
@@ -130,6 +257,39 @@ void BattleState::renderCharacters(sf::RenderTarget& target)
 	{
 		hero->render(target);
 	}
+}
+
+// Internal
+void BattleState::changePhase(Phase phase)
+{
+	switch (phase)
+	{
+
+	case InitialPhase:
+		initActionMenu(Empty);
+		break;
+
+	case ActionSelect:
+		initActionMenu(MainActions);
+		break;
+
+	case TargetSelect:
+		// TODO
+	case ActionResults:
+		// TODO
+		break;
+
+	case EndPhase:
+		endState();
+	}
+
+	this->phase = phase;
+}
+
+// Initialization
+void BattleState::initVariables()
+{
+	phase = BattleState::InitialPhase;
 }
 
 void BattleState::initDeferredRendering()
@@ -244,21 +404,64 @@ void BattleState::initCharacters()
 	}
 }
 
-void BattleState::initActionMenu()
+void BattleState::initDialogueMenu()
+{
+	std::vector<std::string> startDialogue =
+			{"Wild foes appeared!",
+			"Battle starts!!!"};\
+
+	dialogueMenu.reset(new gui::Dialogue(
+			{1000, 270},
+			{40, 50},
+			50,
+			startDialogue,
+			font));
+
+	dialogueMenu->setPosition(100, 700);
+}
+
+void BattleState::initActionMenu(ActionMenu menu)
 {
 	actionMenu.reset(new gui::Selection(
 			sf::Vector2f(1200, 700),
 			sf::Vector2f(600, 270),
 			sf::Vector2f(40, 50),
-			sf::Vector2u(2, 2),
+			sf::Vector2u(2, 3),
 			sf::Vector2u(2, 2),
 			50,
 			font));
 
-	actionMenu->addEntry("ATTACK");
-	actionMenu->addEntry("MAGIC");
-	actionMenu->addEntry("OBJECT");
-	actionMenu->addEntry("FLEE");
+	switch (menu)
+	{
+
+	case Empty:
+		break;
+
+	case MainActions:
+		actionMenu->addEntry("ATTACK");
+		actionMenu->addEntry("MAGIC");
+		actionMenu->addEntry("OBJECT");
+		actionMenu->addEntry("FLEE");
+		break;
+
+	case MagicMenu:
+		actionMenu->addEntry("FIRE");
+		actionMenu->addEntry("BLIZZARD");
+		actionMenu->addEntry("THUNDER");
+		actionMenu->addEntry("AERO");
+		actionMenu->addEntry("CURE");
+		actionMenu->addEntry("HEAL");
+		break;
+
+	case ObjectMenu:
+		actionMenu->addEntry("POTION");
+		actionMenu->addEntry("ETHER");
+		actionMenu->addEntry("PHOENIX DOWN");
+		actionMenu->addEntry("ANTIDOTE");
+		actionMenu->addEntry("MEGAPOTION");
+		actionMenu->addEntry("MEGAETHER");
+		break;
+	}
 }
 
 void BattleState::initPauseMenu()

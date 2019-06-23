@@ -13,6 +13,7 @@
 #include "..\Entities\Character.hpp"
 #include "..\Entities\Monster.hpp"
 
+#include "..\GUI\Dialogue.hpp"
 #include "..\GUI\Selection.hpp"
 #include "..\GUI\PauseMenu.hpp"
 
@@ -21,6 +22,22 @@ class BattleState:
 {
 public:
 	// Enumerators
+	enum Phase
+	{
+		InitialPhase,
+		ActionSelect,
+		TargetSelect,
+		ActionResults,
+		EndPhase
+	};
+
+	enum ActionMenu
+	{
+		Empty,
+		MainActions,
+		MagicMenu,
+		ObjectMenu,
+	};
 
 	// Constructor / Destructor
 	explicit BattleState(
@@ -34,6 +51,8 @@ public:
 
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
+	virtual void updateBattleInput(const float& dt);
+	virtual void updateActionMenu(const std::string& entry);
 	virtual void updatePauseMenu();
 	virtual void render(
 			std::shared_ptr<sf::RenderTarget> target = nullptr);
@@ -42,14 +61,19 @@ public:
 	// Getters / Setters
 
 private:
-	// Initialization functions
+	// Internal
+	void changePhase(Phase phase);
+
+	// Initialization
+	void initVariables();
 	void initDeferredRendering();
 	void initBindings();
 	void initFonts();
 	void initTextures();
 	void initBackground();
 	void initCharacters();
-	void initActionMenu();
+	void initDialogueMenu();
+	void initActionMenu(ActionMenu menu);
 	void initPauseMenu();
 
 	// Resources
@@ -57,6 +81,7 @@ private:
 	sf::Sprite renderSprite;
 	std::shared_ptr<sf::Font> font;
 	sf::Sprite background;
+	std::unique_ptr<gui::Dialogue> dialogueMenu;
 	std::unique_ptr<gui::Selection> actionMenu;
 	std::unique_ptr<gui::PauseMenu> pauseMenu;
 
@@ -64,6 +89,7 @@ private:
 	std::vector<std::shared_ptr<Character>> enemies;
 
 	// Variables
+	Phase phase;
 };
 
 #endif /* STATES_BATTLESTATE_HPP_ */

@@ -155,12 +155,14 @@ void Selection::renderScrolls(sf::RenderTarget& target)
 		leftScroll.render(target);
 	}
 
-	if (viewIndex.y + viewSize.y < fieldSize.y)
+	if (viewIndex.y + viewSize.y < fieldSize.y
+		&& entries.size() > fieldSize.x * viewSize.y)
 	{
 		bottomScroll.render(target);
 	}
 
-	if (viewIndex.x + viewSize.x < fieldSize.x)
+	if (viewIndex.x + viewSize.x < fieldSize.x
+		&& entries.size() > viewSize.x)
 	{
 		rightScroll.render(target);
 	}
