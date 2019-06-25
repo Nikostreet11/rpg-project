@@ -411,7 +411,7 @@ void BattleState::initDialogueMenu()
 			"Battle starts!!!"};\
 
 	dialogueMenu.reset(new gui::Dialogue(
-			{1000, 270},
+			{900, 270},
 			{40, 50},
 			50,
 			startDialogue,
@@ -423,12 +423,12 @@ void BattleState::initDialogueMenu()
 void BattleState::initActionMenu(ActionMenu menu)
 {
 	actionMenu.reset(new gui::Selection(
-			sf::Vector2f(1200, 700),
-			sf::Vector2f(600, 270),
-			sf::Vector2f(40, 50),
+			sf::Vector2f(1100, 700),
+			sf::Vector2f(700, 270),
+			sf::Vector2f(60, 50),
 			sf::Vector2u(2, 3),
 			sf::Vector2u(2, 2),
-			50,
+			45,
 			font));
 
 	switch (menu)
@@ -447,8 +447,8 @@ void BattleState::initActionMenu(ActionMenu menu)
 	case MagicMenu:
 		actionMenu->addEntry("FIRE");
 		actionMenu->addEntry("BLIZZARD");
-		actionMenu->addEntry("THUNDER");
 		actionMenu->addEntry("AERO");
+		actionMenu->addEntry("THUNDER");
 		actionMenu->addEntry("CURE");
 		actionMenu->addEntry("HEAL");
 		break;
@@ -456,10 +456,10 @@ void BattleState::initActionMenu(ActionMenu menu)
 	case ObjectMenu:
 		actionMenu->addEntry("POTION");
 		actionMenu->addEntry("ETHER");
-		actionMenu->addEntry("PHOENIX DOWN");
+		actionMenu->addEntry("PHNX DWN");
 		actionMenu->addEntry("ANTIDOTE");
-		actionMenu->addEntry("MEGAPOTION");
-		actionMenu->addEntry("MEGAETHER");
+		actionMenu->addEntry("MGPOTION");
+		actionMenu->addEntry("MGETHER");
 		break;
 	}
 }

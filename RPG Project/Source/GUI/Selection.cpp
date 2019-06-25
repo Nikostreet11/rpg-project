@@ -241,15 +241,17 @@ void Selection::addEntry(std::string name)
 	sf::Text entry;
 	entry.setFont(*font);
 	entry.setCharacterSize(textSize);
+	entry.setFillColor(sf::Color::White);
 	entry.setString(name);
+	/*
 	entry.setPosition(
 			position.x + offset.x + spacing.x * (entries.size() % fieldSize.x)
 					+ markerSpacing,
 			position.y + offset.y + spacing.y * (entries.size() / fieldSize.x)
 					- textSize * 0.2f);
-	entry.setFillColor(sf::Color::White);
-
+	*/
 	entries.push_back(entry);
+	updateEntriesPosition();
 }
 
 void Selection::removeEntry()
@@ -328,9 +330,14 @@ void Selection::updateEntriesPosition()
 			{
 				entries[index].setPosition(
 						position.x + offset.x + spacing.x * x
-								+ markerSpacing,
+								/*+ markerSpacing*/,
 						position.y + offset.y + spacing.y * y
 								- textSize * 0.2f);
+
+				if (x == markerIndex.x && y == markerIndex.y)
+				{
+					entries[index].move(markerSpacing, 0);
+				}
 			}
 		}
 	}
@@ -344,7 +351,7 @@ void Selection::initVariables()
 	scrollsSize = textSize * 0.8f;
 
 	this->spacing = {
-			(size.x - offset.x * 2) / viewSize.x,
+			(size.x - offset.x) / viewSize.x,
 			(size.y - offset.y * 2 - textSize) / (viewSize.y - 1)};
 
 	viewIndex = {0, 0};
