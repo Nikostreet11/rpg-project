@@ -35,13 +35,14 @@ public:
 	const sf::Vector2f getSize() const;
 	void setSize(const sf::Vector2f& size);
 
+	const std::string& getName() const;
+	void setName(const std::string& name);
 	//int getAgility() const;
 	//int getEndurance() const;
 	//float getHealth() const;
 	//void setHealth(float health);
 	//int getPosX() const;
 	//int getPosY() const;
-	//const std::string& getName() const;
 
 protected:
 	// Internal
@@ -50,7 +51,7 @@ protected:
 
 	// Initialization
 	virtual void initVariables();
-	void initStats();
+	virtual void initStats();
 	void initSprite(
 			const sf::Texture& spriteset,
 			sf::Vector2f position,

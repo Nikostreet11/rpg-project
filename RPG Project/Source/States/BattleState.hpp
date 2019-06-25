@@ -16,6 +16,7 @@
 #include "..\GUI\Dialogue.hpp"
 #include "..\GUI\Selection.hpp"
 #include "..\GUI\PauseMenu.hpp"
+#include "..\Icons\Caret.hpp"
 
 class BattleState:
 		public State
@@ -37,6 +38,7 @@ public:
 		MainActions,
 		MagicMenu,
 		ObjectMenu,
+		TargetMenu
 	};
 
 	// Constructor / Destructor
@@ -75,8 +77,13 @@ private:
 	void initDialogueMenu();
 	void initActionMenu(ActionMenu menu);
 	void initPauseMenu();
+	void initTargetMarker();
 
 	// Resources
+	std::vector<std::shared_ptr<Character>> party;
+	std::vector<std::shared_ptr<Character>> enemies;
+	std::vector<std::shared_ptr<Character>> targets;
+
 	sf::RenderTexture renderTexture;
 	sf::Sprite renderSprite;
 	std::shared_ptr<sf::Font> font;
@@ -84,12 +91,11 @@ private:
 	std::unique_ptr<gui::Dialogue> dialogueMenu;
 	std::unique_ptr<gui::Selection> actionMenu;
 	std::unique_ptr<gui::PauseMenu> pauseMenu;
-
-	std::vector<std::shared_ptr<Character>> party;
-	std::vector<std::shared_ptr<Character>> enemies;
+	icons::Caret targetMarker;
 
 	// Variables
 	Phase phase;
+	ActionMenu menu;
 };
 
 #endif /* STATES_BATTLESTATE_HPP_ */

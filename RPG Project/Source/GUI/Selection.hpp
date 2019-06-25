@@ -47,6 +47,7 @@ public:
 
 	// Getters / Setters
 	const std::string getSelectedEntry() const;
+	const size_t getIndex() const;
 	//const sf::Vector2u& getMarkerIndex() const;
 	//void setMarkerIndex(const sf::Vector2u& markerIndex);
 

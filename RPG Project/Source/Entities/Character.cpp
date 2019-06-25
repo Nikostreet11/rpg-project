@@ -89,6 +89,16 @@ void Character::setSize(const sf::Vector2f& size)
 			size.y / sprite.getTextureRect().height);
 }
 
+const std::string& Character::getName() const
+{
+	return name;
+}
+
+void Character::setName(const std::string& name)
+{
+	this->name = name;
+}
+
 /*
 int Character::getAgility() const
 {
@@ -109,13 +119,9 @@ void Character::setHealth(float health)
 {
 	this->health = health;
 }
-
-const std::string& Character::getName() const
-{
-	return name;
-}
 */
 
+// Initialization
 void Character::initVariables()
 {
 	spriteOffset = sf::Vector2u(16, 16);

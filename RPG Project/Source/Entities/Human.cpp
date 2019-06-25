@@ -17,6 +17,7 @@ Human::Human(
 	this->type = type;
 
 	initVariables();
+	initStats();
 	initSprite(spriteset, position, size);
 	/*
 	weapon = nullptr;
@@ -92,4 +93,61 @@ void Human::initVariables()
 	spriteSize = {48, 48};
 	spriteSpacing = {16, 16};
 	spriteIndex = {1, 0};
+}
+
+void Human::initStats()
+{
+	switch (type)
+	{
+	case BlackMage:
+		name = "Black mage";
+		break;
+
+	case BlackWizard:
+		name = "Black wizard";
+		break;
+
+	case Knight:
+		name = "Knight";
+		break;
+
+	case Master:
+		name = "Master";
+		break;
+
+	case Monk:
+		name = "Monk";
+		break;
+
+	case Ninja:
+		name = "Ninja";
+		break;
+
+	case RedMage:
+		name = "Red mage";
+		break;
+
+	case RedWizard:
+		name = "Red wizard";
+		break;
+
+	case Thief:
+		name = "Thief";
+		break;
+
+	case Warrior:
+		name = "Warrior";
+		break;
+
+	case WhiteMage:
+		name = "White mage";
+		break;
+
+	case WhiteWizard:
+		name = "White wizard";
+		break;
+
+	default:
+		break;
+	}
 }

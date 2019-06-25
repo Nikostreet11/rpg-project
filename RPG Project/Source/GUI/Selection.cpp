@@ -332,7 +332,7 @@ void Selection::updateEntriesPosition()
 						position.x + offset.x + spacing.x * x
 								/*+ markerSpacing*/,
 						position.y + offset.y + spacing.y * y
-								- textSize * 0.2f);
+								- textSize * 0.33f);
 
 				if (x == markerIndex.x && y == markerIndex.y)
 				{
@@ -346,7 +346,7 @@ void Selection::updateEntriesPosition()
 // Initialization
 void Selection::initVariables()
 {
-	markerSpacing = textSize * 0.8;
+	markerSpacing = textSize * 0.50f;
 
 	scrollsSize = textSize * 0.8f;
 
@@ -363,7 +363,7 @@ void Selection::initContainer()
 	container.setPosition(position);
 	container.setSize(size);
 	container.setFillColor(sf::Color::Blue);
-	container.setOutlineThickness(-3);
+	container.setOutlineThickness(-5);
 	container.setOutlineColor(sf::Color::White);
 }
 
@@ -372,7 +372,7 @@ void gui::Selection::initMarker()
 	marker.setPosition(
 			position.x + offset.x + spacing.x * markerIndex.x,
 			position.y + offset.y + spacing.y * markerIndex.y);
-	marker.setSize(textSize * 0.8f);
+	marker.setSize(textSize * 0.60f);
 	marker.setColor(sf::Color::White);
 }
 
@@ -477,3 +477,9 @@ void Selection::setTextSize(int textSize) {
 */
 
 } /* namespace gui */
+
+const size_t gui::Selection::getIndex() const
+{
+	return (viewIndex.y + markerIndex.y) * fieldSize.x +
+			viewIndex.x + markerIndex.x;
+}

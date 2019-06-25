@@ -26,6 +26,7 @@ BattleState::BattleState(
 	initDialogueMenu();
 	initActionMenu(Empty);
 	initPauseMenu();
+	initTargetMarker();
 }
 
 BattleState::~BattleState()
@@ -122,6 +123,46 @@ void BattleState::updateBattleInput(const float& dt)
 		{
 			changePhase(ActionResults);
 		}
+
+		if (keybinds["SELECT_UP"].isPressed())
+		{
+			actionMenu->moveMarker(Direction::Up);
+			size_t index = actionMenu->getIndex();
+			targetMarker.setPosition(targets[index]->getPosition());
+			targetMarker.move(
+					targets[index]->getSize().x / 2.f - targetMarker.getSize() / 2,
+					-targetMarker.getSize() * 0.8f);
+		}
+
+		if (keybinds["SELECT_LEFT"].isPressed())
+		{
+			actionMenu->moveMarker(Direction::Left);
+			size_t index = actionMenu->getIndex();
+			targetMarker.setPosition(targets[index]->getPosition());
+			targetMarker.move(
+					targets[index]->getSize().x / 2.f - targetMarker.getSize() / 2,
+					-targetMarker.getSize() * 0.8f);
+		}
+
+		if (keybinds["SELECT_DOWN"].isPressed())
+		{
+			actionMenu->moveMarker(Direction::Down);
+			size_t index = actionMenu->getIndex();
+			targetMarker.setPosition(targets[index]->getPosition());
+			targetMarker.move(
+					targets[index]->getSize().x / 2.f - targetMarker.getSize() / 2,
+					-targetMarker.getSize() * 0.8f);
+		}
+
+		if (keybinds["SELECT_RIGHT"].isPressed())
+		{
+			actionMenu->moveMarker(Direction::Right);
+			size_t index = actionMenu->getIndex();
+			targetMarker.setPosition(targets[index]->getPosition());
+			targetMarker.move(
+					targets[index]->getSize().x / 2.f - targetMarker.getSize() / 2,
+					-targetMarker.getSize() * 0.8f);
+		}
 		break;
 
 	case ActionResults:
@@ -213,6 +254,7 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 				hoverText.getPosition().y);
 		actionMenu->render(renderTexture);
 		renderTexture.draw(hoverText);
+		targetMarker.render(renderTexture);
 		break;
 
 	case ActionResults:
@@ -274,7 +316,26 @@ void BattleState::changePhase(Phase phase)
 		break;
 
 	case TargetSelect:
-		// TODO
+		// TODO: put in a separate function
+		targets.clear();
+
+		if (menu == ObjectMenu)
+		{
+			targets.insert(targets.end(), party.begin(), party.end());
+			targets.insert(targets.end(), enemies.begin(), enemies.end());
+		}
+		else
+		{
+			targets.insert(targets.end(), enemies.begin(), enemies.end());
+			targets.insert(targets.end(), party.begin(), party.end());
+		}
+		initActionMenu(TargetMenu);
+		targetMarker.setPosition(targets[0]->getPosition());
+		targetMarker.move(
+				targets[0]->getSize().x / 2.f - targetMarker.getSize() / 2,
+				-targetMarker.getSize() * 0.8f);
+		break;
+
 	case ActionResults:
 		// TODO
 		break;
@@ -460,33 +521,43 @@ void BattleState::initDialogueMenu()
 			"Battle starts!!!"};\
 
 	dialogueMenu.reset(new gui::Dialogue(
-			{900, 270},
+			{1000, 250},
 			{40, 50},
 			50,
 			startDialogue,
 			font));
 
-	dialogueMenu->setPosition(100, 700);
+	dialogueMenu->setPosition(100, 750);
 }
 
 void BattleState::initActionMenu(ActionMenu menu)
 {
-	actionMenu.reset(new gui::Selection(
-			sf::Vector2f(1100, 700),
-			sf::Vector2f(700, 270),
-			sf::Vector2f(60, 50),
-			sf::Vector2u(2, 3),
-			sf::Vector2u(2, 2),
-			45,
-			font));
-
 	switch (menu)
 	{
 
 	case Empty:
+
+		actionMenu.reset(new gui::Selection(
+				sf::Vector2f(1200, 750),
+				sf::Vector2f(600, 250),
+				sf::Vector2f(40, 50),
+				sf::Vector2u(2, 3),
+				sf::Vector2u(2, 2),
+				45,
+				font));
 		break;
 
 	case MainActions:
+
+		actionMenu.reset(new gui::Selection(
+				sf::Vector2f(1200, 750),
+				sf::Vector2f(600, 250),
+				sf::Vector2f(40, 50),
+				sf::Vector2u(2, 3),
+				sf::Vector2u(2, 2),
+				45,
+				font));
+
 		actionMenu->addEntry("ATTACK");
 		actionMenu->addEntry("MAGIC");
 		actionMenu->addEntry("OBJECT");
@@ -494,23 +565,61 @@ void BattleState::initActionMenu(ActionMenu menu)
 		break;
 
 	case MagicMenu:
-		actionMenu->addEntry("FIRE");
-		actionMenu->addEntry("BLIZZARD");
-		actionMenu->addEntry("AERO");
-		actionMenu->addEntry("THUNDER");
-		actionMenu->addEntry("CURE");
-		actionMenu->addEntry("HEAL");
+
+		actionMenu.reset(new gui::Selection(
+				sf::Vector2f(1200, 750),
+				sf::Vector2f(600, 250),
+				sf::Vector2f(30, 60),
+				sf::Vector2u(2, 3),
+				sf::Vector2u(2, 2),
+				40,
+				font));
+
+		actionMenu->addEntry("Fire");
+		actionMenu->addEntry("Blizzard");
+		actionMenu->addEntry("Aero");
+		actionMenu->addEntry("Thunder");
+		actionMenu->addEntry("Cure");
+		actionMenu->addEntry("Heal");
 		break;
 
 	case ObjectMenu:
-		actionMenu->addEntry("POTION");
-		actionMenu->addEntry("ETHER");
-		actionMenu->addEntry("PHNX DWN");
-		actionMenu->addEntry("ANTIDOTE");
-		actionMenu->addEntry("MGPOTION");
-		actionMenu->addEntry("MGETHER");
+
+		actionMenu.reset(new gui::Selection(
+				sf::Vector2f(1200, 750),
+				sf::Vector2f(600, 250),
+				sf::Vector2f(30, 60),
+				sf::Vector2u(2, 3),
+				sf::Vector2u(2, 2),
+				40,
+				font));
+
+		actionMenu->addEntry("Potion");
+		actionMenu->addEntry("Ether");
+		actionMenu->addEntry("Phoenix down");
+		actionMenu->addEntry("Antidote");
+		actionMenu->addEntry("Megapotion");
+		actionMenu->addEntry("Megaether");
 		break;
+
+	case TargetMenu:
+
+		actionMenu.reset(new gui::Selection(
+				sf::Vector2f(1200, 750),
+				sf::Vector2f(600, 250),
+				sf::Vector2f(60, 40),
+				sf::Vector2u(1, 12),
+				sf::Vector2u(1, 3),
+				40,
+				font));
+
+		for (auto &target : targets)
+		{
+			actionMenu->addEntry(target->getName());
+		}
 	}
+
+	this->menu = menu;
 }
 
 void BattleState::initPauseMenu()
@@ -518,4 +627,12 @@ void BattleState::initPauseMenu()
 	pauseMenu.reset(new gui::PauseMenu(window, font));
 
 	pauseMenu->addButton("QUIT", 800.f, "Quit");
+}
+
+void BattleState::initTargetMarker()
+{
+	targetMarker.setSize(40);
+	targetMarker.setOrigin(sf::Vector2f(0, targetMarker.getSize()));
+	targetMarker.setRotation(90);
+	targetMarker.setColor(sf::Color(255, 255, 255, 200));
 }

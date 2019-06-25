@@ -17,6 +17,7 @@ Monster::Monster(
 	this->type = type;
 
 	initVariables();
+	initStats();
 	initSprite(spriteset, position, size);
 }
 
@@ -36,7 +37,7 @@ void Monster::initVariables()
 		spriteIndex = {0, 0};
 		break;
 
-	case Type::Wolf:
+	case Wolf:
 		spriteIndex = {8, 0};
 		break;
 
@@ -70,6 +71,51 @@ void Monster::initVariables()
 
 	default:
 		spriteIndex = {0, 0};
+		break;
+	}
+}
+
+void Monster::initStats()
+{
+	switch (type)
+	{
+	case Goblin:
+		name = "Goblin";
+		break;
+
+	case Wolf:
+		name = "Wolf";
+		break;
+
+	case Piranha:
+		name = "Piranha";
+		break;
+
+	case Skeleton:
+		name = "Skeleton";
+		break;
+
+	case BlackWidow:
+		name = "Black widow";
+		break;
+
+	case GigasWorm:
+		name = "Gigas worm";
+		break;
+
+	case WargWolf:
+		name = "Warg wolf";
+		break;
+
+	case Werewolf:
+		name = "Werewolf";
+		break;
+
+	case Zombie:
+		name = "Zombie";
+		break;
+
+	default:
 		break;
 	}
 }

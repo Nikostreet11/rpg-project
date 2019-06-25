@@ -52,6 +52,7 @@ public:
 protected:
 	// Initialization
 	virtual void initVariables() override;
+	virtual void initStats() override;
 
 	// Variables
 	Type type;
