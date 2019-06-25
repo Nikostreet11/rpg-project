@@ -5,26 +5,39 @@
  *      Author: Nikostreet11
  */
 
-#include "Exclude/Human.h"
+#include "Human.hpp"
 
-#include "Exclude/Randomizer.h"
+Human::Human(
+		Type type,
+		const sf::Texture& spriteset,
+		sf::Vector2f position,
+		sf::Vector2f size) :
+		Character()
+{
+	this->type = type;
 
-Human::Human(std::string name, int level, int posX, int posY) :
-		Character(name, level, posX, posY) {
+	initVariables();
+	initSprite(spriteset, position, size);
+	/*
 	weapon = nullptr;
 	chestplate = nullptr;
+	*/
 }
 
-Human::~Human() {}
+Human::~Human()
+{
+}
 
-float Human::attack(Character& target) {
+/*
+float Human::attack(Character& target)
+{
 	Randomizer& randomizer = Randomizer::getInstance();
 	float damage;
 	float accuracy = 50 + agility - target.getAgility();
 	if (randomizer.percentageOn(accuracy)) {
 		// strike
 		damage = strenght - target.getEndurance() * 0.5;
-		if (weapon != nullptr){
+		if (weapon != nullptr) {
 			// weapon damage
 			damage += weapon->getImpact();
 		}
@@ -52,7 +65,9 @@ float Human::attack(Character& target) {
 	}
 	return damage;
 }
+*/
 
+/*
 const Chestplate* Human::getChestplate() const {
 	return chestplate;
 }
@@ -67,4 +82,14 @@ const Weapon* Human::getWeapon() const {
 
 void Human::setWeapon(Weapon* weapon) {
 	this->weapon = weapon;
+}
+*/
+
+// Initialization
+void Human::initVariables()
+{
+	spriteOffset = {16, 16};
+	spriteSize = {48, 48};
+	spriteSpacing = {16, 16};
+	spriteIndex = {1, 0};
 }

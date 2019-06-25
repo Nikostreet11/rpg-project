@@ -30,15 +30,17 @@ public:
 
 	// Constructor / Destructor
 	explicit Monster(
-			sf::Vector2f position,
-			sf::Vector2f size,
+			Type type,
 			const sf::Texture& spriteset,
-			Type type);
+			sf::Vector2f position = {0, 0},
+			sf::Vector2f size = {0, 0});
 	virtual ~Monster();
 
 private:
+	// Initialization
 	virtual void initVariables() override;
 
+	// Variables
 	Type type;
 };
 

@@ -7,19 +7,21 @@
 
 #include "Character.hpp"
 
-Character::Character(
+Character::Character(/*
+		const sf::Texture& spriteset,
 		sf::Vector2f position,
-		sf::Vector2f size,
-		const sf::Texture& spriteset)
+		sf::Vector2f size*/)
 {
-	initVariables();
+	//initVariables();
 	initStats();
-	initSprite(position, size, spriteset);
-
+	//initSprite(spriteset, position, size);
 }
 
-Character::~Character() {}
+Character::~Character()
+{
+}
 
+/*
 float Character::attack(Character& target) {
 	Randomizer& randomizer = Randomizer::getInstance();
 	float damage;
@@ -32,13 +34,13 @@ float Character::attack(Character& target) {
 			// critical damage
 			damage *= 1.5;
 		}
-		/*Human* human = dynamic_cast<Human*>(&target);
+		Human* human = dynamic_cast<Human*>(&target);
 		if (human) {
 			// target armor
 			if (human->getChestplate() != nullptr) {
 				damage -= human->getChestplate()->getArmor() * 0.5;
 			}
-		}*/
+		}
 		if (damage < 0) {
 			// block
 			damage = 0;
@@ -51,6 +53,7 @@ float Character::attack(Character& target) {
 	}
 	return damage;
 }
+*/
 
 void Character::update(const float& dt)
 {
@@ -61,7 +64,32 @@ void Character::render(sf::RenderTarget& target)
 	target.draw(sprite);
 }
 
+// Getters / Setters
+const sf::Vector2f& Character::getPosition() const
+{
+	return sprite.getPosition();
+}
 
+void Character::setPosition(const sf::Vector2f& position)
+{
+	sprite.setPosition(position);
+}
+
+const sf::Vector2f Character::getSize() const
+{
+	return sf::Vector2f(
+			sprite.getScale().x * sprite.getTextureRect().width,
+			sprite.getScale().y * sprite.getTextureRect().height);
+}
+
+void Character::setSize(const sf::Vector2f& size)
+{
+	sprite.setScale(
+			size.x / sprite.getTextureRect().width,
+			size.y / sprite.getTextureRect().height);
+}
+
+/*
 int Character::getAgility() const
 {
 	return agility;
@@ -86,6 +114,8 @@ const std::string& Character::getName() const
 {
 	return name;
 }
+*/
+
 void Character::initVariables()
 {
 	spriteOffset = sf::Vector2u(16, 16);
@@ -115,17 +145,17 @@ void Character::initStats()
 }
 
 void Character::initSprite(
+		const sf::Texture& spriteset,
 		sf::Vector2f position,
-		sf::Vector2f size,
-		const sf::Texture& spriteset)
+		sf::Vector2f size)
 {
-	sprite.setPosition(position);
 	sprite.setTexture(spriteset);
 	sprite.setTextureRect(sf::IntRect(
 			spriteOffset.x + (spriteSpacing.x + spriteSize.x) * spriteIndex.x,
 			spriteOffset.y + (spriteSpacing.y + spriteSize.y) * spriteIndex.y,
 			spriteSize.x,
 			spriteSize.y));
+	sprite.setPosition(position);
 	sprite.setScale(
 			size.x / sprite.getTextureRect().width,
 			size.y / sprite.getTextureRect().height);

@@ -16,27 +16,32 @@ class Character
 {
 public:
 	// Constructor / Destructor
-	Character(
-			sf::Vector2f position,
-			sf::Vector2f size,
-			const sf::Texture& spriteset);
+	Character(/*
+			const sf::Texture& spriteset,
+			sf::Vector2f position = {0, 0},
+			sf::Vector2f size = {0, 0}*/);
 	virtual ~Character();
 
 	// Functions
-	virtual float attack(Character& target);
+	//virtual float attack(Character& target);
 	//bool move(Direction direction);
 
 	virtual void update(const float& dt);
 	virtual void render(sf::RenderTarget& target);
 
 	// Getters / Setters
-	int getAgility() const;
-	int getEndurance() const;
-	float getHealth() const;
-	void setHealth(float health);
+	const sf::Vector2f& getPosition() const;
+	void setPosition(const sf::Vector2f& position);
+	const sf::Vector2f getSize() const;
+	void setSize(const sf::Vector2f& size);
+
+	//int getAgility() const;
+	//int getEndurance() const;
+	//float getHealth() const;
+	//void setHealth(float health);
 	//int getPosX() const;
 	//int getPosY() const;
-	const std::string& getName() const;
+	//const std::string& getName() const;
 
 protected:
 	// Internal
@@ -47,17 +52,14 @@ protected:
 	virtual void initVariables();
 	void initStats();
 	void initSprite(
+			const sf::Texture& spriteset,
 			sf::Vector2f position,
-			sf::Vector2f size,
-			const sf::Texture& spriteset);
+			sf::Vector2f size);
 
 	// Resources
 	sf::Sprite sprite;
 
 	// Variables
-	sf::Vector2f position;
-	sf::Vector2f size;
-
 	std::string name;
 	int level;
 	float maxHealth;

@@ -352,6 +352,30 @@ void BattleState::initTextures()
 		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_WARRIOR_TEXTURE";
 	}
 
+	textures["THIEF"] = std::make_shared<sf::Texture>();
+
+	if (!textures["THIEF"]->loadFromFile(
+			"Images/Battle/Characters/Thief.png"))
+	{
+		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_THIEF_TEXTURE";
+	}
+
+	textures["BLACK_MAGE"] = std::make_shared<sf::Texture>();
+
+	if (!textures["BLACK_MAGE"]->loadFromFile(
+			"Images/Battle/Characters/BlackMage.png"))
+	{
+		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_BLACK_MAGE_TEXTURE";
+	}
+
+	textures["WHITE_MAGE"] = std::make_shared<sf::Texture>();
+
+	if (!textures["WHITE_MAGE"]->loadFromFile(
+			"Images/Battle/Characters/WhiteMage.png"))
+	{
+		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_WHITE_MAGE_TEXTURE";
+	}
+
 	textures["FOES"] = std::make_shared<sf::Texture>();
 
 	if (!textures["FOES"]->loadFromFile(
@@ -376,32 +400,57 @@ void BattleState::initBackground()
 
 void BattleState::initCharacters()
 {
+	// TODO: rework with the map factory method
+	for (unsigned index = 0; index < 4; index++)
+	{
+		enemies.push_back(std::move(std::make_shared<Monster>(
+						Monster::Werewolf,
+						*textures["FOES"])));
+	}
+
+	for (unsigned index = 0; index < 4; index++)
+	{
+		enemies.push_back(std::move(std::make_shared<Monster>(
+						Monster::GigasWorm,
+						*textures["FOES"])));
+	}
+
+	// TODO: rework with the party getters
+	party.push_back(std::move(std::make_shared<Human>(
+			Human::Warrior,
+			*textures["WARRIOR"])));
+	party.push_back(std::move(std::make_shared<Human>(
+			Human::Thief,
+			*textures["THIEF"])));
+	party.push_back(std::move(std::make_shared<Human>(
+			Human::WhiteMage,
+			*textures["WHITE_MAGE"])));
+	party.push_back(std::move(std::make_shared<Human>(
+			Human::BlackMage,
+			*textures["BLACK_MAGE"])));
+
 	sf::Vector2f leftStart(700.f, 180.f);
 	sf::Vector2f leftStep(-80.f, 100.f);
 
-	for (size_t index = 0; index < 8; index++)
+	for (size_t index = 0; index < enemies.size(); index++)
 	{
-		enemies.push_back(std::move(std::make_shared<Monster>(
-			sf::Vector2f(
-					leftStart.x + leftStep.x * index,
-					leftStart.y + leftStep.y * (index % 4)),
-			sf::Vector2f(200, 200),
-			*textures["FOES"],
-			Monster::WargWolf)));
+		enemies[index]->setPosition(sf::Vector2f(
+				leftStart.x + leftStep.x * index,
+				leftStart.y + leftStep.y * (index % 4)));
+		enemies[index]->setSize(sf::Vector2f(200, 200));
 	}
 
 	sf::Vector2f rightStart(1200, 200);
 	sf::Vector2f rightStep(80, 100);
 
-	for (std::size_t index = 0; index < 4; index++)
+	for (std::size_t index = 0; index < party.size(); index++)
 	{
-		party.push_back(std::move(std::make_shared<Character>(
-			sf::Vector2f(
-					rightStart.x + rightStep.x * index,
-					rightStart.y + rightStep.y * (index % 4)),
-			sf::Vector2f(180, 180),
-			*textures["WARRIOR"])));
+		party[index]->setPosition(sf::Vector2f(
+				rightStart.x + rightStep.x * index,
+				rightStart.y + rightStep.y * (index % 4) + 20.f));
+		party[index]->setSize(sf::Vector2f(160, 160));
 	}
+
 }
 
 void BattleState::initDialogueMenu()

@@ -8,16 +8,16 @@
 #include "Monster.hpp"
 
 Monster::Monster(
-		sf::Vector2f position,
-		sf::Vector2f size,
+		Type type,
 		const sf::Texture& spriteset,
-		Type type) :
-		Character(position, size, spriteset)
+		sf::Vector2f position,
+		sf::Vector2f size) :
+		Character()
 {
 	this->type = type;
 
 	initVariables();
-	initSprite(position, size, spriteset);
+	initSprite(spriteset, position, size);
 }
 
 Monster::~Monster()

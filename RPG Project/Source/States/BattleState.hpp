@@ -10,7 +10,7 @@
 
 #include "State.hpp"
 
-#include "..\Entities\Character.hpp"
+#include "..\Entities\Human.hpp"
 #include "..\Entities\Monster.hpp"
 
 #include "..\GUI\Dialogue.hpp"
