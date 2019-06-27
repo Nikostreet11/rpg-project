@@ -10,6 +10,9 @@
 
 #include "pch.hpp"
 
+#include "..\Containers\ActionResults.hpp"
+#include "..\Utilities\Randomizer.hpp"
+
 // Forward declarations
 class Character;
 
@@ -17,7 +20,7 @@ class Action
 {
 public:
 	// Functions
-	virtual void use(
+	virtual std::shared_ptr<ActionResults> use(
 			std::shared_ptr<Character> source,
 			std::shared_ptr<Character> target) = 0;
 
@@ -25,6 +28,13 @@ protected:
 	// Constructor / Destructor
 	Action();
 	virtual ~Action();
+
+	// Initialization
+	void initVariables();
+
+	// Variables
+	float manaCost;
+	float staminaCost;
 };
 
 #endif /* ACTIONS_ACTION_HPP_ */

@@ -9,20 +9,32 @@
 
 #include "..\Entities\Character.hpp"
 
-Attack::Attack()
+Attack::Attack() :
+		Action()
 {
+	staminaCost = 2.f;
 }
 
 Attack::~Attack()
 {
 }
 
-void Attack::use(
+std::shared_ptr<ActionResults> Attack::use(
 		std::shared_ptr<Character> source,
 		std::shared_ptr<Character> target)
 {
+	std::shared_ptr<ActionResults> results =
+			std::make_shared<ActionResults>(source, target);
+
 	// TODO: rework with other character stats, weapons and armor
-	std::cout << "Target hp before the attack: " << target->getHealth() << std::endl;
-	target->setHealth(target->getHealth() - source->getStrenght());
-	std::cout << "Target hp after the attack: " << target->getHealth() << std::endl;
+	Randomizer& r = Randomizer::getInstance();
+	float damage = source->getStrenght() * r.getBetween(10, 20);
+
+	source->setStamina(source->getStamina() - staminaCost);
+
+	target->setHealth(target->getHealth() - damage);
+
+	results->compute(source, target);
+
+	return std::move(results);
 }

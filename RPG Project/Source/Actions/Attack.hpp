@@ -17,7 +17,7 @@ public:
 	Attack();
 	virtual ~Attack();
 
-	virtual void use(
+	virtual std::shared_ptr<ActionResults> use(
 			std::shared_ptr<Character> source,
 			std::shared_ptr<Character> target);
 };

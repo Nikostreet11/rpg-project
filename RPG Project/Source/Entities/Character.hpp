@@ -42,6 +42,10 @@ public:
 	//int getEndurance() const;
 	float getHealth() const;
 	void setHealth(float health);
+	float getMana() const;
+	void setMana(float mana);
+	float getStamina() const;
+	void setStamina(float stamina);
 	int getStrenght() const;
 
 	//int getPosX() const;

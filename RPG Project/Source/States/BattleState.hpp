@@ -12,6 +12,8 @@
 
 #include "..\Entities\Human.hpp"
 #include "..\Entities\Monster.hpp"
+#include "..\Actions\Action.hpp"
+#include "..\Containers\ActionResults.hpp"
 
 #include "..\GUI\Dialogue.hpp"
 #include "..\GUI\Selection.hpp"
@@ -25,11 +27,11 @@ public:
 	// Enumerators
 	enum Phase
 	{
-		InitialPhase,
-		ActionSelect,
-		TargetSelect,
-		ActionResults,
-		EndPhase
+		Begin,
+		ActionSelection,
+		TargetSelection,
+		Results,
+		End
 	};
 
 	enum ActionMenu
@@ -92,6 +94,7 @@ private:
 	std::shared_ptr<Action> action;
 	std::shared_ptr<Character> active;
 	std::shared_ptr<Character> target;
+	std::shared_ptr<ActionResults> results;
 
 	sf::RenderTexture renderTexture;
 	sf::Sprite renderSprite;

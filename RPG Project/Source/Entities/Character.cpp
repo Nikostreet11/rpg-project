@@ -116,6 +116,26 @@ void Character::setHealth(float health)
 	this->health = health;
 }
 
+float Character::getMana() const
+{
+	return mana;
+}
+
+void Character::setMana(float mana)
+{
+	this->mana = mana;
+}
+
+float Character::getStamina() const
+{
+	return stamina;
+}
+
+void Character::setStamina(float stamina)
+{
+	this->stamina = stamina;
+}
+
 int Character::getStrenght() const
 {
 	return strenght;

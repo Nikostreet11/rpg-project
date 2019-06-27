@@ -77,7 +77,7 @@ void BattleState::updateBattleInput(const float& dt)
 	switch (phase)
 	{
 
-	case InitialPhase:
+	case Begin:
 
 		if (keybinds["CONFIRM"].isPressed())
 		{
@@ -85,12 +85,12 @@ void BattleState::updateBattleInput(const float& dt)
 
 			if (dialogueMenu->isEnded())
 			{
-				changePhase(ActionSelect);
+				changePhase(ActionSelection);
 			}
 		}
 		break;
 
-	case ActionSelect:
+	case ActionSelection:
 
 		if (keybinds["CONFIRM"].isPressed())
 		{
@@ -107,7 +107,7 @@ void BattleState::updateBattleInput(const float& dt)
 			else
 			{
 				action = active->getAction(entry);
-				changePhase(TargetSelect);
+				changePhase(TargetSelection);
 			}
 		}
 
@@ -136,12 +136,12 @@ void BattleState::updateBattleInput(const float& dt)
 		}
 		break;
 
-	case TargetSelect:
+	case TargetSelection:
 
 		if (keybinds["CONFIRM"].isPressed())
 		{
 			target = targets[actionMenu->getIndex()];
-			changePhase(ActionResults);
+			changePhase(Results);
 		}
 
 		if (keybinds["SELECT_UP"].isPressed())
@@ -185,15 +185,15 @@ void BattleState::updateBattleInput(const float& dt)
 		}
 		break;
 
-	case ActionResults:
+	case Results:
 
 		if (keybinds["CONFIRM"].isPressed())
 		{
-			changePhase(ActionSelect);
+			changePhase(ActionSelection);
 		}
 		break;
 
-	case EndPhase:
+	case End:
 
 		if (keybinds["CONFIRM"].isPressed())
 		{
@@ -236,13 +236,13 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 	renderCharacters(renderTexture);
 	dialogueMenu->render(renderTexture);
 
-	if (phase != InitialPhase)
+	if (phase != Begin)
 	{
 		actionMenu->render(renderTexture);
 		activeMarker.render(renderTexture);
 	}
 
-	if (phase == TargetSelect || phase == ActionResults)
+	if (phase == TargetSelection || phase == Results)
 	{
 		targetMarker.render(renderTexture);
 	}
@@ -277,14 +277,14 @@ void BattleState::changePhase(Phase phase)
 	switch (phase)
 	{
 
-	case InitialPhase:
+	case Begin:
 
 		initActionMenu(Empty);
 		break;
 
-	case ActionSelect:
+	case ActionSelection:
 
-		if (this->phase == InitialPhase)
+		if (this->phase == Begin)
 		{
 			active = activeQueue[0];
 		}
@@ -297,7 +297,7 @@ void BattleState::changePhase(Phase phase)
 		initActionMenu(MainActions);
 		break;
 
-	case TargetSelect:
+	case TargetSelection:
 		// TODO: put in a separate function
 		targets.clear();
 
@@ -320,12 +320,12 @@ void BattleState::changePhase(Phase phase)
 				-targetMarker.getSize() * 0.8f);
 		break;
 
-	case ActionResults:
+	case Results:
 
-		action->use(active, target);
+		results = action->use(active, target);
 		break;
 
-	case EndPhase:
+	case End:
 		endState();
 	}
 
@@ -337,7 +337,7 @@ void BattleState::changePhase(Phase phase)
 void BattleState::initVariables()
 {
 	activeIndex = 0;
-	phase = BattleState::InitialPhase;
+	phase = BattleState::Begin;
 }
 
 void BattleState::initDeferredRendering()
@@ -511,15 +511,16 @@ void BattleState::initActiveQueue()
 void BattleState::initDialogueMenu()
 {
 	std::vector<std::string> dialogue;
+	std::stringstream stringStream;
 
 	switch (phase)
 	{
 
-	case InitialPhase:
+	case Begin:
 		dialogue = {"Wild foes appeared!", "Battle starts!!!"};
 		break;
 
-	case ActionSelect:
+	case ActionSelection:
 			if (actionMenu->getSelectedEntry() == "ATTACK")
 			{
 				dialogue = {"Physical attack."};
@@ -542,26 +543,40 @@ void BattleState::initDialogueMenu()
 			}
 		break;
 
-	case TargetSelect:
+	case TargetSelection:
 		dialogue = {"Select the target"};
 		break;
 
-	case ActionResults:
-		dialogue = {"<< action results >>"};
+	case Results:
+		stringStream << "Damage dealt: " << results->target.dHealth << " HP!";
+		dialogue = {stringStream.str()};
 		break;
 
-	case EndPhase:
+	case End:
 		dialogue = {"<< battle results >>"};
 		break;
 
 	}
 
-	dialogueMenu.reset(new gui::Dialogue(
-			{1000, 250},
-			{40, 50},
-			50,
-			dialogue,
-			font));
+
+	if (phase == Begin)
+	{
+		dialogueMenu.reset(new gui::Dialogue(
+				{1700, 250},
+				{40, 50},
+				50,
+				dialogue,
+				font));
+	}
+	else
+	{
+		dialogueMenu.reset(new gui::Dialogue(
+				{1000, 250},
+				{40, 50},
+				50,
+				dialogue,
+				font));
+	}
 
 	dialogueMenu->setPosition(100, 750);
 }
