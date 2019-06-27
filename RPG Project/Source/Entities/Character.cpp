@@ -14,6 +14,7 @@ Character::Character(/*
 {
 	//initVariables();
 	initStats();
+	initActions();
 	//initSprite(spriteset, position, size);
 }
 
@@ -89,6 +90,12 @@ void Character::setSize(const sf::Vector2f& size)
 			size.y / sprite.getTextureRect().height);
 }
 
+std::shared_ptr<Action> Character::getAction(const std::string& actionName)
+{
+	// TODO: rework getting the right action based on the request;
+	return attack;
+}
+
 const std::string& Character::getName() const
 {
 	return name;
@@ -97,6 +104,21 @@ const std::string& Character::getName() const
 void Character::setName(const std::string& name)
 {
 	this->name = name;
+}
+
+float Character::getHealth() const
+{
+	return health;
+}
+
+void Character::setHealth(float health)
+{
+	this->health = health;
+}
+
+int Character::getStrenght() const
+{
+	return strenght;
 }
 
 /*
@@ -108,16 +130,6 @@ int Character::getAgility() const
 int Character::getEndurance() const
 {
 	return endurance;
-}
-
-float Character::getHealth() const
-{
-	return health;
-}
-
-void Character::setHealth(float health)
-{
-	this->health = health;
 }
 */
 
@@ -150,6 +162,11 @@ void Character::initStats()
 	luck = 1;
 }
 
+void Character::initActions()
+{
+	attack = std::make_shared<Attack>();
+}
+
 void Character::initSprite(
 		const sf::Texture& spriteset,
 		sf::Vector2f position,
@@ -167,7 +184,8 @@ void Character::initSprite(
 			size.y / sprite.getTextureRect().height);
 }
 
-/*bool Character::move(Direction direction) {
+/*
+bool Character::move(Direction direction) {
 	if (posX == NO_POSITION || posY == NO_POSITION) {
 		return false;
 	}

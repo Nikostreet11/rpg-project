@@ -23,10 +23,11 @@ BattleState::BattleState(
 	initTextures();
 	initBackground();
 	initCharacters();
+	initActiveQueue();
 	initDialogueMenu();
 	initActionMenu(Empty);
 	initPauseMenu();
-	initTargetMarker();
+	initMarkers();
 }
 
 BattleState::~BattleState()
@@ -93,7 +94,21 @@ void BattleState::updateBattleInput(const float& dt)
 
 		if (keybinds["CONFIRM"].isPressed())
 		{
-			updateActionMenu(actionMenu->getSelectedEntry());
+			std::string entry = actionMenu->getSelectedEntry();
+
+			if (entry == "MAGIC" || entry == "OBJECT")
+			{
+				updateActionMenu(entry);
+			}
+			else if (entry == "FLEE")
+			{
+				endState();
+			}
+			else
+			{
+				action = active->getAction(entry);
+				changePhase(TargetSelect);
+			}
 		}
 
 		if (keybinds["SELECT_UP"].isPressed())
@@ -121,6 +136,7 @@ void BattleState::updateBattleInput(const float& dt)
 
 		if (keybinds["CONFIRM"].isPressed())
 		{
+			target = targets[actionMenu->getIndex()];
 			changePhase(ActionResults);
 		}
 
@@ -185,25 +201,13 @@ void BattleState::updateBattleInput(const float& dt)
 
 void BattleState::updateActionMenu(const std::string& entry)
 {
-	if (entry == "ATTACK")
-	{
-		changePhase(TargetSelect);
-	}
-	else if (entry == "MAGIC")
+	if (entry == "MAGIC")
 	{
 		initActionMenu(MagicMenu);
 	}
 	else if (entry == "OBJECT")
 	{
 		initActionMenu(ObjectMenu);
-	}
-	else if (entry == "FLEE")
-	{
-		endState();
-	}
-	else
-	{
-		changePhase(TargetSelect);
 	}
 }
 
@@ -237,24 +241,23 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 			0,
 			(graphicsSettings->resolution.height - 70 * 1.3f) / 2.f);
 
+	if (phase != InitialPhase)
+	{
+		actionMenu->render(renderTexture);
+		activeMarker.render(renderTexture);
+	}
+
+	if (phase == TargetSelect || phase == ActionResults)
+	{
+		targetMarker.render(renderTexture);
+	}
+
 	switch (phase)
 	{
+
 	case InitialPhase:
-		break;
-
 	case ActionSelect:
-		actionMenu->render(renderTexture);
-		break;
-
 	case TargetSelect:
-		hoverText.setString("TARGET SELECT PHASE");
-		hoverText.setPosition(
-				(graphicsSettings->resolution.width
-						- hoverText.getGlobalBounds().width) / 2.f,
-				hoverText.getPosition().y);
-		actionMenu->render(renderTexture);
-		renderTexture.draw(hoverText);
-		targetMarker.render(renderTexture);
 		break;
 
 	case ActionResults:
@@ -308,10 +311,22 @@ void BattleState::changePhase(Phase phase)
 	{
 
 	case InitialPhase:
+
 		initActionMenu(Empty);
 		break;
 
 	case ActionSelect:
+
+		if (this->phase == InitialPhase)
+		{
+			active = activeQueue[0];
+		}
+		else
+		{
+			selectNextActive();
+		}
+
+		updateActiveMarker();
 		initActionMenu(MainActions);
 		break;
 
@@ -329,7 +344,9 @@ void BattleState::changePhase(Phase phase)
 			targets.insert(targets.end(), enemies.begin(), enemies.end());
 			targets.insert(targets.end(), party.begin(), party.end());
 		}
+
 		initActionMenu(TargetMenu);
+
 		targetMarker.setPosition(targets[0]->getPosition());
 		targetMarker.move(
 				targets[0]->getSize().x / 2.f - targetMarker.getSize() / 2,
@@ -337,7 +354,8 @@ void BattleState::changePhase(Phase phase)
 		break;
 
 	case ActionResults:
-		// TODO
+
+		action->use(active, target);
 		break;
 
 	case EndPhase:
@@ -350,6 +368,7 @@ void BattleState::changePhase(Phase phase)
 // Initialization
 void BattleState::initVariables()
 {
+	activeIndex = 0;
 	phase = BattleState::InitialPhase;
 }
 
@@ -514,6 +533,13 @@ void BattleState::initCharacters()
 
 }
 
+void BattleState::initActiveQueue()
+{
+	// TODO: rework based on Characters stats
+	// TODO: add enemies
+	activeQueue = party;
+}
+
 void BattleState::initDialogueMenu()
 {
 	std::vector<std::string> startDialogue =
@@ -629,8 +655,35 @@ void BattleState::initPauseMenu()
 	pauseMenu->addButton("QUIT", 800.f, "Quit");
 }
 
-void BattleState::initTargetMarker()
+void BattleState::selectNextActive()
 {
+	if (activeIndex < activeQueue.size() - 1)
+	{
+		activeIndex++;
+	}
+	else
+	{
+		activeIndex = 0;
+	}
+
+	active = activeQueue[activeIndex];
+}
+
+void BattleState::updateActiveMarker()
+{
+	activeMarker.setPosition(active->getPosition());
+	activeMarker.move(
+			active->getSize().x / 2.f - activeMarker.getSize() / 2,
+			-activeMarker.getSize() * 0.8f);
+}
+
+void BattleState::initMarkers()
+{
+	activeMarker.setSize(40);
+	activeMarker.setOrigin(sf::Vector2f(0, activeMarker.getSize()));
+	activeMarker.setRotation(90);
+	activeMarker.setColor(sf::Color(255, 255, 255, 200));
+
 	targetMarker.setSize(40);
 	targetMarker.setOrigin(sf::Vector2f(0, targetMarker.getSize()));
 	targetMarker.setRotation(90);

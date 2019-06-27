@@ -55,6 +55,7 @@ public:
 	virtual void updateInput(const float& dt);
 	virtual void updateBattleInput(const float& dt);
 	virtual void updateActionMenu(const std::string& entry);
+	virtual void updateActiveMarker();
 	virtual void updatePauseMenu();
 	virtual void render(
 			std::shared_ptr<sf::RenderTarget> target = nullptr);
@@ -65,6 +66,7 @@ public:
 private:
 	// Internal
 	void changePhase(Phase phase);
+	void selectNextActive();
 
 	// Initialization
 	void initVariables();
@@ -74,15 +76,21 @@ private:
 	void initTextures();
 	void initBackground();
 	void initCharacters();
+	void initActiveQueue();
 	void initDialogueMenu();
 	void initActionMenu(ActionMenu menu);
 	void initPauseMenu();
-	void initTargetMarker();
+	void initMarkers();
 
 	// Resources
 	std::vector<std::shared_ptr<Character>> party;
 	std::vector<std::shared_ptr<Character>> enemies;
+	std::vector<std::shared_ptr<Character>> activeQueue;
 	std::vector<std::shared_ptr<Character>> targets;
+
+	std::shared_ptr<Action> action;
+	std::shared_ptr<Character> active;
+	std::shared_ptr<Character> target;
 
 	sf::RenderTexture renderTexture;
 	sf::Sprite renderSprite;
@@ -91,11 +99,13 @@ private:
 	std::unique_ptr<gui::Dialogue> dialogueMenu;
 	std::unique_ptr<gui::Selection> actionMenu;
 	std::unique_ptr<gui::PauseMenu> pauseMenu;
-	icons::Caret targetMarker;
+	icons::Caret activeMarker;
+	icons::Angle targetMarker;
 
 	// Variables
 	Phase phase;
 	ActionMenu menu;
+	size_t activeIndex;
 };
 
 #endif /* STATES_BATTLESTATE_HPP_ */

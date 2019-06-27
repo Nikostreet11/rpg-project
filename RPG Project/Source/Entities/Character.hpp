@@ -10,7 +10,8 @@
 
 #include "pch.hpp"
 
-#include "../Utilities/Randomizer.hpp"
+#include "..\Actions\Attack.hpp"
+#include "..\Utilities\Randomizer.hpp"
 
 class Character
 {
@@ -23,7 +24,6 @@ public:
 	virtual ~Character();
 
 	// Functions
-	//virtual float attack(Character& target);
 	//bool move(Direction direction);
 
 	virtual void update(const float& dt);
@@ -35,12 +35,15 @@ public:
 	const sf::Vector2f getSize() const;
 	void setSize(const sf::Vector2f& size);
 
+	std::shared_ptr<Action> getAction(const std::string& actionName);
 	const std::string& getName() const;
 	void setName(const std::string& name);
 	//int getAgility() const;
 	//int getEndurance() const;
-	//float getHealth() const;
-	//void setHealth(float health);
+	float getHealth() const;
+	void setHealth(float health);
+	int getStrenght() const;
+
 	//int getPosX() const;
 	//int getPosY() const;
 
@@ -52,12 +55,14 @@ protected:
 	// Initialization
 	virtual void initVariables();
 	virtual void initStats();
+	virtual void initActions();
 	void initSprite(
 			const sf::Texture& spriteset,
 			sf::Vector2f position,
 			sf::Vector2f size);
 
 	// Resources
+	std::shared_ptr<Action> attack;
 	sf::Sprite sprite;
 
 	// Variables
