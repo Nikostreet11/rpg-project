@@ -114,21 +114,25 @@ void BattleState::updateBattleInput(const float& dt)
 		if (keybinds["SELECT_UP"].isPressed())
 		{
 			actionMenu->moveMarker(Direction::Up);
+			initDialogueMenu();
 		}
 
 		if (keybinds["SELECT_LEFT"].isPressed())
 		{
 			actionMenu->moveMarker(Direction::Left);
+			initDialogueMenu();
 		}
 
 		if (keybinds["SELECT_DOWN"].isPressed())
 		{
 			actionMenu->moveMarker(Direction::Down);
+			initDialogueMenu();
 		}
 
 		if (keybinds["SELECT_RIGHT"].isPressed())
 		{
 			actionMenu->moveMarker(Direction::Right);
+			initDialogueMenu();
 		}
 		break;
 
@@ -232,15 +236,6 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 	renderCharacters(renderTexture);
 	dialogueMenu->render(renderTexture);
 
-	// TODO: remove later
-	sf::Text hoverText;
-	hoverText.setFont(*font);
-	hoverText.setCharacterSize(70);
-	hoverText.setFillColor(sf::Color::White);
-	hoverText.setPosition(
-			0,
-			(graphicsSettings->resolution.height - 70 * 1.3f) / 2.f);
-
 	if (phase != InitialPhase)
 	{
 		actionMenu->render(renderTexture);
@@ -250,34 +245,6 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 	if (phase == TargetSelect || phase == ActionResults)
 	{
 		targetMarker.render(renderTexture);
-	}
-
-	switch (phase)
-	{
-
-	case InitialPhase:
-	case ActionSelect:
-	case TargetSelect:
-		break;
-
-	case ActionResults:
-		hoverText.setString("ACTION RESULTS PHASE");
-		hoverText.setPosition(
-				(graphicsSettings->resolution.width
-						- hoverText.getGlobalBounds().width) / 2.f,
-				hoverText.getPosition().y);
-		renderTexture.draw(hoverText);
-		break;
-
-	case EndPhase:
-		hoverText.setString("END PHASE");
-		hoverText.setPosition(
-				(graphicsSettings->resolution.width
-						- hoverText.getGlobalBounds().width) / 2.f,
-				hoverText.getPosition().y);
-		renderTexture.draw(hoverText);
-		break;
-
 	}
 
 	if (paused)
@@ -363,6 +330,7 @@ void BattleState::changePhase(Phase phase)
 	}
 
 	this->phase = phase;
+	initDialogueMenu();
 }
 
 // Initialization
@@ -542,15 +510,57 @@ void BattleState::initActiveQueue()
 
 void BattleState::initDialogueMenu()
 {
-	std::vector<std::string> startDialogue =
-			{"Wild foes appeared!",
-			"Battle starts!!!"};\
+	std::vector<std::string> dialogue;
+
+	switch (phase)
+	{
+
+	case InitialPhase:
+		dialogue = {"Wild foes appeared!", "Battle starts!!!"};
+		break;
+
+	case ActionSelect:
+			if (actionMenu->getSelectedEntry() == "ATTACK")
+			{
+				dialogue = {"Physical attack."};
+			}
+			else if (actionMenu->getSelectedEntry() == "MAGIC")
+			{
+				dialogue = {"Mostly elemental attacks."};
+			}
+			else if (actionMenu->getSelectedEntry() == "OBJECT")
+			{
+				dialogue = {"Utility objects, various effects."};
+			}
+			else if (actionMenu->getSelectedEntry() == "FLEE")
+			{
+				dialogue = {"Try to flee from the battlefield."};
+			}
+			else
+			{
+				dialogue = {""}; // = active->getAction(actionMenu->getSelectedEntry())->getDescription();
+			}
+		break;
+
+	case TargetSelect:
+		dialogue = {"Select the target"};
+		break;
+
+	case ActionResults:
+		dialogue = {"<< action results >>"};
+		break;
+
+	case EndPhase:
+		dialogue = {"<< battle results >>"};
+		break;
+
+	}
 
 	dialogueMenu.reset(new gui::Dialogue(
 			{1000, 250},
 			{40, 50},
 			50,
-			startDialogue,
+			dialogue,
 			font));
 
 	dialogueMenu->setPosition(100, 750);

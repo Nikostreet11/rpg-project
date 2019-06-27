@@ -111,7 +111,7 @@ void Dialogue::initVariables()
 void Dialogue::initContainer()
 {
 	container.setFillColor(sf::Color::Blue);
-	container.setOutlineThickness(-3.f);
+	container.setOutlineThickness(-5.f);
 	container.setOutlineColor(sf::Color::White);
 	container.setSize(size);
 }
