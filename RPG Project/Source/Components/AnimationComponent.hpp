@@ -16,8 +16,7 @@ public:
 	// Constructor / Destructor
 	explicit AnimationComponent(
 			sf::Sprite& sprite,
-			std::shared_ptr<sf::Texture> textureSheet
-			);
+			std::shared_ptr<sf::Texture> textureSheet = nullptr);
 	virtual ~AnimationComponent();
 
 	// Functions
@@ -69,6 +68,9 @@ private:
 
 	sf::Sprite& sprite;
 	std::shared_ptr<sf::Texture> textureSheet;
+	sf::Texture defaultTexture;
+	sf::IntRect defaultTextureRect;
+
 	std::map<std::string, std::shared_ptr<Animation>> animations;
 	std::shared_ptr<Animation> lastAnimation;
 	std::shared_ptr<Animation> priorityAnimation;

@@ -50,6 +50,7 @@ void BattleState::update(const float& dt)
 	{
 		// Unpaused update
 		updateBattleInput(dt);
+		updateCharacters(dt);
 		//dialogueMenu->update();
 		//actionMenu->update();
 	}
@@ -203,6 +204,14 @@ void BattleState::updateBattleInput(const float& dt)
 	}
 }
 
+void BattleState::updateCharacters(const float& dt)
+{
+	for (auto &character : activeQueue)
+	{
+		character->update(dt);
+	}
+}
+
 void BattleState::updateActionMenu(const std::string& entry)
 {
 	if (entry == "MAGIC")
@@ -322,6 +331,11 @@ void BattleState::changePhase(Phase phase)
 
 	case Results:
 
+		/*if (menu == MagicMenu)
+		{*/
+			std::cout << "been here" << std::endl;
+			active->setState(Character::Casting);
+		//}
 		results = action->use(active, target);
 		break;
 

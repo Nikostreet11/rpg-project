@@ -56,9 +56,11 @@ float Character::attack(Character& target) {
 }
 */
 
+/*
 void Character::update(const float& dt)
 {
 }
+*/
 
 void Character::render(sf::RenderTarget& target)
 {
@@ -66,6 +68,11 @@ void Character::render(sf::RenderTarget& target)
 }
 
 // Getters / Setters
+void Character::setState(State state)
+{
+	this->state = state;
+}
+
 const sf::Vector2f& Character::getPosition() const
 {
 	return sprite.getPosition();

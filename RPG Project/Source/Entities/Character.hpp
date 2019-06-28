@@ -16,6 +16,18 @@
 class Character
 {
 public:
+	// Enumerators
+	enum State
+	{
+		Idle,
+		Ready,
+		Attacking,
+		Casting,
+		Hurt,
+		Hit,
+		Dead
+	};
+
 	// Constructor / Destructor
 	Character(/*
 			const sf::Texture& spriteset,
@@ -26,10 +38,11 @@ public:
 	// Functions
 	//bool move(Direction direction);
 
-	virtual void update(const float& dt);
+	virtual void update(const float& dt) = 0;
 	virtual void render(sf::RenderTarget& target);
 
 	// Getters / Setters
+	void setState(State state);
 	const sf::Vector2f& getPosition() const;
 	void setPosition(const sf::Vector2f& position);
 	const sf::Vector2f getSize() const;
@@ -70,6 +83,7 @@ protected:
 	sf::Sprite sprite;
 
 	// Variables
+	State state;
 	std::string name;
 	int level;
 	float maxHealth;

@@ -36,6 +36,9 @@ public:
 			sf::Vector2f size = {0, 0});
 	virtual ~Monster();
 
+	// Functions
+	virtual void update(const float& dt);
+
 private:
 	// Initialization
 	virtual void initVariables() override;

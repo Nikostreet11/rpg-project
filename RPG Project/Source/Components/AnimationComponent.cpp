@@ -12,11 +12,13 @@
 // Constructor / Destructor
 AnimationComponent::AnimationComponent(
 		sf::Sprite& sprite,
-		std::shared_ptr<sf::Texture> textureSheet
-		) :
+		std::shared_ptr<sf::Texture> textureSheet) :
 sprite(sprite),
 textureSheet(textureSheet)
 {
+	defaultTexture = *sprite.getTexture();
+	defaultTextureRect = sprite.getTextureRect();
+
 	lastAnimation = nullptr;
 	priorityAnimation = nullptr;
 }
@@ -55,6 +57,8 @@ void AnimationComponent::play(const std::string key, const float& dt,
 			{
 				// The animation has finished => Unlock the priority
 				priorityAnimation = nullptr;
+				sprite.setTexture(defaultTexture);
+				sprite.setTextureRect(defaultTextureRect);
 			}
 		}
 		else
@@ -78,6 +82,11 @@ void AnimationComponent::play(const std::string key, const float& dt,
 			lastAnimation = animations[key];
 		}
 		animations[key]->play(dt);
+		if (animations[key]->isDone())
+		{
+			sprite.setTexture(defaultTexture);
+			sprite.setTextureRect(defaultTextureRect);
+		}
 	}
 }
 
@@ -145,7 +154,6 @@ animationTimer(animationTimer),
 timer(0),
 done(true)
 {
-	this->sprite.setTexture(*textureSheet);
 }
 
 AnimationComponent::Animation::~Animation()
@@ -155,6 +163,11 @@ AnimationComponent::Animation::~Animation()
 // Functions
 void AnimationComponent::Animation::play(const float& dt)
 {
+	if (textureSheet)
+	{
+		this->sprite.setTexture(*textureSheet);
+	}
+
 	done = false;
 
 	// Update timer

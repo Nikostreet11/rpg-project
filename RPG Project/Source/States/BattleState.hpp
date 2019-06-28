@@ -56,6 +56,7 @@ public:
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
 	virtual void updateBattleInput(const float& dt);
+	virtual void updateCharacters(const float& dt);
 	// virtual void updateDialogueMenu(const float& dt);
 	virtual void updateActionMenu(const std::string& entry);
 	virtual void updateActiveMarker();

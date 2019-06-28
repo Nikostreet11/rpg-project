@@ -9,6 +9,8 @@
 #define ENTITIES_HUMAN_HPP_
 
 #include "Character.hpp"
+
+#include "..\Components\AnimationComponent.hpp"
 //#include "..\Exclude\Chestplate.h"
 //#include "..\Exclude\Weapon.h"
 
@@ -41,6 +43,8 @@ public:
 			sf::Vector2f size = {0, 0});
 	virtual ~Human();
 
+	virtual void update(const float& dt);
+	virtual void updateAnimations(const float& dt);
 	//virtual float attack(Character& target);
 	/*
 	const Chestplate* getChestplate() const;
@@ -53,6 +57,12 @@ protected:
 	// Initialization
 	virtual void initVariables() override;
 	virtual void initStats() override;
+	void initAnimations();
+
+	// Resources
+	std::shared_ptr<AnimationComponent> animationComponent;
+
+	std::shared_ptr<sf::Texture> test;
 
 	// Variables
 	Type type;

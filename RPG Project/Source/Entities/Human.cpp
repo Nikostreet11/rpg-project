@@ -19,6 +19,7 @@ Human::Human(
 	initVariables();
 	initStats();
 	initSprite(spriteset, position, size);
+	initAnimations();
 	/*
 	weapon = nullptr;
 	chestplate = nullptr;
@@ -27,6 +28,25 @@ Human::Human(
 
 Human::~Human()
 {
+}
+
+// Functions
+void Human::update(const float& dt)
+{
+	updateAnimations(dt);
+}
+
+void Human::updateAnimations(const float& dt)
+{
+	if (state == Casting)
+	{
+		animationComponent->play("CAST", dt, true);
+
+		if (animationComponent->isDone("CAST"))
+		{
+			state = Idle;
+		}
+	}
 }
 
 /*
@@ -89,6 +109,8 @@ void Human::setWeapon(Weapon* weapon) {
 // Initialization
 void Human::initVariables()
 {
+	state = Idle;
+
 	spriteOffset = {16, 16};
 	spriteSize = {48, 48};
 	spriteSpacing = {16, 16};
@@ -150,4 +172,28 @@ void Human::initStats()
 	default:
 		break;
 	}
+}
+
+void Human::initAnimations()
+{
+
+	test = std::make_shared<sf::Texture>();
+	test->loadFromFile("Images/Battle/Characters/WhiteMage.png");
+
+	animationComponent.reset(new AnimationComponent(sprite, test));
+
+	std::vector<sf::IntRect> rectVector = {
+			sf::IntRect(336, 16, 48, 48),
+			sf::IntRect(400, 16, 48, 48),
+			sf::IntRect(336, 16, 48, 48),
+			sf::IntRect(400, 16, 48, 48),
+			sf::IntRect(336, 16, 48, 48),
+			sf::IntRect(400, 16, 48, 48),
+			sf::IntRect(336, 16, 48, 48),
+			sf::IntRect(400, 16, 48, 48),
+			sf::IntRect(16, 80, 48, 48),
+			sf::IntRect(16, 80, 48, 48),
+			sf::IntRect(16, 80, 48, 48)
+	};
+	animationComponent->addAnimation("CAST", 0.2f, rectVector);
 }

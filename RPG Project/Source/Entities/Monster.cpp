@@ -25,6 +25,10 @@ Monster::~Monster()
 {
 }
 
+void Monster::update(const float& dt)
+{
+}
+
 void Monster::initVariables()
 {
 	spriteOffset = {0, 0};
