@@ -23,6 +23,9 @@ std::shared_ptr<ActionResults> Attack::use(
 		std::shared_ptr<Character> source,
 		std::shared_ptr<Character> target)
 {
+	source->setState(Character::Attacking);
+	target->setState(Character::Hit);
+
 	std::shared_ptr<ActionResults> results =
 			std::make_shared<ActionResults>(source, target);
 

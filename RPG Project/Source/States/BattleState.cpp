@@ -296,6 +296,7 @@ void BattleState::changePhase(Phase phase)
 		if (this->phase == Begin)
 		{
 			active = activeQueue[0];
+			active->setState(Character::Ready);
 		}
 		else
 		{
@@ -330,12 +331,6 @@ void BattleState::changePhase(Phase phase)
 		break;
 
 	case Results:
-
-		/*if (menu == MagicMenu)
-		{*/
-			std::cout << "been here" << std::endl;
-			active->setState(Character::CastingMagic);
-		//}
 		results = action->use(active, target);
 		break;
 
@@ -572,7 +567,6 @@ void BattleState::initDialogueMenu()
 
 	}
 
-
 	if (phase == Begin)
 	{
 		dialogueMenu.reset(new gui::Dialogue(
@@ -706,6 +700,7 @@ void BattleState::selectNextActive()
 	}
 
 	active = activeQueue[activeIndex];
+	active->setState(Character::Ready);
 }
 
 void BattleState::updateActiveMarker()

@@ -83,6 +83,26 @@ void Character::resetState()
 	}
 }
 
+std::shared_ptr<Action> Character::getAttack()
+{
+	return attack;
+}
+
+std::shared_ptr<Action> Character::getMagic(const std::string& name)
+{
+	return magic[name];
+}
+
+std::shared_ptr<Action> Character::getObject(const std::string& name)
+{
+	return objects[name];
+}
+
+std::shared_ptr<Action> Character::getFlee()
+{
+	return flee;
+}
+
 // Getters / Setters
 void Character::setState(State state)
 {
@@ -226,7 +246,6 @@ void Character::initSprite(
 			size.x / sprite.getTextureRect().width,
 			size.y / sprite.getTextureRect().height);
 }
-
 /*
 bool Character::move(Direction direction) {
 	if (posX == NO_POSITION || posY == NO_POSITION) {

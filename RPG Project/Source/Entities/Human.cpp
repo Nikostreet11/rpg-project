@@ -87,7 +87,12 @@ void Human::updateAnimations(const float& dt)
 
 	case Hit:
 
-		animationComponent->play("HIT", dt);
+		animationComponent->play("HIT", dt, true);
+
+		if (animationComponent->isDone("HIT"))
+		{
+			resetState();
+		}
 		break;
 
 	case Dead:
@@ -236,7 +241,7 @@ void Human::initAnimations()
 	animationComponent->addAnimation("READY", 0.3f, indexVector);
 
 	indexVector = {
-			{2, 0}, {4, 0}, {2, 0},
+			{2, 0}, {4, 0}, {2, 0}, {2, 0},
 			{4, 0}, {4, 0}, {4, 0}, {3, 0}, {3, 0},
 			{2, 0}, {4, 0}, {2, 0}};
 	animationComponent->addAnimation("ATTACK", 0.15f, indexVector);
@@ -252,7 +257,7 @@ void Human::initAnimations()
 	indexVector = {{1, 1}};
 	animationComponent->addAnimation("HURT", 0.3f, indexVector);
 
-	indexVector = {{2, 1}};
+	indexVector = {{1, 0}, {1, 0}, {2, 1}, {2, 1}, {2, 1}, {2, 1}};
 	animationComponent->addAnimation("HIT", 0.3f, indexVector);
 
 	indexVector = {{3, 1}};

@@ -44,6 +44,11 @@ public:
 
 	virtual void resetState();
 
+	std::shared_ptr<Action> getAttack();
+	std::shared_ptr<Action> getMagic(const std::string& name);
+	std::shared_ptr<Action> getObject(const std::string& name);
+	std::shared_ptr<Action> getFlee();
+
 	// Getters / Setters
 	void setState(State state);
 	const sf::Vector2f& getPosition() const;
@@ -83,6 +88,10 @@ protected:
 
 	// Resources
 	std::shared_ptr<Action> attack;
+	std::map<std::string, std::shared_ptr<Action>> magic;
+	std::map<std::string, std::shared_ptr<Action>> objects;
+	std::shared_ptr<Action> flee;
+
 	sf::Sprite sprite;
 
 	// Variables
