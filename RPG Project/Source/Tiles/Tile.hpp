@@ -24,8 +24,8 @@ public:
 
 	enum Closeness
 	{
-		background,
-		foreground
+		Background,
+		Foreground
 	};
 
 	explicit Tile(
@@ -35,7 +35,7 @@ public:
 			sf::Vector2u spriteIndex,
 			unsigned spriteSize,
 			Type type = Type::Default,
-			Closeness closeness = Closeness::foreground,
+			Closeness closeness = Closeness::Foreground,
 			bool crossable = true);
 	virtual ~Tile();
 

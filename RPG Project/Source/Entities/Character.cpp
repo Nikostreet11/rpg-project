@@ -67,6 +67,22 @@ void Character::render(sf::RenderTarget& target)
 	target.draw(sprite);
 }
 
+void Character::resetState()
+{
+	if (health > maxHealth * 0.3f)
+	{
+		state = Waiting;
+	}
+	else if	(health <= 0.f)
+	{
+		state = Dead;
+	}
+	else
+	{
+		state = Hurt;
+	}
+}
+
 // Getters / Setters
 void Character::setState(State state)
 {

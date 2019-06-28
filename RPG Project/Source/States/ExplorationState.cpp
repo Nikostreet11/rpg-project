@@ -115,9 +115,9 @@ void ExplorationState::render(std::shared_ptr<sf::RenderTarget> target)
 	renderTexture.clear();
 
 	renderTexture.setView(*camera);
-	tileMap->render(renderTexture, Tile::Closeness::background);
+	tileMap->render(renderTexture, Tile::Closeness::Background);
 	player->render(renderTexture);
-	tileMap->render(renderTexture, Tile::Closeness::foreground);
+	tileMap->render(renderTexture, Tile::Closeness::Foreground);
 
 	if (paused)
 	{

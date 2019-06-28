@@ -214,7 +214,10 @@ void TileMap::render(sf::RenderTarget& target, Tile::Closeness closeness)
 		}
 	}
 
-	target.draw(border);
+	if (closeness == Tile::Background)
+	{
+		target.draw(border);
+	}
 }
 
 void TileMap::addTile(

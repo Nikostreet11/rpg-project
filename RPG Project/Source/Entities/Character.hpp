@@ -19,10 +19,11 @@ public:
 	// Enumerators
 	enum State
 	{
-		Idle,
+		Waiting,
 		Ready,
 		Attacking,
-		Casting,
+		CastingMagic,
+		UsingObject,
 		Hurt,
 		Hit,
 		Dead
@@ -40,6 +41,8 @@ public:
 
 	virtual void update(const float& dt) = 0;
 	virtual void render(sf::RenderTarget& target);
+
+	virtual void resetState();
 
 	// Getters / Setters
 	void setState(State state);

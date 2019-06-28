@@ -125,7 +125,7 @@ AnimationComponent::Animation::Animation(
 	sprite(sprite),
 	textureSheet(textureSheet),
 	indexVector(indexVector),
-	currentRect(0),
+	currentIndex(0),
 	animationTimer(animationTimer),
 	timer(0),
 	done(true)
@@ -161,20 +161,24 @@ void AnimationComponent::Animation::play(const float& dt, float modifier)
 		timer = 0.f;
 
 		// Animate
-		if (currentRect < indexVector.size() - 1)
+		if (currentIndex < indexVector.size() - 1)
 		{
-			currentRect++;
+			currentIndex++;
 		}
 		// Reset
 		else
 		{
-			currentRect = 0;
+			currentIndex = 0;
+		}
+
+		if (currentIndex == indexVector.size() - 1)
+		{
 			done = true;
 		}
 
 		sprite.setTextureRect(sf::IntRect(
-				offset.x + (size.x + spacing.x) * indexVector[currentRect].x,
-				offset.y + (size.y + spacing.y) * indexVector[currentRect].y,
+				offset.x + (size.x + spacing.x) * indexVector[currentIndex].x,
+				offset.y + (size.y + spacing.y) * indexVector[currentIndex].y,
 				size.x,
 				size.y));
 	}
@@ -183,7 +187,7 @@ void AnimationComponent::Animation::play(const float& dt, float modifier)
 void AnimationComponent::Animation::reset()
 {
 	timer = 0.f;
-	currentRect = 0;
+	currentIndex = 0;
 
 	sprite.setTextureRect(sf::IntRect(
 			offset.x + (size.x + spacing.x) * indexVector[0].x,

@@ -8,7 +8,7 @@
 #ifndef COMPONENTS_ANIMATIONCOMPONENT_HPP_
 #define COMPONENTS_ANIMATIONCOMPONENT_HPP_
 
-#include "..\PCH\pch.hpp"
+#include "pch.hpp"
 
 class AnimationComponent
 {
@@ -67,7 +67,7 @@ private:
 		sf::Vector2u offset;
 		sf::Vector2u size;
 		sf::Vector2u spacing;
-		unsigned currentRect;
+		unsigned currentIndex;
 		float animationTimer;
 		float timer;
 		bool done;

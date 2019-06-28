@@ -38,15 +38,62 @@ void Human::update(const float& dt)
 
 void Human::updateAnimations(const float& dt)
 {
-	if (state == Casting)
+	switch (state)
 	{
-		animationComponent->play("CAST", dt, true);
+	case Waiting:
 
-		if (animationComponent->isDone("CAST"))
+		animationComponent->play("WAIT", dt);
+		break;
+
+	case Ready:
+
+		animationComponent->play("READY", dt);
+		break;
+
+	case Attacking:
+
+		animationComponent->play("ATTACK", dt, true);
+
+		if (animationComponent->isDone("ATTACK"))
 		{
-			animationComponent->stop();
-			state = Idle;
+			resetState();
 		}
+		break;
+
+	case CastingMagic:
+
+		animationComponent->play("CAST_MAGIC", dt, true);
+
+		if (animationComponent->isDone("CAST_MAGIC"))
+		{
+			resetState();
+		}
+		break;
+
+	case UsingObject:
+
+		animationComponent->play("USE_OBJECT", dt, true);
+
+		if (animationComponent->isDone("USE_OBJECT"))
+		{
+			resetState();
+		}
+		break;
+
+	case Hurt:
+
+		animationComponent->play("HURT", dt);
+		break;
+
+	case Hit:
+
+		animationComponent->play("HIT", dt);
+		break;
+
+	case Dead:
+
+		animationComponent->play("DEAD", dt);
+		break;
 	}
 }
 
@@ -110,7 +157,7 @@ void Human::setWeapon(Weapon* weapon) {
 // Initialization
 void Human::initVariables()
 {
-	state = Idle;
+	state = Waiting;
 
 	spriteOffset = {16, 16};
 	spriteSize = {48, 48};
@@ -180,24 +227,34 @@ void Human::initAnimations()
 	animationComponent.reset(new AnimationComponent(sprite,
 			{16, 16}, {48, 48}, {16, 16}));
 
-	std::vector<sf::Vector2u> indexVector = {{5, 0}, {6, 0}, {5, 0}, {6, 0},
-			{5, 0}, {6, 0}, {5, 0}, {6, 0}, {0, 1}, {0, 1}, {0, 1}, {0, 1},
-			{0, 1}};
+	std::vector<sf::Vector2u> indexVector;
 
-	std::vector<sf::IntRect> rectVector = {
-			sf::IntRect(336, 16, 48, 48),
-			sf::IntRect(400, 16, 48, 48),
-			sf::IntRect(336, 16, 48, 48),
-			sf::IntRect(400, 16, 48, 48),
-			sf::IntRect(336, 16, 48, 48),
-			sf::IntRect(400, 16, 48, 48),
-			sf::IntRect(336, 16, 48, 48),
-			sf::IntRect(400, 16, 48, 48),
-			sf::IntRect(16, 80, 48, 48),
-			sf::IntRect(16, 80, 48, 48),
-			sf::IntRect(16, 80, 48, 48),
-			sf::IntRect(16, 80, 48, 48),
-			sf::IntRect(16, 80, 48, 48)
-	};
-	animationComponent->addAnimation("CAST", 0.2f, indexVector);
+	indexVector = {{0, 0}};
+	animationComponent->addAnimation("WAIT", 0.3f, indexVector);
+
+	indexVector = {{1, 0}};
+	animationComponent->addAnimation("READY", 0.3f, indexVector);
+
+	indexVector = {
+			{2, 0}, {4, 0}, {2, 0},
+			{4, 0}, {4, 0}, {4, 0}, {3, 0}, {3, 0},
+			{2, 0}, {4, 0}, {2, 0}};
+	animationComponent->addAnimation("ATTACK", 0.15f, indexVector);
+
+	indexVector = {
+			{5, 0}, {6, 0}, {5, 0}, {6, 0}, {5, 0}, {6, 0},
+			{5, 0}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 1}};
+	animationComponent->addAnimation("CAST_MAGIC", 0.3f, indexVector);
+
+	indexVector = {{0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 1}};
+	animationComponent->addAnimation("USE_OBJECT", 0.3f, indexVector);
+
+	indexVector = {{1, 1}};
+	animationComponent->addAnimation("HURT", 0.3f, indexVector);
+
+	indexVector = {{2, 1}};
+	animationComponent->addAnimation("HIT", 0.3f, indexVector);
+
+	indexVector = {{3, 1}};
+	animationComponent->addAnimation("DEAD", 0.3f, indexVector);
 }

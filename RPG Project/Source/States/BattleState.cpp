@@ -334,7 +334,7 @@ void BattleState::changePhase(Phase phase)
 		/*if (menu == MagicMenu)
 		{*/
 			std::cout << "been here" << std::endl;
-			active->setState(Character::Casting);
+			active->setState(Character::CastingMagic);
 		//}
 		results = action->use(active, target);
 		break;

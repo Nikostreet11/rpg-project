@@ -161,13 +161,13 @@ void EditorState::updateEditorInput(const float& dt)
 
 	if (keybinds.at("NEXT_CLOSENESS").isPressed())
 	{
-		if (closeness == Tile::Closeness::background)
+		if (closeness == Tile::Closeness::Background)
 		{
-			closeness = Tile::Closeness::foreground;
+			closeness = Tile::Closeness::Foreground;
 		}
 		else
 		{
-			closeness = Tile::Closeness::background;
+			closeness = Tile::Closeness::Background;
 		}
 	}
 
@@ -272,8 +272,8 @@ void EditorState::render(std::shared_ptr<sf::RenderTarget> target)
 		target = window;
 
 	target->setView(*tileMapView);
-	tileMap->render(*target, Tile::Closeness::background);
-	tileMap->render(*target, Tile::Closeness::foreground);
+	tileMap->render(*target, Tile::Closeness::Background);
+	tileMap->render(*target, Tile::Closeness::Foreground);
 
 	renderGUI(target);
 	renderButtons(target);
@@ -321,7 +321,7 @@ void EditorState::initVariables()
 	cameraSpeed = 100.f;
 
 	type = Tile::Type::Default;
-	closeness = Tile::Closeness::background;
+	closeness = Tile::Closeness::Background;
 	crossable = true;
 }
 
