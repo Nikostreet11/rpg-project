@@ -23,7 +23,7 @@ Entity::~Entity()
 void Entity::setTexture(std::shared_ptr<sf::Texture> texture)
 {
 	sprite.setTexture(*texture);
-	sprite.setTextureRect(sf::IntRect(0, 0, 36, 36));
+	sprite.setTextureRect(sf::IntRect(2, 2, 32, 32));
 	sprite.setScale(sf::Vector2f(3.5f, 3.5f));
 }
 
@@ -42,8 +42,8 @@ void Entity::createMovement(
 void Entity::createAnimationComponent(
 		std::shared_ptr<sf::Texture> textureSheet)
 {
-	animationComponent.reset(new AnimationComponent(
-			sprite,
+	animationComponent.reset(new AnimationComponent(sprite,
+			{2, 2}, {32, 32}, {4, 4},
 			std::move(textureSheet)));
 }
 

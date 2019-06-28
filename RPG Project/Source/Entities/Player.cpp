@@ -22,8 +22,8 @@ Player::Player(sf::Vector2f position, std::shared_ptr<sf::Texture> textureSheet)
 
 	createHitboxComponent(
 			sprite,
-			sf::Vector2f(20, 10),
-			sf::Vector2f(90, 110));
+			{8, 80}, {96, 32});
+			//{10, 5}, {90, 110});
 }
 
 Player::~Player()
@@ -84,58 +84,34 @@ void Player::initVariables()
 
 void Player::initAnimations()
 {
-	std::vector<sf::IntRect> rectVector = {
-			sf::IntRect(0, 0, 36, 36),
-			sf::IntRect(324, 0, 36, 36),
-			sf::IntRect(0, 0, 36, 36),
-			sf::IntRect(360, 0, 36, 36)
-	};
-	animationComponent->addAnimation("IDLE", 0.5f, rectVector);
+	std::vector<sf::Vector2u> indexVector = {{0, 0}, {9, 0}, {0, 0}, {10, 0}};
 
-	rectVector = {
-			sf::IntRect(252, 0, 36, 36),
-			sf::IntRect(216, 0, 36, 36)
-	};
-	animationComponent->addAnimation("WALK_LEFT", 0.2f, rectVector);
+	animationComponent->addAnimation("IDLE", 0.5f, indexVector);
 
-	rectVector = {
-			sf::IntRect(180, 0, 36, 36),
-			sf::IntRect(144, 0, 36, 36)
-	};
-	animationComponent->addAnimation("WALK_RIGHT", 0.2f, rectVector);
+	indexVector = {{7, 0}, {6, 0}};
 
-	rectVector = {
-			sf::IntRect(108, 0, 36, 36),
-			sf::IntRect(72, 0, 36, 36)
-	};
-	animationComponent->addAnimation("WALK_UP", 0.2f, rectVector);
+	animationComponent->addAnimation("WALK_LEFT", 0.2f, indexVector);
 
-	rectVector = {
-			sf::IntRect(36, 0, 36, 36),
-			sf::IntRect(0, 0, 36, 36)
-	};
-	animationComponent->addAnimation("WALK_DOWN", 0.2f, rectVector);
+	indexVector = {{5, 0}, {4, 0}};
 
-	rectVector = {
-			sf::IntRect(648, 0, 36, 36),
-			sf::IntRect(684, 0, 36, 36)
-	};
-	animationComponent->addAnimation("WAVE", 0.5f, rectVector);
+	animationComponent->addAnimation("WALK_RIGHT", 0.2f, indexVector);
 
-	rectVector = {	// 0 5 2 7 0 5 2 7 11 11 11 11 9 9
-			sf::IntRect(0, 0, 36, 36),
-			sf::IntRect(180, 0, 36, 36),
-			sf::IntRect(72, 0, 36, 36),
-			sf::IntRect(252, 0, 36, 36),
-			sf::IntRect(0, 0, 36, 36),
-			sf::IntRect(180, 0, 36, 36),
-			sf::IntRect(72, 0, 36, 36),
-			sf::IntRect(252, 0, 36, 36),
-			sf::IntRect(396, 0, 36, 36),
-			sf::IntRect(396, 0, 36, 36),
-			sf::IntRect(396, 0, 36, 36),
-			sf::IntRect(288, 0, 36, 36),
-			sf::IntRect(288, 0, 36, 36)
-	};
-	animationComponent->addAnimation("SPIN", 0.2f, rectVector);
+	indexVector = {{3, 0}, {2, 0}};
+
+	animationComponent->addAnimation("WALK_UP", 0.2f, indexVector);
+
+	indexVector = {{1, 0}, {0, 0}};
+
+	animationComponent->addAnimation("WALK_DOWN", 0.2f, indexVector);
+
+	indexVector = {{18, 0}, {19, 0}};
+
+	animationComponent->addAnimation("WAVE", 0.5f, indexVector);
+
+	indexVector = {	// 0 5 2 7 0 5 2 7 11 11 11 11 8 8
+			{0, 0}, {5, 0}, {2, 0}, {7, 0},
+			{0, 0}, {5, 0}, {2, 0}, {7, 0},
+			{11, 0}, {11, 0}, {11, 0}, {11, 0}, {8, 0}, {8, 0}};
+
+	animationComponent->addAnimation("SPIN", 0.2f, indexVector);
 }

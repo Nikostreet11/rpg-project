@@ -75,7 +75,7 @@ void MainMenuState::updateButtons()
 	if (buttons["SETTINGS_STATE"]->isReleased())
 	{
 		std::unique_ptr<State> settingsStatePtr(
-				new SettingsState(stateData));
+				new ExplorationState(stateData));
 		states->push(move(settingsStatePtr));
 	}
 

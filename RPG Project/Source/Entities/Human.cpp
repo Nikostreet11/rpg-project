@@ -44,6 +44,7 @@ void Human::updateAnimations(const float& dt)
 
 		if (animationComponent->isDone("CAST"))
 		{
+			animationComponent->stop();
 			state = Idle;
 		}
 	}
@@ -176,11 +177,12 @@ void Human::initStats()
 
 void Human::initAnimations()
 {
+	animationComponent.reset(new AnimationComponent(sprite,
+			{16, 16}, {48, 48}, {16, 16}));
 
-	test = std::make_shared<sf::Texture>();
-	test->loadFromFile("Images/Battle/Characters/WhiteMage.png");
-
-	animationComponent.reset(new AnimationComponent(sprite, test));
+	std::vector<sf::Vector2u> indexVector = {{5, 0}, {6, 0}, {5, 0}, {6, 0},
+			{5, 0}, {6, 0}, {5, 0}, {6, 0}, {0, 1}, {0, 1}, {0, 1}, {0, 1},
+			{0, 1}};
 
 	std::vector<sf::IntRect> rectVector = {
 			sf::IntRect(336, 16, 48, 48),
@@ -193,7 +195,9 @@ void Human::initAnimations()
 			sf::IntRect(400, 16, 48, 48),
 			sf::IntRect(16, 80, 48, 48),
 			sf::IntRect(16, 80, 48, 48),
+			sf::IntRect(16, 80, 48, 48),
+			sf::IntRect(16, 80, 48, 48),
 			sf::IntRect(16, 80, 48, 48)
 	};
-	animationComponent->addAnimation("CAST", 0.2f, rectVector);
+	animationComponent->addAnimation("CAST", 0.2f, indexVector);
 }
