@@ -10,6 +10,8 @@
 
 #include "pch.hpp"
 
+#include "..\Animations\Animation.hpp"
+
 class AnimationComponent
 {
 public:
@@ -38,41 +40,6 @@ public:
 	bool isDone(std::string key);
 
 private:
-	class Animation
-	{
-	public:
-		explicit Animation(
-				sf::Sprite& sprite,
-				std::shared_ptr<sf::Texture> textureSheet,
-				float animationTimer,
-				std::vector<sf::Vector2u> indexVector,
-				sf::Vector2u offset,
-				sf::Vector2u size,
-				sf::Vector2u spacing);
-		virtual ~Animation();
-
-		// Functions
-		void play(const float& dt, float modifier);
-		void reset();
-
-		// Getters / Setters
-		bool isDone() const;
-
-		// Resources
-		sf::Sprite& sprite;
-		std::shared_ptr<sf::Texture> textureSheet;
-		std::vector<sf::Vector2u> indexVector;
-
-		// Variables
-		sf::Vector2u offset;
-		sf::Vector2u size;
-		sf::Vector2u spacing;
-		unsigned currentIndex;
-		float animationTimer;
-		float timer;
-		bool done;
-	};
-
 	// Resources
 	sf::Sprite& sprite;
 	std::shared_ptr<sf::Texture> textureSheet;
