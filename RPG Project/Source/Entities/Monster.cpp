@@ -9,7 +9,7 @@
 
 Monster::Monster(
 		Type type,
-		const sf::Texture& spriteset,
+		const sf::Texture& textureSheet,
 		sf::Vector2f position,
 		sf::Vector2f size) :
 		Character()
@@ -18,7 +18,7 @@ Monster::Monster(
 
 	initVariables();
 	initStats();
-	initSprite(spriteset, position, size);
+	initSprite(textureSheet, position, size);
 }
 
 Monster::~Monster()

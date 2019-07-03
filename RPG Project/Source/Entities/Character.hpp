@@ -10,6 +10,8 @@
 
 #include "pch.hpp"
 
+
+#include "..\Components\AnimationComponent.hpp"
 #include "..\Actions\Attack.hpp"
 #include "..\Utilities\Randomizer.hpp"
 
@@ -82,7 +84,7 @@ protected:
 	virtual void initStats();
 	virtual void initActions();
 	void initSprite(
-			const sf::Texture& spriteset,
+			const sf::Texture& textureSheet,
 			sf::Vector2f position,
 			sf::Vector2f size);
 
@@ -93,6 +95,7 @@ protected:
 	std::shared_ptr<Action> flee;
 
 	sf::Sprite sprite;
+	//std::shared_ptr<sf::Texture> textureSheet;
 
 	// Variables
 	State state;

@@ -15,7 +15,7 @@ class Animation
 public:
 	explicit Animation(
 			sf::Sprite& sprite,
-			std::shared_ptr<sf::Texture> textureSheet,
+			const sf::Texture& textureSheet,
 			float animationTimer,
 			std::vector<sf::Vector2u> indexVector,
 			sf::Vector2u offset,
@@ -33,7 +33,7 @@ public:
 protected:
 	// Resources
 	sf::Sprite& sprite;
-	std::shared_ptr<sf::Texture> textureSheet;
+	const sf::Texture& textureSheet;
 	std::vector<sf::Vector2u> indexVector;
 
 	// Variables

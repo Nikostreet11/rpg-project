@@ -30,6 +30,10 @@ public:
 			float animationTimer,
 			std::vector<sf::Vector2u>& indexVector);
 
+	void addAnimation(
+			const std::string key,
+			std::shared_ptr<Animation> animation);
+
 	void play(const std::string key, const float& dt,
 			const bool priority = false);
 	void play(const std::string key, const float& dt,

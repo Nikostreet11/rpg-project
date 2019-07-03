@@ -231,11 +231,13 @@ void Character::initActions()
 }
 
 void Character::initSprite(
-		const sf::Texture& spriteset,
+		const sf::Texture& textureSheet,
 		sf::Vector2f position,
 		sf::Vector2f size)
 {
-	sprite.setTexture(spriteset);
+	//this->textureSheet = textureSheet;
+
+	sprite.setTexture(textureSheet);
 	sprite.setTextureRect(sf::IntRect(
 			spriteOffset.x + (spriteSpacing.x + spriteSize.x) * spriteIndex.x,
 			spriteOffset.y + (spriteSpacing.y + spriteSize.y) * spriteIndex.y,

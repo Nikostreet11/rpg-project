@@ -9,7 +9,7 @@
 
 StatsAnimation::StatsAnimation(
 		sf::Sprite& sprite,
-		std::shared_ptr<sf::Texture> textureSheet,
+		sf::Texture& textureSheet,
 		float animationTimer,
 		sf::Vector2u offset,
 		sf::Vector2u size,
@@ -40,17 +40,14 @@ StatsAnimation::StatsAnimation(
 	{
 		sf::Sprite& spriteDigit = digits[index];
 
-		if (textureSheet)
-		{
-			spriteDigit.setTexture(*textureSheet);
+		spriteDigit.setTexture(textureSheet);
 
-			unsigned digit = static_cast<unsigned>(stringValue[index]);
-			spriteDigit.setTextureRect(sf::IntRect(
-					offset.x + (size.x + spacing.x) * getIndex(digit).x,
-					offset.y + (size.y + spacing.y) * getIndex(digit).y,
-					size.x,
-					size.y));
-		}
+		unsigned digit = static_cast<unsigned>(stringValue[index]);
+		spriteDigit.setTextureRect(sf::IntRect(
+				offset.x + (size.x + spacing.x) * getIndex(digit).x,
+				offset.y + (size.y + spacing.y) * getIndex(digit).y,
+				size.x,
+				size.y));
 	}
 
 	initPosition();

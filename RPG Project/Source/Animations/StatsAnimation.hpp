@@ -25,7 +25,7 @@ public:
 	// Constructor / Destructor
 	explicit StatsAnimation(
 			sf::Sprite& sprite,
-			std::shared_ptr<sf::Texture> textureSheet,
+			sf::Texture& textureSheet,
 			float animationTimer,
 			sf::Vector2u offset,
 			sf::Vector2u size,

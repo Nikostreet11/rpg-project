@@ -9,8 +9,6 @@
 #define ENTITIES_HUMAN_HPP_
 
 #include "Character.hpp"
-
-#include "..\Components\AnimationComponent.hpp"
 //#include "..\Exclude\Chestplate.h"
 //#include "..\Exclude\Weapon.h"
 
@@ -59,10 +57,7 @@ protected:
 	virtual void initStats() override;
 	void initAnimations();
 
-	// Resources
 	std::shared_ptr<AnimationComponent> animationComponent;
-
-	std::shared_ptr<sf::Texture> test;
 
 	// Variables
 	Type type;

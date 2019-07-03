@@ -10,7 +10,7 @@
 // Constructor / Destructor
 Animation::Animation(
 		sf::Sprite& sprite,
-		std::shared_ptr<sf::Texture> textureSheet,
+		const sf::Texture& textureSheet,
 		float animationTimer,
 		std::vector<sf::Vector2u> indexVector,
 		sf::Vector2u offset,
@@ -36,10 +36,7 @@ Animation::~Animation()
 // Functions
 void Animation::play(const float& dt, float modifier)
 {
-	if (textureSheet)
-	{
-		this->sprite.setTexture(*textureSheet);
-	}
+	this->sprite.setTexture(textureSheet);
 
 	done = false;
 

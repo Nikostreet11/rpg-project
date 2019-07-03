@@ -44,12 +44,19 @@ void AnimationComponent::addAnimation(
 {
 	animations[key] = std::make_shared<Animation>(
 			sprite,
-			textureSheet,
+			*textureSheet,
 			animationTimer,
 			indexVector,
 			offset,
 			size,
 			spacing);
+}
+
+void AnimationComponent::addAnimation(
+		const std::string key,
+		std::shared_ptr<Animation> animation)
+{
+	animations[key] = animation;
 }
 
 void AnimationComponent::play(const std::string key, const float& dt,

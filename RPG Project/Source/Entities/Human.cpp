@@ -234,8 +234,18 @@ void Human::initAnimations()
 
 	std::vector<sf::Vector2u> indexVector;
 
+	// Sprite does not have a texture yet!!!
+	// Bug in Animation or AnimationComponent (most likely)
 	indexVector = {{0, 0}};
-	animationComponent->addAnimation("WAIT", 0.3f, indexVector);
+	animationComponent->addAnimation(
+			"WAIT",
+			std::make_shared<Animation>(
+					sprite, *sprite.getTexture(),
+					0.3f, indexVector,
+					sf::Vector2u(16, 16),
+					sf::Vector2u(48, 48),
+					sf::Vector2u(16, 16)));
+	//animationComponent->addAnimation("WAIT", 0.3f, indexVector);
 
 	indexVector = {{1, 0}};
 	animationComponent->addAnimation("READY", 0.3f, indexVector);
