@@ -9,7 +9,7 @@
 
 Human::Human(
 		Type type,
-		const sf::Texture& spriteset,
+		const sf::Texture& textureSheet,
 		sf::Vector2f position,
 		sf::Vector2f size) :
 		Character()
@@ -18,7 +18,7 @@ Human::Human(
 
 	initVariables();
 	initStats();
-	initSprite(spriteset, position, size);
+	initSprite(textureSheet, position, size);
 	initAnimations();
 	/*
 	weapon = nullptr;
@@ -239,37 +239,86 @@ void Human::initAnimations()
 	indexVector = {{0, 0}};
 	animationComponent->addAnimation(
 			"WAIT",
-			std::make_shared<Animation>(
+			std::move(std::make_shared<Animation>(
 					sprite, *sprite.getTexture(),
 					0.3f, indexVector,
 					sf::Vector2u(16, 16),
 					sf::Vector2u(48, 48),
-					sf::Vector2u(16, 16)));
+					sf::Vector2u(16, 16))));
 	//animationComponent->addAnimation("WAIT", 0.3f, indexVector);
 
 	indexVector = {{1, 0}};
-	animationComponent->addAnimation("READY", 0.3f, indexVector);
+	animationComponent->addAnimation(
+			"READY",
+			std::move(std::make_shared<Animation>(
+					sprite, *sprite.getTexture(),
+					0.3f, indexVector,
+					sf::Vector2u(16, 16),
+					sf::Vector2u(48, 48),
+					sf::Vector2u(16, 16))));
 
 	indexVector = {
 			{2, 0}, {4, 0}, {2, 0}, {2, 0},
 			{4, 0}, {4, 0}, {4, 0}, {3, 0}, {3, 0},
 			{2, 0}, {4, 0}, {2, 0}};
-	animationComponent->addAnimation("ATTACK", 0.15f, indexVector);
+	animationComponent->addAnimation(
+			"ATTACK",
+			std::move(std::make_shared<Animation>(
+					sprite, *sprite.getTexture(),
+					0.15f, indexVector,
+					sf::Vector2u(16, 16),
+					sf::Vector2u(48, 48),
+					sf::Vector2u(16, 16))));
 
 	indexVector = {
 			{5, 0}, {6, 0}, {5, 0}, {6, 0}, {5, 0}, {6, 0},
 			{5, 0}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 1}};
-	animationComponent->addAnimation("CAST_MAGIC", 0.3f, indexVector);
+	animationComponent->addAnimation(
+			"CAST_MAGIC",
+			std::move(std::make_shared<Animation>(
+					sprite, *sprite.getTexture(),
+					0.3f, indexVector,
+					sf::Vector2u(16, 16),
+					sf::Vector2u(48, 48),
+					sf::Vector2u(16, 16))));
 
 	indexVector = {{0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 1}};
-	animationComponent->addAnimation("USE_OBJECT", 0.3f, indexVector);
+	animationComponent->addAnimation(
+			"USE_OBJECT",
+			std::move(std::make_shared<Animation>(
+					sprite, *sprite.getTexture(),
+					0.3f, indexVector,
+					sf::Vector2u(16, 16),
+					sf::Vector2u(48, 48),
+					sf::Vector2u(16, 16))));
 
 	indexVector = {{1, 1}};
-	animationComponent->addAnimation("HURT", 0.3f, indexVector);
+	animationComponent->addAnimation(
+			"HURT",
+			std::move(std::make_shared<Animation>(
+					sprite, *sprite.getTexture(),
+					0.3f, indexVector,
+					sf::Vector2u(16, 16),
+					sf::Vector2u(48, 48),
+					sf::Vector2u(16, 16))));
 
 	indexVector = {{1, 0}, {1, 0}, {2, 1}, {2, 1}, {2, 1}, {2, 1}};
-	animationComponent->addAnimation("HIT", 0.3f, indexVector);
+	animationComponent->addAnimation(
+			"HIT",
+			std::move(std::make_shared<Animation>(
+					sprite, *sprite.getTexture(),
+					0.3f, indexVector,
+					sf::Vector2u(16, 16),
+					sf::Vector2u(48, 48),
+					sf::Vector2u(16, 16))));
 
 	indexVector = {{3, 1}};
-	animationComponent->addAnimation("DEAD", 0.3f, indexVector);
+	animationComponent->addAnimation(
+			"DEAD",
+			std::move(std::make_shared<Animation>(
+					sprite, *sprite.getTexture(),
+					0.3f, indexVector,
+					sf::Vector2u(16, 16),
+					sf::Vector2u(48, 48),
+					sf::Vector2u(16, 16))));
 }

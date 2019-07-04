@@ -16,19 +16,28 @@ AnimationComponent::AnimationComponent(
 		sf::Vector2u size,
 		sf::Vector2u spacing,
 		std::shared_ptr<sf::Texture> textureSheet) :
-sprite(sprite),
-textureSheet(textureSheet)
+sprite(sprite)
 {
 	this->offset = offset;
 	this->size = size;
 	this->spacing = spacing;
+
+	/*
+	if (!textureSheet)
+	{
+		this->textureSheet = *sprite.getTexture();
+	}
+	*/
 
 	// initVariables();
 	lastAnimation = nullptr;
 	priorityAnimation = nullptr;
 
 	// initDefaultValues();
-	defaultTexture = *sprite.getTexture();
+	if (!textureSheet)
+	{
+		defaultTexture = *sprite.getTexture();
+	}
 	defaultTextureRect = sprite.getTextureRect();
 }
 
@@ -44,7 +53,7 @@ void AnimationComponent::addAnimation(
 {
 	animations[key] = std::make_shared<Animation>(
 			sprite,
-			*textureSheet,
+			defaultTexture,
 			animationTimer,
 			indexVector,
 			offset,

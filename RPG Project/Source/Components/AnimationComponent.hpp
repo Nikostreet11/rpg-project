@@ -46,7 +46,7 @@ public:
 private:
 	// Resources
 	sf::Sprite& sprite;
-	std::shared_ptr<sf::Texture> textureSheet;
+	//sf::Texture textureSheet;
 	sf::Texture defaultTexture;
 	sf::IntRect defaultTextureRect;
 

@@ -36,7 +36,7 @@ public:
 	// Constructor / Destructor
 	explicit Human(
 			Type type,
-			const sf::Texture& spriteset,
+			const sf::Texture& TextureSheet,
 			sf::Vector2f position = {0, 0},
 			sf::Vector2f size = {0, 0});
 	virtual ~Human();
