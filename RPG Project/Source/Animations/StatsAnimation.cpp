@@ -11,6 +11,7 @@ StatsAnimation::StatsAnimation(
 		sf::Sprite& sprite,
 		sf::Texture& textureSheet,
 		float animationTimer,
+		float delay,
 		sf::Vector2u offset,
 		sf::Vector2u size,
 		sf::Vector2u spacing) :
@@ -23,6 +24,9 @@ StatsAnimation::StatsAnimation(
 			size,
 			spacing)
 {
+	this->delay = delay;
+	delayTimer = 0;
+	started = false;
 	initVariables();
 }
 
@@ -41,35 +45,42 @@ void StatsAnimation::update(const float& dt, float modifier)
 			modifier = 0.5f;
 
 		// Update timer
-		timer += dt * modifier;
-
-		if (timer > animationTimer)
+		if (delayTimer < delay)
 		{
-			done = true;
-			playing = false;
-			// Reset timer
-			reset();
+			delayTimer += dt * modifier;
 		}
-
-		// Animate
-		for (size_t index = 0; index < digits.size(); index++)
+		else
 		{
-			digits[index].move(0, -25 * dt * modifier);
+			timer += dt * modifier;
 
-			sf::Color spriteColor = digits[index].getColor();
-
-			unsigned dAlpha = static_cast<unsigned>(200.f * dt * modifier);
-
-			if (dAlpha > spriteColor.a)
+			if (timer > animationTimer)
 			{
-				spriteColor.a = 0;
-			}
-			else
-			{
-				spriteColor.a -= dAlpha;
+				done = true;
+				playing = false;
+				// Reset timer
+				reset();
 			}
 
-			digits[index].setColor(spriteColor);
+			// Animate
+			for (size_t index = 0; index < digits.size(); index++)
+			{
+				digits[index].move(0, -40 * dt * timer * modifier);
+
+				sf::Color spriteColor = digits[index].getColor();
+
+				unsigned dAlpha = static_cast<unsigned>(300.f * dt * timer * modifier);
+
+				if (dAlpha > spriteColor.a)
+				{
+					spriteColor.a = 0;
+				}
+				else
+				{
+					spriteColor.a -= dAlpha;
+				}
+
+				digits[index].setColor(spriteColor);
+			}
 		}
 	}
 }
@@ -119,6 +130,7 @@ void StatsAnimation::play(unsigned value, Stat stat, bool critical)
 	}
 
 	timer = 0;
+	delayTimer = 0;
 
 	initScale();
 	initPosition();

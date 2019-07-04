@@ -21,6 +21,7 @@ public:
 			sf::Sprite& sprite,
 			sf::Texture& textureSheet,
 			float animationTimer,
+			float delay,
 			sf::Vector2u offset,
 			sf::Vector2u size,
 			sf::Vector2u spacing);
@@ -49,10 +50,13 @@ private:
 	std::vector<sf::Sprite> digits;
 
 	// Variables
+	float delay;
+	float delayTimer;
 	Stat stat;
 	bool critical;
 
 	bool playing;
+	bool started;
 };
 
 #endif /* ANIMATIONS_STATSANIMATION_HPP_ */
