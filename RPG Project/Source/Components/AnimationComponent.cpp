@@ -38,6 +38,11 @@ sprite(sprite)
 	{
 		defaultTexture = *sprite.getTexture();
 	}
+	else
+	{
+		defaultTexture = *textureSheet;
+	}
+
 	defaultTextureRect = sprite.getTextureRect();
 }
 
