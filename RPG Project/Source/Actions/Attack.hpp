@@ -10,6 +10,8 @@
 
 #include "Action.hpp"
 
+#include "..\Stat.hpp"
+
 class Attack:
 		public Action
 {

@@ -7,14 +7,14 @@
 
 #include "Character.hpp"
 
-Character::Character(/*
-		const sf::Texture& spriteset,
-		sf::Vector2f position,
-		sf::Vector2f size*/)
+Character::Character(
+		std::map<std::string, std::shared_ptr<sf::Texture>> textures) :
+	textures(std::move(textures))
 {
 	//initVariables();
 	initStats();
 	initActions();
+	initAnimations();
 	//initSprite(spriteset, position, size);
 }
 
@@ -62,9 +62,15 @@ void Character::update(const float& dt)
 }
 */
 
+void Character::update(const float& dt)
+{
+	statsAnimation->update(dt, 1.f);
+}
+
 void Character::render(sf::RenderTarget& target)
 {
 	target.draw(sprite);
+	statsAnimation->render(target);
 }
 
 void Character::resetState()
@@ -247,6 +253,20 @@ void Character::initSprite(
 	sprite.setScale(
 			size.x / sprite.getTextureRect().width,
 			size.y / sprite.getTextureRect().height);
+}
+
+void Character::playStatsAnimation(int value, Stat stat, bool critical)
+{
+	statsAnimation->play(value, stat, critical);
+}
+
+void Character::initAnimations()
+{
+	statsAnimation = std::make_shared<StatsAnimation>(
+			sprite, *textures["ICONS"], 2.f,
+			sf::Vector2u(2, 2),
+			sf::Vector2u(16, 16),
+			sf::Vector2u(0, 0));
 }
 /*
 bool Character::move(Direction direction) {

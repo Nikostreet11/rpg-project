@@ -39,5 +39,7 @@ std::shared_ptr<ActionResults> Attack::use(
 
 	results->compute(source, target);
 
+	target->playStatsAnimation(static_cast<int>(damage), Stat::Health, false);
+
 	return std::move(results);
 }

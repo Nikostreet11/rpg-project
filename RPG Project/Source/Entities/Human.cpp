@@ -9,16 +9,16 @@
 
 Human::Human(
 		Type type,
-		const sf::Texture& textureSheet,
+		std::map<std::string, std::shared_ptr<sf::Texture>> textures,
 		sf::Vector2f position,
 		sf::Vector2f size) :
-		Character()
+		Character(textures)
 {
 	this->type = type;
 
 	initVariables();
 	initStats();
-	initSprite(textureSheet, position, size);
+	initSprite(getTexture(textures), position, size);
 	initAnimations();
 	/*
 	weapon = nullptr;
@@ -33,6 +33,7 @@ Human::~Human()
 // Functions
 void Human::update(const float& dt)
 {
+	Character::update(dt);
 	updateAnimations(dt);
 }
 
@@ -159,6 +160,56 @@ void Human::setWeapon(Weapon* weapon) {
 }
 */
 
+// Internal
+const sf::Texture& Human::getTexture(
+		std::map<std::string, std::shared_ptr<sf::Texture>> textures)
+{
+	switch (type)
+	{
+	case BlackMage:
+		return *textures["BLACK_MAGE"];
+		break;
+
+	case BlackWizard:
+		break;
+
+	case Knight:
+		break;
+
+	case Master:
+		break;
+
+	case Monk:
+		break;
+
+	case Ninja:
+		break;
+
+	case RedMage:
+		break;
+
+	case RedWizard:
+		break;
+
+	case Thief:
+		return *textures["THIEF"];
+		break;
+
+	case Warrior:
+		return *textures["WARRIOR"];
+		break;
+
+	case WhiteMage:
+		return *textures["WHITE_MAGE"];
+		break;
+
+	case WhiteWizard:
+		break;
+	}
+
+	return *textures["WARRIOR"];
+}
+
 // Initialization
 void Human::initVariables()
 {
@@ -234,8 +285,6 @@ void Human::initAnimations()
 
 	std::vector<sf::Vector2u> indexVector;
 
-	// Sprite does not have a texture yet!!!
-	// Bug in Animation or AnimationComponent (most likely)
 	indexVector = {{0, 0}};
 	animationComponent->addAnimation(
 			"WAIT",

@@ -206,9 +206,14 @@ void BattleState::updateBattleInput(const float& dt)
 
 void BattleState::updateCharacters(const float& dt)
 {
-	for (auto &character : activeQueue)
+	for (auto &enemy : enemies)
 	{
-		character->update(dt);
+		enemy->update(dt);
+	}
+
+	for (auto &hero : party)
+	{
+		hero->update(dt);
 	}
 }
 
@@ -433,12 +438,20 @@ void BattleState::initTextures()
 		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_WHITE_MAGE_TEXTURE";
 	}
 
-	textures["FOES"] = std::make_shared<sf::Texture>();
+	textures["MONSTERS"] = std::make_shared<sf::Texture>();
 
-	if (!textures["FOES"]->loadFromFile(
+	if (!textures["MONSTERS"]->loadFromFile(
 			"Images/Battle/Enemies/Foes.png"))
 	{
 		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_FOES_TEXTURE";
+	}
+
+	textures["ICONS"] = std::make_shared<sf::Texture>();
+
+	if (!textures["ICONS"]->loadFromFile(
+			"Images/Battle/Icons/Icons.png"))
+	{
+		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_ICONS_TEXTURE";
 	}
 }
 
@@ -462,29 +475,25 @@ void BattleState::initCharacters()
 	{
 		enemies.push_back(std::move(std::make_shared<Monster>(
 						Monster::Werewolf,
-						*textures["FOES"])));
+						textures)));
 	}
 
 	for (unsigned index = 0; index < 4; index++)
 	{
 		enemies.push_back(std::move(std::make_shared<Monster>(
 						Monster::GigasWorm,
-						*textures["FOES"])));
+						textures)));
 	}
 
 	// TODO: rework with the party getters
 	party.push_back(std::move(std::make_shared<Human>(
-			Human::Warrior,
-			*textures["WARRIOR"])));
+			Human::Warrior, textures)));
 	party.push_back(std::move(std::make_shared<Human>(
-			Human::Thief,
-			*textures["THIEF"])));
+			Human::Thief, textures)));
 	party.push_back(std::move(std::make_shared<Human>(
-			Human::WhiteMage,
-			*textures["WHITE_MAGE"])));
+			Human::WhiteMage, textures)));
 	party.push_back(std::move(std::make_shared<Human>(
-			Human::BlackMage,
-			*textures["BLACK_MAGE"])));
+			Human::BlackMage, textures)));
 
 	sf::Vector2f leftStart(700.f, 180.f);
 	sf::Vector2f leftStep(-80.f, 100.f);

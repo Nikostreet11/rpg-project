@@ -10,10 +10,12 @@
 
 #include "pch.hpp"
 
-
 #include "..\Components\AnimationComponent.hpp"
+#include "..\Animations\StatsAnimation.hpp"
 #include "..\Actions\Attack.hpp"
 #include "..\Utilities\Randomizer.hpp"
+
+#include "..\Stat.hpp"
 
 class Character
 {
@@ -32,16 +34,14 @@ public:
 	};
 
 	// Constructor / Destructor
-	Character(/*
-			const sf::Texture& spriteset,
-			sf::Vector2f position = {0, 0},
-			sf::Vector2f size = {0, 0}*/);
-	virtual ~Character();
+	explicit Character(
+			std::map<std::string, std::shared_ptr<sf::Texture>> textures);
+	virtual ~Character() = 0;
 
 	// Functions
 	//bool move(Direction direction);
 
-	virtual void update(const float& dt) = 0;
+	virtual void update(const float& dt);
 	virtual void render(sf::RenderTarget& target);
 
 	virtual void resetState();
@@ -50,6 +50,11 @@ public:
 	std::shared_ptr<Action> getMagic(const std::string& name);
 	std::shared_ptr<Action> getObject(const std::string& name);
 	std::shared_ptr<Action> getFlee();
+
+	void playStatsAnimation(
+			int value,
+			Stat stat,
+			bool critical);
 
 	// Getters / Setters
 	void setState(State state);
@@ -87,6 +92,7 @@ protected:
 			const sf::Texture& textureSheet,
 			sf::Vector2f position,
 			sf::Vector2f size);
+	void initAnimations();
 
 	// Resources
 	std::shared_ptr<Action> attack;
@@ -95,7 +101,12 @@ protected:
 	std::shared_ptr<Action> flee;
 
 	sf::Sprite sprite;
+	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
+
+	std::shared_ptr<AnimationComponent> animationComponent;
 	//std::shared_ptr<sf::Texture> textureSheet;
+
+	std::shared_ptr<StatsAnimation> statsAnimation;
 
 	// Variables
 	State state;

@@ -9,16 +9,16 @@
 
 Monster::Monster(
 		Type type,
-		const sf::Texture& textureSheet,
+		std::map<std::string, std::shared_ptr<sf::Texture>> textures,
 		sf::Vector2f position,
 		sf::Vector2f size) :
-		Character()
+		Character(textures)
 {
 	this->type = type;
 
 	initVariables();
 	initStats();
-	initSprite(textureSheet, position, size);
+	initSprite(*textures["MONSTERS"], position, size);
 }
 
 Monster::~Monster()
@@ -27,6 +27,7 @@ Monster::~Monster()
 
 void Monster::update(const float& dt)
 {
+	Character::update(dt);
 }
 
 void Monster::initVariables()

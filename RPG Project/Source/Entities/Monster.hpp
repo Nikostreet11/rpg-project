@@ -31,7 +31,7 @@ public:
 	// Constructor / Destructor
 	explicit Monster(
 			Type type,
-			const sf::Texture& spriteset,
+			std::map<std::string, std::shared_ptr<sf::Texture>> textures,
 			sf::Vector2f position = {0, 0},
 			sf::Vector2f size = {0, 0});
 	virtual ~Monster();

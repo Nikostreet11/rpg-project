@@ -36,7 +36,7 @@ public:
 	// Constructor / Destructor
 	explicit Human(
 			Type type,
-			const sf::Texture& TextureSheet,
+			std::map<std::string, std::shared_ptr<sf::Texture>> textures,
 			sf::Vector2f position = {0, 0},
 			sf::Vector2f size = {0, 0});
 	virtual ~Human();
@@ -52,12 +52,14 @@ public:
 	*/
 
 protected:
+	// Internal
+	const sf::Texture& getTexture(
+			std::map<std::string, std::shared_ptr<sf::Texture>> textures);
+
 	// Initialization
 	virtual void initVariables() override;
 	virtual void initStats() override;
-	void initAnimations();
-
-	std::shared_ptr<AnimationComponent> animationComponent;
+	virtual void initAnimations();
 
 	// Variables
 	Type type;
