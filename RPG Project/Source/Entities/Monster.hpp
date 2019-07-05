@@ -39,6 +39,11 @@ public:
 	// Functions
 	virtual void update(const float& dt);
 
+	// Getters / Setters
+	virtual bool isWeakToFire() const;
+	virtual bool isWeakToIce() const;
+	virtual bool isWeakToLightning() const;
+
 private:
 	// Initialization
 	virtual void initVariables() override;
@@ -46,6 +51,10 @@ private:
 
 	// Variables
 	Type type;
+
+	bool weakToFire;
+	bool weakToIce;
+	bool weakToLightning;
 };
 
 #endif /* ENTITIES_MONSTER_HPP_ */

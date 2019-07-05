@@ -32,7 +32,7 @@ public:
 	virtual void render(sf::RenderTarget& target);
 
 	void play(
-			unsigned value,
+			int value,
 			Stat stat = Health,
 			bool critical = false);
 	virtual void reset();
@@ -44,7 +44,7 @@ private:
 	void initVariables();
 	void initScale();
 	void initPosition();
-	void initColor(Stat stat, bool critical);
+	void initColor(Stat stat, bool critical, bool healing);
 
 	// Resources
 	std::vector<sf::Sprite> digits;
@@ -53,6 +53,7 @@ private:
 
 	Stat stat;
 	bool critical;
+	bool healing;
 };
 
 #endif /* ANIMATIONS_STATSANIMATION_HPP_ */

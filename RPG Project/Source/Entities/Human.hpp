@@ -41,8 +41,15 @@ public:
 			sf::Vector2f size = {0, 0});
 	virtual ~Human();
 
+	// Functions
 	virtual void update(const float& dt);
 	virtual void updateAnimations(const float& dt);
+
+	// Getters / Setters
+	virtual bool isWeakToFire() const;
+	virtual bool isWeakToIce() const;
+	virtual bool isWeakToLightning() const;
+
 	//virtual float attack(Character& target);
 	/*
 	const Chestplate* getChestplate() const;

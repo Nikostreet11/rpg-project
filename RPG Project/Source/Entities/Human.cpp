@@ -103,6 +103,21 @@ void Human::updateAnimations(const float& dt)
 	}
 }
 
+bool Human::isWeakToFire() const
+{
+	return false;
+}
+
+bool Human::isWeakToIce() const
+{
+	return false;
+}
+
+bool Human::isWeakToLightning() const
+{
+	return false;
+}
+
 /*
 float Human::attack(Character& target)
 {

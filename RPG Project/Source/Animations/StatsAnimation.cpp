@@ -99,10 +99,20 @@ void StatsAnimation::render(sf::RenderTarget& target)
 	}
 }
 
-void StatsAnimation::play(unsigned value, Stat stat, bool critical)
+void StatsAnimation::play(int value, Stat stat, bool critical)
 {
 	this->stat = stat;
 	this->critical = critical;
+
+	if (value < 0)
+	{
+		healing = true;
+		value = std::abs(value);
+	}
+	else
+	{
+		healing = false;
+	}
 
 	std::cout << "value: " << value << std::endl;
 
@@ -137,7 +147,7 @@ void StatsAnimation::play(unsigned value, Stat stat, bool critical)
 
 	initScale();
 	initPosition();
-	initColor(stat, critical);
+	initColor(stat, critical, healing);
 
 	done = false;
 	started = false;
@@ -148,7 +158,7 @@ void StatsAnimation::reset()
 	timer = 0.f;
 
 	initPosition();
-	initColor(stat, critical);
+	initColor(stat, critical, healing);
 }
 
 // Internal
@@ -211,6 +221,7 @@ void StatsAnimation::initVariables()
 {
 	stat = Health;
 	critical = false;
+	healing = false;
 }
 
 void StatsAnimation::initScale()
@@ -236,7 +247,7 @@ void StatsAnimation::initPosition()
 	}
 }
 
-void StatsAnimation::initColor(Stat stat, bool critical)
+void StatsAnimation::initColor(Stat stat, bool critical, bool healing)
 {
 	for (size_t index = 0; index < digits.size(); index++)
 	{
@@ -253,6 +264,11 @@ void StatsAnimation::initColor(Stat stat, bool critical)
 				digits[index].setColor(sf::Color::White);
 			}
 
+			if (healing)
+			{
+				digits[index].setColor(sf::Color(50, 255, 50, 255));
+			}
+
 			break;
 
 		case Mana:
@@ -263,7 +279,7 @@ void StatsAnimation::initColor(Stat stat, bool critical)
 
 		case Stamina:
 
-			digits[index].setColor(sf::Color::Green);
+			digits[index].setColor(sf::Color(0, 150, 0, 255));
 
 			break;
 		}

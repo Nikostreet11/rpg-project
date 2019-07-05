@@ -25,16 +25,38 @@ Monster::~Monster()
 {
 }
 
+// Functions
 void Monster::update(const float& dt)
 {
 	Character::update(dt);
 }
 
+// Getters / Setters
+bool Monster::isWeakToFire() const
+{
+	return weakToFire;
+}
+
+bool Monster::isWeakToIce() const
+{
+	return weakToIce;
+}
+
+bool Monster::isWeakToLightning() const
+{
+	return weakToLightning;
+}
+
+// Initialization
 void Monster::initVariables()
 {
 	spriteOffset = {0, 0};
 	spriteSize = {64, 64};
 	spriteSpacing = {2, 2};
+
+	weakToFire = false;
+	weakToIce = false;
+	weakToLightning = false;
 
 	switch (type)
 	{
@@ -86,38 +108,47 @@ void Monster::initStats()
 	{
 	case Goblin:
 		name = "Goblin";
+		weakToLightning = true;
 		break;
 
 	case Wolf:
 		name = "Wolf";
+		weakToFire = true;
 		break;
 
 	case Piranha:
 		name = "Piranha";
+		weakToLightning = true;
 		break;
 
 	case Skeleton:
 		name = "Skeleton";
+		weakToIce = true;
 		break;
 
 	case BlackWidow:
 		name = "Black widow";
+		weakToIce = true;
 		break;
 
 	case GigasWorm:
 		name = "Gigas worm";
+		weakToFire = true;
 		break;
 
 	case WargWolf:
 		name = "Warg wolf";
+		weakToIce = true;
 		break;
 
 	case Werewolf:
 		name = "Werewolf";
+		weakToLightning = true;
 		break;
 
 	case Zombie:
 		name = "Zombie";
+		weakToFire = true;
 		break;
 
 	default:

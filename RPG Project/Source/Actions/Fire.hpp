@@ -1,22 +1,22 @@
 /*
- * Attack.hpp
+ * Fire.hpp
  *
- *  Created on: Jun 27, 2019
+ *  Created on: Jul 5, 2019
  *      Author: nicop
  */
 
-#ifndef ACTIONS_ATTACK_HPP_
-#define ACTIONS_ATTACK_HPP_
+#ifndef ACTIONS_FIRE_HPP_
+#define ACTIONS_FIRE_HPP_
 
-#include "Action.hpp"
+#include "Magic.hpp"
 
-class Attack:
-		public Action
+class Fire:
+		public Magic
 {
 public:
 	// Constructor / Destructor
-	Attack();
-	virtual ~Attack();
+	Fire();
+	virtual ~Fire();
 
 	// Functions
 	virtual std::shared_ptr<ActionResults> use(
@@ -24,4 +24,4 @@ public:
 			std::shared_ptr<Character> target);
 };
 
-#endif /* ACTIONS_ATTACK_HPP_ */
+#endif /* ACTIONS_FIRE_HPP_ */

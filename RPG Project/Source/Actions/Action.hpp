@@ -13,6 +13,8 @@
 #include "..\Containers\ActionResults.hpp"
 #include "..\Utilities\Randomizer.hpp"
 
+#include "..\Stat.hpp"
+
 // Forward declarations
 class Character;
 
@@ -33,6 +35,9 @@ protected:
 	void initVariables();
 
 	// Variables
+	std::string name;
+
+	float healthCost;
 	float manaCost;
 	float staminaCost;
 };

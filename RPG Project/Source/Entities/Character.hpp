@@ -75,6 +75,11 @@ public:
 	float getStamina() const;
 	void setStamina(float stamina);
 	int getStrenght() const;
+	int getIntelligence() const;
+
+	virtual bool isWeakToFire() const = 0;
+	virtual bool isWeakToIce() const = 0;
+	virtual bool isWeakToLightning() const = 0;
 
 	//int getPosX() const;
 	//int getPosY() const;
@@ -95,17 +100,15 @@ protected:
 	void initAnimations();
 
 	// Resources
+	sf::Sprite sprite;
+	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
+
 	std::shared_ptr<Action> attack;
 	std::map<std::string, std::shared_ptr<Action>> magic;
 	std::map<std::string, std::shared_ptr<Action>> objects;
 	std::shared_ptr<Action> flee;
 
-	sf::Sprite sprite;
-	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
-
 	std::shared_ptr<AnimationComponent> animationComponent;
-	//std::shared_ptr<sf::Texture> textureSheet;
-
 	std::shared_ptr<StatsAnimation> statsAnimation;
 
 	// Variables

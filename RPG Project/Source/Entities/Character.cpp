@@ -190,6 +190,11 @@ int Character::getStrenght() const
 	return strenght;
 }
 
+int Character::getIntelligence() const
+{
+	return intelligence;
+}
+
 /*
 int Character::getAgility() const
 {
@@ -268,6 +273,7 @@ void Character::initAnimations()
 			sf::Vector2u(16, 16),
 			sf::Vector2u(0, 0));
 }
+
 /*
 bool Character::move(Direction direction) {
 	if (posX == NO_POSITION || posY == NO_POSITION) {

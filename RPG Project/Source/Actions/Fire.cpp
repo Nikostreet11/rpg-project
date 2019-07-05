@@ -1,31 +1,30 @@
 /*
- * Attack.cpp
+ * Fire.cpp
  *
- *  Created on: Jun 27, 2019
+ *  Created on: Jul 5, 2019
  *      Author: nicop
  */
 
-#include "Attack.hpp"
+#include "Fire.hpp"
 
 #include "..\Entities\Character.hpp"
 
-// Constructor / Destructor
-Attack::Attack() :
-		Action()
+Fire::Fire()
 {
-	staminaCost = 2.f;
+	fireElement = true;
+
+	manaCost = 3.f;
 }
 
-Attack::~Attack()
+Fire::~Fire()
 {
 }
 
-// Functions
-std::shared_ptr<ActionResults> Attack::use(
+std::shared_ptr<ActionResults> Fire::use(
 		std::shared_ptr<Character> source,
 		std::shared_ptr<Character> target)
 {
-	source->setState(Character::Attacking);
+	source->setState(Character::CastingMagic);
 	target->setState(Character::Hit);
 
 	std::shared_ptr<ActionResults> results =
@@ -33,15 +32,23 @@ std::shared_ptr<ActionResults> Attack::use(
 
 	// TODO: rework with other character stats, weapons and armor
 	Randomizer& r = Randomizer::getInstance();
-	float damage = source->getStrenght() * r.getBetween(1, 5);
 
-	source->setStamina(source->getStamina() - staminaCost);
+	float damage = source->getIntelligence() * r.getBetween(1, 5);
+
+	bool critical = fireElement && target->isWeakToFire();
+
+	if (critical)
+	{
+		damage *= 1.5f;
+	}
+
+	source->setMana(source->getMana() - manaCost);
 
 	target->setHealth(target->getHealth() - damage);
 
 	results->compute(source, target);
 
-	target->playStatsAnimation(std::round(damage), Stat::Health, false);
+	target->playStatsAnimation(std::round(damage), Stat::Health, critical);
 
 	return std::move(results);
 }

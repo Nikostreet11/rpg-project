@@ -18,6 +18,9 @@ Action::~Action()
 
 void Action::initVariables()
 {
+	name = "DEFAULT_ACTION";
+
+	healthCost = 0.f;
 	manaCost = 0.f;
 	staminaCost = 0.f;
 }
