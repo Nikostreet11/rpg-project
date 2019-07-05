@@ -316,7 +316,7 @@ void BattleState::changePhase(Phase phase)
 		// TODO: put in a separate function
 		targets.clear();
 
-		if (menu == ObjectMenu)
+		if (action->isFriendly())
 		{
 			targets.insert(targets.end(), party.begin(), party.end());
 			targets.insert(targets.end(), enemies.begin(), enemies.end());

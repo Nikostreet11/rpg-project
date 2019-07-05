@@ -58,6 +58,8 @@ std::shared_ptr<ActionResults> Object::use(
 
 void Object::initVariables(Type type)
 {
+	friendly = true;
+
 	healthRestore = 0.f;
 	manaRestore = 0.f;
 	staminaRestore = 0.f;

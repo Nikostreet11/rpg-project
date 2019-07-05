@@ -28,6 +28,7 @@ public:
 
 	// Getters / Setters
 	const std::string& getName() const;
+	bool isFriendly() const;
 
 protected:
 	// Constructor / Destructor
@@ -43,6 +44,8 @@ protected:
 	float healthCost;
 	float manaCost;
 	float staminaCost;
+
+	bool friendly;
 };
 
 #endif /* ACTIONS_ACTION_HPP_ */
