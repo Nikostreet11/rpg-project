@@ -14,18 +14,26 @@ class Object:
 		public Action
 {
 public:
+	// Enumerators
+	enum Type
+	{
+		Potion,
+		Ether,
+		Energizer
+	};
+
+	// Constructor / Destructor
+	Object(Type type);
+	virtual ~Object();
+
 	// Functions
 	virtual std::shared_ptr<ActionResults> use(
 			std::shared_ptr<Character> source,
-			std::shared_ptr<Character> target) = 0;
+			std::shared_ptr<Character> target);
 
 protected:
-	// Constructor / Destructor
-	Object();
-	virtual ~Object();
-
 	// Initialization
-	void initVariables();
+	void initVariables(Type type);
 
 	// Variables
 	float healthRestore;

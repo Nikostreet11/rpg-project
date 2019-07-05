@@ -114,15 +114,9 @@ void StatsAnimation::play(int value, Stat stat, bool critical)
 		healing = false;
 	}
 
-	std::cout << "value: " << value << std::endl;
-
 	std::string stringValue = std::to_string(value);
 
-	std::cout << "stringValue: " << stringValue << std::endl;
-
 	unsigned numberOfDigits = stringValue.length();
-
-	std::cout << "numberOfDigits: " << numberOfDigits << std::endl;
 
 	digits.clear();
 	digits.resize(numberOfDigits);

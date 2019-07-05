@@ -53,7 +53,7 @@ void Human::updateAnimations(const float& dt)
 
 	case Attacking:
 
-		animationComponent->play("ATTACK", dt, true);
+		animationComponent->play("ATTACK", dt);
 
 		if (animationComponent->isDone("ATTACK"))
 		{
@@ -63,7 +63,7 @@ void Human::updateAnimations(const float& dt)
 
 	case CastingMagic:
 
-		animationComponent->play("CAST_MAGIC", dt, true);
+		animationComponent->play("CAST_MAGIC", dt);
 
 		if (animationComponent->isDone("CAST_MAGIC"))
 		{
@@ -73,7 +73,7 @@ void Human::updateAnimations(const float& dt)
 
 	case UsingObject:
 
-		animationComponent->play("USE_OBJECT", dt, true);
+		animationComponent->play("USE_OBJECT", dt);
 
 		if (animationComponent->isDone("USE_OBJECT"))
 		{
@@ -88,7 +88,7 @@ void Human::updateAnimations(const float& dt)
 
 	case Hit:
 
-		animationComponent->play("HIT", dt, true);
+		animationComponent->play("HIT", dt);
 
 		if (animationComponent->isDone("HIT"))
 		{
@@ -322,31 +322,34 @@ void Human::initAnimations()
 					sf::Vector2u(16, 16))));
 
 	indexVector = {
-			{2, 0}, {4, 0}, {2, 0}, {2, 0},
-			{4, 0}, {4, 0}, {4, 0}, {3, 0}, {3, 0},
+			{2, 0}, {4, 0}, {2, 0}, {4, 0}, {2, 0}, {4, 0},
+			{4, 0}, {4, 0}, {3, 0}, {3, 0},
 			{2, 0}, {4, 0}, {2, 0}};
 	animationComponent->addAnimation(
 			"ATTACK",
 			std::move(std::make_shared<Animation>(
 					sprite, *sprite.getTexture(),
-					0.15f, indexVector,
+					0.2f, indexVector,
 					sf::Vector2u(16, 16),
 					sf::Vector2u(48, 48),
 					sf::Vector2u(16, 16))));
 
 	indexVector = {
-			{5, 0}, {6, 0}, {5, 0}, {6, 0}, {5, 0}, {6, 0},
-			{5, 0}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 1}};
+			{5, 0}, {6, 0}, {5, 0}, {6, 0},
+			{5, 0}, {0, 1}, {0, 1}, {0, 1},
+			{0, 1}, {0, 1}, {0, 1}, {0, 1}};
 	animationComponent->addAnimation(
 			"CAST_MAGIC",
 			std::move(std::make_shared<Animation>(
 					sprite, *sprite.getTexture(),
-					0.3f, indexVector,
+					0.2f, indexVector,
 					sf::Vector2u(16, 16),
 					sf::Vector2u(48, 48),
 					sf::Vector2u(16, 16))));
 
-	indexVector = {{0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 1}};
+	indexVector = {
+			{0, 1}, {0, 1}, {0, 1}, {0, 1},
+			{0, 1}, {0, 1}, {0, 1}, {0, 1}};
 	animationComponent->addAnimation(
 			"USE_OBJECT",
 			std::move(std::make_shared<Animation>(
@@ -366,7 +369,9 @@ void Human::initAnimations()
 					sf::Vector2u(48, 48),
 					sf::Vector2u(16, 16))));
 
-	indexVector = {{1, 0}, {1, 0}, {2, 1}, {2, 1}, {2, 1}, {2, 1}};
+	indexVector = {
+			{1, 0}, {1, 0}, {1, 0}, {1, 0},
+			{2, 1}, {2, 1}, {2, 1}, {2, 1}};
 	animationComponent->addAnimation(
 			"HIT",
 			std::move(std::make_shared<Animation>(

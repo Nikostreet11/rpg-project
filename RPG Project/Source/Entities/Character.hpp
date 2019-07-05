@@ -10,9 +10,11 @@
 
 #include "pch.hpp"
 
+#include "..\Actions\Magic.hpp"
 #include "..\Components\AnimationComponent.hpp"
 #include "..\Animations\StatsAnimation.hpp"
 #include "..\Actions\Attack.hpp"
+#include "..\Actions\Object.hpp"
 #include "..\Utilities\Randomizer.hpp"
 
 #include "..\Stat.hpp"
@@ -46,11 +48,6 @@ public:
 
 	virtual void resetState();
 
-	std::shared_ptr<Action> getAttack();
-	std::shared_ptr<Action> getMagic(const std::string& name);
-	std::shared_ptr<Action> getObject(const std::string& name);
-	std::shared_ptr<Action> getFlee();
-
 	void playStatsAnimation(
 			int value,
 			Stat stat,
@@ -63,6 +60,8 @@ public:
 	const sf::Vector2f getSize() const;
 	void setSize(const sf::Vector2f& size);
 
+
+	std::map<std::string, std::shared_ptr<Action>>& getActions();
 	std::shared_ptr<Action> getAction(const std::string& actionName);
 	const std::string& getName() const;
 	void setName(const std::string& name);
@@ -103,10 +102,7 @@ protected:
 	sf::Sprite sprite;
 	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 
-	std::shared_ptr<Action> attack;
-	std::map<std::string, std::shared_ptr<Action>> magic;
-	std::map<std::string, std::shared_ptr<Action>> objects;
-	std::shared_ptr<Action> flee;
+	std::map<std::string, std::shared_ptr<Action>> actions;
 
 	std::shared_ptr<AnimationComponent> animationComponent;
 	std::shared_ptr<StatsAnimation> statsAnimation;

@@ -26,6 +26,9 @@ public:
 			std::shared_ptr<Character> source,
 			std::shared_ptr<Character> target) = 0;
 
+	// Getters / Setters
+	const std::string& getName() const;
+
 protected:
 	// Constructor / Destructor
 	Action();

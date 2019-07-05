@@ -89,26 +89,6 @@ void Character::resetState()
 	}
 }
 
-std::shared_ptr<Action> Character::getAttack()
-{
-	return attack;
-}
-
-std::shared_ptr<Action> Character::getMagic(const std::string& name)
-{
-	return magic[name];
-}
-
-std::shared_ptr<Action> Character::getObject(const std::string& name)
-{
-	return objects[name];
-}
-
-std::shared_ptr<Action> Character::getFlee()
-{
-	return flee;
-}
-
 // Getters / Setters
 void Character::setState(State state)
 {
@@ -139,10 +119,14 @@ void Character::setSize(const sf::Vector2f& size)
 			size.y / sprite.getTextureRect().height);
 }
 
-std::shared_ptr<Action> Character::getAction(const std::string& actionName)
+std::map<std::string, std::shared_ptr<Action>>& Character::getActions()
 {
-	// TODO: rework getting the right action based on the request;
-	return attack;
+	return actions;
+}
+
+std::shared_ptr<Action> Character::getAction(const std::string& name)
+{
+	return actions[name];
 }
 
 const std::string& Character::getName() const
@@ -238,7 +222,26 @@ void Character::initStats()
 
 void Character::initActions()
 {
-	attack = std::make_shared<Attack>();
+	actions["ATTACK"] =
+			std::move(std::make_shared<Attack>());
+
+	actions["FIRE"] =
+			std::move(std::make_shared<Magic>(Magic::Fire));
+
+	actions["BLIZZARD"] =
+			std::move(std::make_shared<Magic>(Magic::Blizzard));
+
+	actions["THUNDER"] =
+			std::move(std::make_shared<Magic>(Magic::Thunder));
+
+	actions["POTION"] =
+			std::move(std::make_shared<Object>(Object::Potion));
+
+	actions["ETHER"] =
+			std::move(std::make_shared<Object>(Object::Ether));
+
+	actions["ENERGIZER"] =
+			std::move(std::make_shared<Object>(Object::Energizer));
 }
 
 void Character::initSprite(
@@ -268,12 +271,11 @@ void Character::playStatsAnimation(int value, Stat stat, bool critical)
 void Character::initAnimations()
 {
 	statsAnimation = std::make_shared<StatsAnimation>(
-			sprite, *textures["ICONS"], 2.f, 0.7f,
+			sprite, *textures["ICONS"], 2.f, 1.3f,
 			sf::Vector2u(2, 2),
 			sf::Vector2u(16, 16),
 			sf::Vector2u(0, 0));
 }
-
 /*
 bool Character::move(Direction direction) {
 	if (posX == NO_POSITION || posY == NO_POSITION) {

@@ -24,3 +24,7 @@ void Action::initVariables()
 	manaCost = 0.f;
 	staminaCost = 0.f;
 }
+
+const std::string& Action::getName() const {
+	return name;
+}

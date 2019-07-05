@@ -643,12 +643,15 @@ void BattleState::initActionMenu(ActionMenu menu)
 				40,
 				font));
 
-		actionMenu->addEntry("Fire");
-		actionMenu->addEntry("Blizzard");
-		actionMenu->addEntry("Aero");
-		actionMenu->addEntry("Thunder");
-		actionMenu->addEntry("Cure");
-		actionMenu->addEntry("Heal");
+		for (auto& action : active->getActions())
+		{
+			if (std::dynamic_pointer_cast<Magic>(action.second))
+			{
+				std::string entry = action.second->getName();
+				std::transform(entry.begin(), entry.end(), entry.begin(), ::toupper);
+				actionMenu->addEntry(entry);
+			}
+		}
 		break;
 
 	case ObjectMenu:
@@ -662,12 +665,15 @@ void BattleState::initActionMenu(ActionMenu menu)
 				40,
 				font));
 
-		actionMenu->addEntry("Potion");
-		actionMenu->addEntry("Ether");
-		actionMenu->addEntry("Phoenix down");
-		actionMenu->addEntry("Antidote");
-		actionMenu->addEntry("Megapotion");
-		actionMenu->addEntry("Megaether");
+		for (auto &action : active->getActions())
+		{
+			if (std::dynamic_pointer_cast<Object>(action.second))
+			{
+				std::string entry = action.second->getName();
+				std::transform(entry.begin(), entry.end(), entry.begin(), ::toupper);
+				actionMenu->addEntry(entry);
+			}
+		}
 		break;
 
 	case TargetMenu:

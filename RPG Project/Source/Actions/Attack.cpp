@@ -14,6 +14,8 @@ Attack::Attack() :
 		Action()
 {
 	staminaCost = 2.f;
+
+	name = "ATTACK";
 }
 
 Attack::~Attack()
@@ -33,7 +35,13 @@ std::shared_ptr<ActionResults> Attack::use(
 
 	// TODO: rework with other character stats, weapons and armor
 	Randomizer& r = Randomizer::getInstance();
-	float damage = source->getStrenght() * r.getBetween(1, 5);
+	float damage = source->getStrenght() + r.getBetween(1, 5);
+
+	bool critical = r.percentageOn(20.f);
+	if (critical)
+	{
+		damage *= 1.5f;
+	}
 
 	source->setStamina(source->getStamina() - staminaCost);
 
@@ -41,7 +49,7 @@ std::shared_ptr<ActionResults> Attack::use(
 
 	results->compute(source, target);
 
-	target->playStatsAnimation(std::round(damage), Stat::Health, false);
+	target->playStatsAnimation(std::round(damage), Stat::Health, critical);
 
 	return std::move(results);
 }

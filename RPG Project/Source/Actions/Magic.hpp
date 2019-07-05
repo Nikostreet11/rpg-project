@@ -14,18 +14,26 @@ class Magic:
 		public Action
 {
 public:
+	// Enumerators
+	enum Type
+	{
+		Fire,
+		Blizzard,
+		Thunder
+	};
+
+	// Constructor / Destructor
+	Magic(Type type);
+	virtual ~Magic();
+
 	// Functions
 	virtual std::shared_ptr<ActionResults> use(
 			std::shared_ptr<Character> source,
-			std::shared_ptr<Character> target) = 0;
+			std::shared_ptr<Character> target);
 
 protected:
-	// Constructor / Destructor
-	Magic();
-	virtual ~Magic();
-
 	// Initialization
-	void initVariables();
+	void initVariables(Type type);
 
 	// Variables
 	bool fireElement;
