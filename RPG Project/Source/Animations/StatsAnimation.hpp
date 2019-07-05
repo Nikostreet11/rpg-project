@@ -50,13 +50,9 @@ private:
 	std::vector<sf::Sprite> digits;
 
 	// Variables
-	float delay;
-	float delayTimer;
+
 	Stat stat;
 	bool critical;
-
-	bool playing;
-	bool started;
 };
 
 #endif /* ANIMATIONS_STATSANIMATION_HPP_ */

@@ -24,9 +24,9 @@ StatsAnimation::StatsAnimation(
 			size,
 			spacing)
 {
+
 	this->delay = delay;
-	delayTimer = 0;
-	started = false;
+
 	initVariables();
 }
 
@@ -36,9 +36,9 @@ StatsAnimation::~StatsAnimation()
 
 void StatsAnimation::update(const float& dt, float modifier)
 {
-	if (playing)
+	if (!done)
 	{
-		done = false;
+		//done = false;
 
 		// Set a minimum value for the modifier
 		if (modifier < 0.5f)
@@ -51,12 +51,15 @@ void StatsAnimation::update(const float& dt, float modifier)
 		}
 		else
 		{
+			started = true;
+
 			timer += dt * modifier;
 
 			if (timer > animationTimer)
 			{
 				done = true;
-				playing = false;
+				//playing = false;
+				started = false;
 				// Reset timer
 				reset();
 			}
@@ -87,7 +90,7 @@ void StatsAnimation::update(const float& dt, float modifier)
 
 void StatsAnimation::render(sf::RenderTarget& target)
 {
-	if (playing)
+	if (started && !done)
 	{
 		for (auto &digit : digits)
 		{
@@ -136,7 +139,8 @@ void StatsAnimation::play(unsigned value, Stat stat, bool critical)
 	initPosition();
 	initColor(stat, critical);
 
-	playing = true;
+	done = false;
+	started = false;
 }
 
 void StatsAnimation::reset()
@@ -207,8 +211,6 @@ void StatsAnimation::initVariables()
 {
 	stat = Health;
 	critical = false;
-
-	playing = false;
 }
 
 void StatsAnimation::initScale()

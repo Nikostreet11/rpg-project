@@ -19,14 +19,13 @@ Animation::Animation(
 	sprite(sprite),
 	textureSheet(textureSheet),
 	indexVector(indexVector),
-	currentIndex(0),
-	animationTimer(animationTimer),
-	timer(0),
-	done(true)
+	animationTimer(animationTimer)
 {
 	this->offset = offset;
 	this->size = size;
 	this->spacing = spacing;
+
+	initVariables();
 }
 
 Animation::~Animation()
@@ -92,3 +91,15 @@ bool Animation::isDone() const
 	return done;
 }
 
+void Animation::initVariables()
+{
+	started = false;
+	done = true;
+
+	timer = 0.f;
+
+	delay = 0.f;
+	delayTimer = 0.f;
+
+	currentIndex = 0;
+}

@@ -31,6 +31,9 @@ public:
 	bool isDone() const;
 
 protected:
+	// Initialization
+	void initVariables();
+
 	// Resources
 	sf::Sprite& sprite;
 	const sf::Texture& textureSheet;
@@ -41,9 +44,14 @@ protected:
 	sf::Vector2u size;
 	sf::Vector2u spacing;
 	unsigned currentIndex;
-	float animationTimer;
-	float timer;
+
+	bool started;
 	bool done;
+
+	float timer;
+	float animationTimer;
+	float delay;
+	float delayTimer;
 };
 
 #endif /* ANIMATIONS_ANIMATION_HPP_ */
