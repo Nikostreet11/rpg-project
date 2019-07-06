@@ -36,11 +36,11 @@ sprite(sprite)
 	// initDefaultValues();
 	if (!textureSheet)
 	{
-		defaultTexture = *sprite.getTexture();
+		defaultTexture = sprite.getTexture();
 	}
 	else
 	{
-		defaultTexture = *textureSheet;
+		defaultTexture = textureSheet.get();
 	}
 
 	defaultTextureRect = sprite.getTextureRect();
@@ -123,7 +123,7 @@ void AnimationComponent::play(const std::string key, const float& dt,
 
 void AnimationComponent::stop()
 {
-	sprite.setTexture(defaultTexture);
+	sprite.setTexture(*defaultTexture);
 	sprite.setTextureRect(defaultTextureRect);
 }
 

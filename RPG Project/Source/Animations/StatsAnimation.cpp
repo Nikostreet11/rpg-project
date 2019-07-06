@@ -9,7 +9,7 @@
 
 StatsAnimation::StatsAnimation(
 		sf::Sprite& sprite,
-		sf::Texture& textureSheet,
+		const sf::Texture* textureSheet,
 		float animationTimer,
 		float delay,
 		sf::Vector2u offset,
@@ -24,7 +24,6 @@ StatsAnimation::StatsAnimation(
 			size,
 			spacing)
 {
-
 	this->delay = delay;
 
 	initVariables();
@@ -125,7 +124,7 @@ void StatsAnimation::play(int value, Stat stat, bool critical)
 	{
 		sf::Sprite& spriteDigit = digits[index];
 
-		spriteDigit.setTexture(textureSheet);
+		spriteDigit.setTexture(*textureSheet);
 
 		char digit = stringValue[index];
 

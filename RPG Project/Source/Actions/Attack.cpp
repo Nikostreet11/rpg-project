@@ -15,7 +15,7 @@ Attack::Attack() :
 {
 	staminaCost = 2.f;
 
-	name = "ATTACK";
+	name = "Attack";
 }
 
 Attack::~Attack()

@@ -10,7 +10,7 @@
 // Constructor / Destructor
 Animation::Animation(
 		sf::Sprite& sprite,
-		const sf::Texture& textureSheet,
+		const sf::Texture* textureSheet,
 		float animationTimer,
 		std::vector<sf::Vector2u> indexVector,
 		sf::Vector2u offset,
@@ -18,9 +18,10 @@ Animation::Animation(
 		sf::Vector2u spacing) :
 	sprite(sprite),
 	textureSheet(textureSheet),
-	indexVector(indexVector),
-	animationTimer(animationTimer)
+	indexVector(indexVector)
 {
+	this->animationTimer = animationTimer;
+
 	this->offset = offset;
 	this->size = size;
 	this->spacing = spacing;
@@ -35,7 +36,10 @@ Animation::~Animation()
 // Functions
 void Animation::play(const float& dt, float modifier)
 {
-	this->sprite.setTexture(textureSheet);
+	if (textureSheet)
+	{
+		this->sprite.setTexture(*textureSheet);
+	}
 
 	done = false;
 

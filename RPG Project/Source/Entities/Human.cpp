@@ -304,7 +304,7 @@ void Human::initAnimations()
 	animationComponent->addAnimation(
 			"WAIT",
 			std::move(std::make_shared<Animation>(
-					sprite, *sprite.getTexture(),
+					sprite, sprite.getTexture(),
 					0.3f, indexVector,
 					sf::Vector2u(16, 16),
 					sf::Vector2u(48, 48),
@@ -315,7 +315,7 @@ void Human::initAnimations()
 	animationComponent->addAnimation(
 			"READY",
 			std::move(std::make_shared<Animation>(
-					sprite, *sprite.getTexture(),
+					sprite, sprite.getTexture(),
 					0.3f, indexVector,
 					sf::Vector2u(16, 16),
 					sf::Vector2u(48, 48),
@@ -328,7 +328,7 @@ void Human::initAnimations()
 	animationComponent->addAnimation(
 			"ATTACK",
 			std::move(std::make_shared<Animation>(
-					sprite, *sprite.getTexture(),
+					sprite, sprite.getTexture(),
 					0.2f, indexVector,
 					sf::Vector2u(16, 16),
 					sf::Vector2u(48, 48),
@@ -341,7 +341,7 @@ void Human::initAnimations()
 	animationComponent->addAnimation(
 			"CAST_MAGIC",
 			std::move(std::make_shared<Animation>(
-					sprite, *sprite.getTexture(),
+					sprite, sprite.getTexture(),
 					0.2f, indexVector,
 					sf::Vector2u(16, 16),
 					sf::Vector2u(48, 48),
@@ -353,7 +353,7 @@ void Human::initAnimations()
 	animationComponent->addAnimation(
 			"USE_OBJECT",
 			std::move(std::make_shared<Animation>(
-					sprite, *sprite.getTexture(),
+					sprite, sprite.getTexture(),
 					0.3f, indexVector,
 					sf::Vector2u(16, 16),
 					sf::Vector2u(48, 48),
@@ -363,7 +363,7 @@ void Human::initAnimations()
 	animationComponent->addAnimation(
 			"HURT",
 			std::move(std::make_shared<Animation>(
-					sprite, *sprite.getTexture(),
+					sprite, sprite.getTexture(),
 					0.3f, indexVector,
 					sf::Vector2u(16, 16),
 					sf::Vector2u(48, 48),
@@ -375,7 +375,7 @@ void Human::initAnimations()
 	animationComponent->addAnimation(
 			"HIT",
 			std::move(std::make_shared<Animation>(
-					sprite, *sprite.getTexture(),
+					sprite, sprite.getTexture(),
 					0.3f, indexVector,
 					sf::Vector2u(16, 16),
 					sf::Vector2u(48, 48),
@@ -385,7 +385,7 @@ void Human::initAnimations()
 	animationComponent->addAnimation(
 			"DEAD",
 			std::move(std::make_shared<Animation>(
-					sprite, *sprite.getTexture(),
+					sprite, sprite.getTexture(),
 					0.3f, indexVector,
 					sf::Vector2u(16, 16),
 					sf::Vector2u(48, 48),

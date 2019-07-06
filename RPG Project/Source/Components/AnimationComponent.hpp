@@ -47,7 +47,7 @@ private:
 	// Resources
 	sf::Sprite& sprite;
 	//sf::Texture textureSheet;
-	sf::Texture defaultTexture;
+	const sf::Texture* defaultTexture;
 	sf::IntRect defaultTextureRect;
 
 	std::map<std::string, std::shared_ptr<Animation>> animations;

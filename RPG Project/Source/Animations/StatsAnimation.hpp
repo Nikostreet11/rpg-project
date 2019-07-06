@@ -19,7 +19,7 @@ public:
 	// Constructor / Destructor
 	explicit StatsAnimation(
 			sf::Sprite& sprite,
-			sf::Texture& textureSheet,
+			const sf::Texture* textureSheet,
 			float animationTimer,
 			float delay,
 			sf::Vector2u offset,

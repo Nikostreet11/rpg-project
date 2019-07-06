@@ -135,11 +135,11 @@ void BattleState::updateActionSelection(const float& dt)
 		{
 			std::string entry = actionMenu->getSelectedEntry();
 
-			if (entry == "MAGIC" || entry == "OBJECT")
+			if (entry == "Magic" || entry == "Object")
 			{
 				updateActionMenu(entry);
 			}
-			else if (entry == "FLEE")
+			else if (entry == "Flee")
 			{
 				endState();
 			}
@@ -247,11 +247,11 @@ void BattleState::updateCharacters(const float& dt)
 
 void BattleState::updateActionMenu(const std::string& entry)
 {
-	if (entry == "MAGIC")
+	if (entry == "Magic")
 	{
 		initActionMenu(MagicMenu);
 	}
-	else if (entry == "OBJECT")
+	else if (entry == "Object")
 	{
 		initActionMenu(ObjectMenu);
 	}
@@ -752,16 +752,16 @@ void BattleState::initActionMenu(ActionMenu menu)
 		actionMenu.reset(new gui::Selection(
 				sf::Vector2f(1200, 750),
 				sf::Vector2f(600, 250),
-				sf::Vector2f(40, 50),
+				sf::Vector2f(60, 45),
 				sf::Vector2u(2, 3),
 				sf::Vector2u(2, 2),
-				45,
+				60,
 				font));
 
-		actionMenu->addEntry("ATTACK");
-		actionMenu->addEntry("MAGIC");
-		actionMenu->addEntry("OBJECT");
-		actionMenu->addEntry("FLEE");
+		actionMenu->addEntry("Attack");
+		actionMenu->addEntry("Magic");
+		actionMenu->addEntry("Object");
+		actionMenu->addEntry("Flee");
 		break;
 
 	case MagicMenu:

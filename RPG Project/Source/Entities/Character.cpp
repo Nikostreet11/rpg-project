@@ -318,7 +318,7 @@ void Character::playStatsAnimation(int value, Stat stat, bool critical)
 void Character::initAnimations()
 {
 	statsAnimation = std::make_shared<StatsAnimation>(
-			sprite, *textures["ICONS"], 2.f, 1.3f,
+			sprite, textures["ICONS"].get(), 2.f, 1.3f,
 			sf::Vector2u(2, 2),
 			sf::Vector2u(16, 16),
 			sf::Vector2u(0, 0));
