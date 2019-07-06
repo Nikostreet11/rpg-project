@@ -128,7 +128,7 @@ void StatsAnimation::play(int value, Stat stat, bool critical)
 		spriteDigit.setTexture(textureSheet);
 
 		char digit = stringValue[index];
-		std::cout << "Digit " << index << ": " << digit << std::endl;
+
 		spriteDigit.setTextureRect(sf::IntRect(
 				offset.x + (size.x + spacing.x) * getIndex(digit).x,
 				offset.y + (size.y + spacing.y) * getIndex(digit).y,

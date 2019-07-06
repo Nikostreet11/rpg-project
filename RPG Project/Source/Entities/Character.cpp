@@ -134,6 +134,30 @@ void Character::setSize(const sf::Vector2f& size)
 			size.y / sprite.getTextureRect().height);
 }
 
+std::shared_ptr<Action> Character::chooseAction()
+{
+	return strategy->chooseAction(actions);
+}
+
+std::shared_ptr<Character> Character::chooseTarget(
+		std::vector<std::shared_ptr<Character>> allies,
+		std::vector<std::shared_ptr<Character>> enemies)
+{
+	return strategy->chooseTarget(allies, enemies);
+}
+
+bool Character::hasStrategy() const
+{
+	if (strategy)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 std::vector<std::shared_ptr<Action>>& Character::getActions()
 {
 	return actions;
@@ -217,6 +241,8 @@ int Character::getEndurance() const
 // Initialization
 void Character::initVariables()
 {
+	strategy = nullptr;
+
 	spriteOffset = sf::Vector2u(16, 16);
 	spriteSize = sf::Vector2u(48, 48);
 	spriteSpacing = sf::Vector2u(16, 16);
@@ -298,6 +324,10 @@ void Character::initAnimations()
 			sf::Vector2u(0, 0));
 }
 
+void Character::setStrategy(std::unique_ptr<Strategy> strategy)
+{
+	this->strategy = std::move(strategy);
+}
 /*
 bool Character::move(Direction direction) {
 	if (posX == NO_POSITION || posY == NO_POSITION) {

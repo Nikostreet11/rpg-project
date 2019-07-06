@@ -92,7 +92,40 @@ void BattleState::updateBattleInput(const float& dt)
 		break;
 
 	case ActionSelection:
+		updateActionSelection(dt);
+		break;
 
+	case TargetSelection:
+		updateTargetSelection(dt);
+		break;
+
+	case Results:
+
+		if (keybinds["CONFIRM"].isPressed())
+		{
+			changePhase(ActionSelection);
+		}
+		break;
+
+	case End:
+
+		if (keybinds["CONFIRM"].isPressed())
+		{
+			endState();
+		}
+		break;
+	}
+}
+
+void BattleState::updateActionSelection(const float& dt)
+{
+	if (active->hasStrategy())
+	{
+		action = active->chooseAction();
+		changePhase(TargetSelection);
+	}
+	else
+	{
 		if (keybinds["CONFIRM"].isPressed())
 		{
 			std::string entry = actionMenu->getSelectedEntry();
@@ -135,10 +168,18 @@ void BattleState::updateBattleInput(const float& dt)
 			actionMenu->moveMarker(Direction::Right);
 			initDialogueMenu();
 		}
-		break;
+	}
+}
 
-	case TargetSelection:
-
+void BattleState::updateTargetSelection(const float& dt)
+{
+	if (active->hasStrategy())
+	{
+		target = active->chooseTarget(enemies, party);
+		changePhase(Results);
+	}
+	else
+	{
 		if (keybinds["CONFIRM"].isPressed())
 		{
 			target = targets[actionMenu->getIndex()];
@@ -184,23 +225,6 @@ void BattleState::updateBattleInput(const float& dt)
 					targets[index]->getSize().x / 2.f - targetMarker.getSize() / 2,
 					-targetMarker.getSize() * 0.8f);
 		}
-		break;
-
-	case Results:
-
-		if (keybinds["CONFIRM"].isPressed())
-		{
-			changePhase(ActionSelection);
-		}
-		break;
-
-	case End:
-
-		if (keybinds["CONFIRM"].isPressed())
-		{
-			endState();
-		}
-		break;
 	}
 }
 
@@ -470,19 +494,58 @@ void BattleState::initBackground()
 
 void BattleState::initCharacters()
 {
+	std::unique_ptr<Strategy> strategy;
 	// TODO: rework with the map factory method
-	for (unsigned index = 0; index < 4; index++)
+	for (unsigned index = 0; index < 2; index++)
 	{
-		enemies.push_back(std::move(std::make_shared<Monster>(
+		std::shared_ptr<Character> monster =
+				std::make_shared<Monster>(
 						Monster::Werewolf,
-						textures)));
+						textures);
+
+		strategy.reset(new NaiveStrategy());
+		monster->setStrategy(std::move(strategy));
+
+		enemies.push_back(std::move(monster));
 	}
 
-	for (unsigned index = 0; index < 4; index++)
+	for (unsigned index = 0; index < 2; index++)
 	{
-		enemies.push_back(std::move(std::make_shared<Monster>(
+		std::shared_ptr<Character> monster =
+				std::make_shared<Monster>(
 						Monster::GigasWorm,
-						textures)));
+						textures);
+
+		strategy.reset(new NaiveStrategy());
+		monster->setStrategy(std::move(strategy));
+
+		enemies.push_back(std::move(monster));
+	}
+
+	for (unsigned index = 0; index < 2; index++)
+	{
+		std::shared_ptr<Character> monster =
+				std::make_shared<Monster>(
+						Monster::Skeleton,
+						textures);
+
+		strategy.reset(new NaiveStrategy());
+		monster->setStrategy(std::move(strategy));
+
+		enemies.push_back(std::move(monster));
+	}
+
+	for (unsigned index = 0; index < 2; index++)
+	{
+		std::shared_ptr<Character> monster =
+				std::make_shared<Monster>(
+						Monster::Zombie,
+						textures);
+
+		strategy.reset(new NaiveStrategy());
+		monster->setStrategy(std::move(strategy));
+
+		enemies.push_back(std::move(monster));
 	}
 
 	// TODO: rework with the party getters
@@ -522,8 +585,9 @@ void BattleState::initCharacters()
 void BattleState::initActiveQueue()
 {
 	// TODO: rework based on Characters stats
-	// TODO: add enemies
-	activeQueue = party;
+	activeQueue.clear();
+	activeQueue.insert(activeQueue.end(), party.begin(), party.end());
+	activeQueue.insert(activeQueue.end(), enemies.begin(), enemies.end());
 }
 
 void BattleState::initDialogueMenu()

@@ -15,6 +15,7 @@
 #include "..\Actions\Object.hpp"
 #include "..\Utilities\Randomizer.hpp"
 #include "..\Containers\ActionResults.hpp"
+#include "..\Strategies\NaiveStrategy.hpp"
 #include "..\Components\AnimationComponent.hpp"
 #include "..\Animations\StatsAnimation.hpp"
 
@@ -65,9 +66,16 @@ public:
 	const sf::Vector2f getSize() const;
 	void setSize(const sf::Vector2f& size);
 
+	std::shared_ptr<Action> chooseAction();
+	std::shared_ptr<Character> chooseTarget(
+			std::vector<std::shared_ptr<Character>> allies,
+			std::vector<std::shared_ptr<Character>> enemies);
+	bool hasStrategy() const;
+	void setStrategy(std::unique_ptr<Strategy> strategy);
 
 	std::vector<std::shared_ptr<Action>>& getActions();
 	std::shared_ptr<Action> getAction(const std::string& actionName);
+
 	const std::string& getName() const;
 	void setName(const std::string& name);
 	//int getAgility() const;
@@ -108,6 +116,8 @@ protected:
 	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 
 	std::vector<std::shared_ptr<Action>> actions;
+
+	std::unique_ptr<Strategy> strategy;
 
 	std::shared_ptr<AnimationComponent> animationComponent;
 	std::shared_ptr<StatsAnimation> statsAnimation;
