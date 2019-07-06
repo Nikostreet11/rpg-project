@@ -10,16 +10,18 @@
 
 #include "pch.hpp"
 
-#include "..\Actions\Magic.hpp"
-#include "..\Components\AnimationComponent.hpp"
-#include "..\Animations\StatsAnimation.hpp"
 #include "..\Actions\Attack.hpp"
+#include "..\Actions\Magic.hpp"
 #include "..\Actions\Object.hpp"
 #include "..\Utilities\Randomizer.hpp"
+#include "..\Containers\ActionResults.hpp"
+#include "..\Components\AnimationComponent.hpp"
+#include "..\Animations\StatsAnimation.hpp"
 
 #include "..\Stat.hpp"
 
-class Character
+class Character:
+		public std::enable_shared_from_this<Character>
 {
 public:
 	// Enumerators
@@ -37,11 +39,14 @@ public:
 
 	// Constructor / Destructor
 	explicit Character(
-			std::map<std::string, std::shared_ptr<sf::Texture>> textures);
+			std::map<std::string,
+			std::shared_ptr<sf::Texture>> textures);
 	virtual ~Character() = 0;
 
 	// Functions
-	//bool move(Direction direction);
+	virtual std::shared_ptr<ActionResults> use(
+			std::shared_ptr<Action> action,
+			std::shared_ptr<Character> target);
 
 	virtual void update(const float& dt);
 	virtual void render(sf::RenderTarget& target);
@@ -61,7 +66,7 @@ public:
 	void setSize(const sf::Vector2f& size);
 
 
-	std::map<std::string, std::shared_ptr<Action>>& getActions();
+	std::vector<std::shared_ptr<Action>>& getActions();
 	std::shared_ptr<Action> getAction(const std::string& actionName);
 	const std::string& getName() const;
 	void setName(const std::string& name);
@@ -102,7 +107,7 @@ protected:
 	sf::Sprite sprite;
 	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 
-	std::map<std::string, std::shared_ptr<Action>> actions;
+	std::vector<std::shared_ptr<Action>> actions;
 
 	std::shared_ptr<AnimationComponent> animationComponent;
 	std::shared_ptr<StatsAnimation> statsAnimation;

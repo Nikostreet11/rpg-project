@@ -336,7 +336,7 @@ void BattleState::changePhase(Phase phase)
 		break;
 
 	case Results:
-		results = action->use(active, target);
+		results = active->use(action, target);
 		break;
 
 	case End:
@@ -566,8 +566,11 @@ void BattleState::initDialogueMenu()
 		break;
 
 	case Results:
-		stringStream << "Damage dealt: " << results->target.dHealth << " HP!";
-		dialogue = {stringStream.str()};
+		if (results)
+		{
+			stringStream << "Damage dealt: " << results->target.dHealth << " HP!";
+			dialogue = {stringStream.str()};
+		}
 		break;
 
 	case End:
@@ -645,11 +648,11 @@ void BattleState::initActionMenu(ActionMenu menu)
 
 		for (auto& action : active->getActions())
 		{
-			if (std::dynamic_pointer_cast<Magic>(action.second))
+			if (std::dynamic_pointer_cast<Magic>(action))
 			{
-				std::string entry = action.second->getName();
-				std::transform(entry.begin(), entry.end(), entry.begin(), ::toupper);
-				actionMenu->addEntry(entry);
+				//std::string entry = action->getName();
+				//std::transform(entry.begin(), entry.end(), entry.begin(), ::toupper);
+				actionMenu->addEntry(action->getName());
 			}
 		}
 		break;
@@ -667,11 +670,11 @@ void BattleState::initActionMenu(ActionMenu menu)
 
 		for (auto &action : active->getActions())
 		{
-			if (std::dynamic_pointer_cast<Object>(action.second))
+			if (std::dynamic_pointer_cast<Object>(action))
 			{
-				std::string entry = action.second->getName();
-				std::transform(entry.begin(), entry.end(), entry.begin(), ::toupper);
-				actionMenu->addEntry(entry);
+				//std::string entry = action->getName();
+				//std::transform(entry.begin(), entry.end(), entry.begin(), ::toupper);
+				actionMenu->addEntry(action->getName());
 			}
 		}
 		break;

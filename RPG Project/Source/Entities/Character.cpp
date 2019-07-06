@@ -22,6 +22,21 @@ Character::~Character()
 {
 }
 
+std::shared_ptr<ActionResults> Character::use(
+		std::shared_ptr<Action> action,
+		std::shared_ptr<Character> target)
+{
+	for (auto& localAction : actions)
+	{
+		if (action == localAction)
+		{
+			return action->use(shared_from_this(), target);
+		}
+	}
+
+	return nullptr;
+}
+
 /*
 float Character::attack(Character& target) {
 	Randomizer& randomizer = Randomizer::getInstance();
@@ -119,14 +134,22 @@ void Character::setSize(const sf::Vector2f& size)
 			size.y / sprite.getTextureRect().height);
 }
 
-std::map<std::string, std::shared_ptr<Action>>& Character::getActions()
+std::vector<std::shared_ptr<Action>>& Character::getActions()
 {
 	return actions;
 }
 
 std::shared_ptr<Action> Character::getAction(const std::string& name)
 {
-	return actions[name];
+	for (auto& action : actions)
+	{
+		if (action->getName() == name)
+		{
+			return action;
+		}
+	}
+
+	return nullptr;
 }
 
 const std::string& Character::getName() const
@@ -222,26 +245,24 @@ void Character::initStats()
 
 void Character::initActions()
 {
-	actions["ATTACK"] =
-			std::move(std::make_shared<Attack>());
+	actions.push_back(std::move(std::make_shared<Attack>()));
 
-	actions["FIRE"] =
-			std::move(std::make_shared<Magic>(Magic::Fire));
+	std::vector<Magic::Type> magicList = {Magic::Fire, Magic::Blizzard, Magic::Thunder};
 
-	actions["BLIZZARD"] =
-			std::move(std::make_shared<Magic>(Magic::Blizzard));
+	for (auto& magic : magicList)
+	{
+		actions.push_back(std::move(std::make_shared<Magic>(magic)));
+	}
 
-	actions["THUNDER"] =
-			std::move(std::make_shared<Magic>(Magic::Thunder));
+	//actions.push_back(std::move(std::make_shared<Magic>(Magic::Blizzard)));
 
-	actions["POTION"] =
-			std::move(std::make_shared<Object>(Object::Potion));
+	//actions.push_back(std::move(std::make_shared<Magic>(Magic::Thunder)));
 
-	actions["ETHER"] =
-			std::move(std::make_shared<Object>(Object::Ether));
+	actions.push_back(std::move(std::make_shared<Object>(Object::Potion)));
 
-	actions["ENERGIZER"] =
-			std::move(std::make_shared<Object>(Object::Energizer));
+	actions.push_back(std::move(std::make_shared<Object>(Object::Ether)));
+
+	actions.push_back(std::move(std::make_shared<Object>(Object::Energizer)));
 }
 
 void Character::initSprite(
@@ -276,6 +297,7 @@ void Character::initAnimations()
 			sf::Vector2u(16, 16),
 			sf::Vector2u(0, 0));
 }
+
 /*
 bool Character::move(Direction direction) {
 	if (posX == NO_POSITION || posY == NO_POSITION) {
