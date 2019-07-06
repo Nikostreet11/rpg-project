@@ -14,6 +14,7 @@
 #include "..\Entities\Monster.hpp"
 #include "..\Actions\Action.hpp"
 #include "..\Containers\ActionResults.hpp"
+#include "..\Utilities\Randomizer.hpp"
 
 #include "..\GUI\Dialogue.hpp"
 #include "..\GUI\Selection.hpp"
@@ -58,6 +59,7 @@ public:
 	virtual void updateBattleInput(const float& dt);
 	virtual void updateActionSelection(const float& dt);
 	virtual void updateTargetSelection(const float& dt);
+	virtual void updateTargetMarkerPosition();
 	virtual void updateCharacters(const float& dt);
 	// virtual void updateDialogueMenu(const float& dt);
 	virtual void updateActionMenu(const std::string& entry);
@@ -73,6 +75,7 @@ private:
 	// Internal
 	void changePhase(Phase phase);
 	void selectNextActive();
+	std::string computeOutcome();
 
 	// Initialization
 	void initVariables();

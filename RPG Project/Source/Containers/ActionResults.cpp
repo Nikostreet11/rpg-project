@@ -38,3 +38,13 @@ void ActionResults::compute(
 	this->target.dMana -= target->getMana();
 	this->target.dStamina -= target->getStamina();
 }
+
+const ActionResults::CharacterData& ActionResults::getSource() const
+{
+	return source;
+}
+
+const ActionResults::CharacterData& ActionResults::getTarget() const
+{
+	return target;
+}

@@ -38,7 +38,12 @@ public:
 	void compute(
 			std::shared_ptr<Character> source,
 			std::shared_ptr<Character> target);
+	void computeOutcome();
 
+	const CharacterData& getSource() const;
+	const CharacterData& getTarget() const;
+
+private:
 	// Resources
 	CharacterData source;
 	CharacterData target;

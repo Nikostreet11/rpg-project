@@ -103,7 +103,12 @@ void BattleState::updateBattleInput(const float& dt)
 
 		if (keybinds["CONFIRM"].isPressed())
 		{
-			changePhase(ActionSelection);
+			dialogueMenu->setNextLine();
+
+			if (dialogueMenu->isEnded())
+			{
+				changePhase(ActionSelection);
+			}
 		}
 		break;
 
@@ -176,6 +181,12 @@ void BattleState::updateTargetSelection(const float& dt)
 	if (active->hasStrategy())
 	{
 		target = active->chooseTarget(enemies, party);
+
+		targetMarker.setPosition(target->getPosition());
+		targetMarker.move(
+				target->getSize().x / 2.f - targetMarker.getSize() / 2,
+				-targetMarker.getSize() * 0.8f);
+
 		changePhase(Results);
 	}
 	else
@@ -189,43 +200,36 @@ void BattleState::updateTargetSelection(const float& dt)
 		if (keybinds["SELECT_UP"].isPressed())
 		{
 			actionMenu->moveMarker(Direction::Up);
-			size_t index = actionMenu->getIndex();
-			targetMarker.setPosition(targets[index]->getPosition());
-			targetMarker.move(
-					targets[index]->getSize().x / 2.f - targetMarker.getSize() / 2,
-					-targetMarker.getSize() * 0.8f);
+			updateTargetMarkerPosition();
 		}
 
 		if (keybinds["SELECT_LEFT"].isPressed())
 		{
 			actionMenu->moveMarker(Direction::Left);
-			size_t index = actionMenu->getIndex();
-			targetMarker.setPosition(targets[index]->getPosition());
-			targetMarker.move(
-					targets[index]->getSize().x / 2.f - targetMarker.getSize() / 2,
-					-targetMarker.getSize() * 0.8f);
+			updateTargetMarkerPosition();
 		}
 
 		if (keybinds["SELECT_DOWN"].isPressed())
 		{
 			actionMenu->moveMarker(Direction::Down);
-			size_t index = actionMenu->getIndex();
-			targetMarker.setPosition(targets[index]->getPosition());
-			targetMarker.move(
-					targets[index]->getSize().x / 2.f - targetMarker.getSize() / 2,
-					-targetMarker.getSize() * 0.8f);
+			updateTargetMarkerPosition();
 		}
 
 		if (keybinds["SELECT_RIGHT"].isPressed())
 		{
 			actionMenu->moveMarker(Direction::Right);
-			size_t index = actionMenu->getIndex();
-			targetMarker.setPosition(targets[index]->getPosition());
-			targetMarker.move(
-					targets[index]->getSize().x / 2.f - targetMarker.getSize() / 2,
-					-targetMarker.getSize() * 0.8f);
+			updateTargetMarkerPosition();
 		}
 	}
+}
+
+void BattleState::updateTargetMarkerPosition()
+{
+	size_t index = actionMenu->getIndex();
+	targetMarker.setPosition(targets[index]->getPosition());
+	targetMarker.move(
+			targets[index]->getSize().x / 2.f - targetMarker.getSize() / 2,
+			-targetMarker.getSize() * 0.8f);
 }
 
 void BattleState::updateCharacters(const float& dt)
@@ -251,6 +255,14 @@ void BattleState::updateActionMenu(const std::string& entry)
 	{
 		initActionMenu(ObjectMenu);
 	}
+}
+
+void BattleState::updateActiveMarker()
+{
+	activeMarker.setPosition(active->getPosition());
+	activeMarker.move(
+			active->getSize().x / 2.f - activeMarker.getSize() / 2,
+			-activeMarker.getSize() * 0.8f);
 }
 
 void BattleState::updatePauseMenu()
@@ -369,6 +381,56 @@ void BattleState::changePhase(Phase phase)
 
 	this->phase = phase;
 	initDialogueMenu();
+}
+
+void BattleState::selectNextActive()
+{
+	if (activeIndex < activeQueue.size() - 1)
+	{
+		activeIndex++;
+	}
+	else
+	{
+		activeIndex = 0;
+	}
+
+	active = activeQueue[activeIndex];
+	active->setState(Character::Ready);
+}
+
+std::string BattleState::computeOutcome()
+{
+	std::stringstream stringStream;
+	Randomizer& rand = Randomizer::getInstance();
+
+	if (results->getTarget().dHealth < 0
+		|| results->getTarget().dMana < 0
+		|| results->getTarget().dStamina < 0)
+	{
+		stringStream << target->getName() << " feels better!";
+	}
+	else if (results->getTarget().dHealth > 0)
+	{
+		float aleatory = rand.getBetween(0, 3);
+		if (aleatory < 1.f)
+		{
+			stringStream << "Hard hit!!";
+		}
+		else if (aleatory < 2.f)
+		{
+			stringStream << "Bullseye!";
+		}
+		else
+		{
+			stringStream << "It's super efficient!";
+		}
+	}
+	else
+	{
+		stringStream << "Nothing happened.";
+	}
+
+	return stringStream.str();
 }
 
 // Initialization
@@ -632,8 +694,11 @@ void BattleState::initDialogueMenu()
 	case Results:
 		if (results)
 		{
-			stringStream << "Damage dealt: " << results->target.dHealth << " HP!";
-			dialogue = {stringStream.str()};
+			stringStream
+					<< active->getName() << " uses " << action->getName()
+					<< " on " << target->getName() << "!";
+			dialogue.push_back(stringStream.str());
+			dialogue.push_back(computeOutcome());
 		}
 		break;
 
@@ -768,29 +833,6 @@ void BattleState::initPauseMenu()
 	pauseMenu.reset(new gui::PauseMenu(window, font));
 
 	pauseMenu->addButton("QUIT", 800.f, "Quit");
-}
-
-void BattleState::selectNextActive()
-{
-	if (activeIndex < activeQueue.size() - 1)
-	{
-		activeIndex++;
-	}
-	else
-	{
-		activeIndex = 0;
-	}
-
-	active = activeQueue[activeIndex];
-	active->setState(Character::Ready);
-}
-
-void BattleState::updateActiveMarker()
-{
-	activeMarker.setPosition(active->getPosition());
-	activeMarker.move(
-			active->getSize().x / 2.f - activeMarker.getSize() / 2,
-			-activeMarker.getSize() * 0.8f);
 }
 
 void BattleState::initMarkers()
