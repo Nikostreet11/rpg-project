@@ -19,9 +19,20 @@ public:
 	AttackAnimation(
 			sf::Sprite& sprite,
 			float animationTimer,
-			float delay,
-			std::shared_ptr<Character> target);
+			float delay);
 	virtual ~AttackAnimation();
+
+	// Functions
+	virtual void update(const float& dt, float modifier);
+	virtual void render(sf::RenderTarget& target);
+
+	void play(std::shared_ptr<Character> target);
+	virtual void reset();
+
+protected:
+	std::shared_ptr<Character> target;
+
+	sf::Vector2f startingPosition;
 };
 
 #endif /* ANIMATIONS_ATTACKANIMATION_HPP_ */
