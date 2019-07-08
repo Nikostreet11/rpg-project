@@ -8,7 +8,7 @@
 #ifndef ENTITIES_ENTITY_HPP_
 #define ENTITIES_ENTITY_HPP_
 
-#include "..\Components\AnimationComponent.hpp"
+#include "../Components/AnimationComponent.hpp"
 #include "..\Components\MovementComponent.hpp"
 #include "..\Components\HitboxComponent.hpp"
 #include "..\Map\Axis.hpp"

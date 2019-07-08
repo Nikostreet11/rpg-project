@@ -17,20 +17,26 @@ class AttackAnimation:
 {
 public:
 	AttackAnimation(
-			sf::Sprite& sprite,
-			float animationTimer,
-			float delay);
+			float duration,
+			sf::Sprite& source);
 	virtual ~AttackAnimation();
 
 	// Functions
 	virtual void update(const float& dt, float modifier);
 	virtual void render(sf::RenderTarget& target);
 
-	void play(std::shared_ptr<Character> target);
+	void init(
+			sf::Vector2f targetPosition,
+			sf::Vector2f targetSize);
+
 	virtual void reset();
 
 protected:
-	std::shared_ptr<Character> target;
+	// Initialization
+	void initVariables();
+
+	sf::Vector2f targetPosition;
+	sf::Vector2f targetSize;
 
 	sf::Vector2f startingPosition;
 };

@@ -14,18 +14,22 @@ class Animation
 {
 public:
 	explicit Animation(
-			sf::Sprite& sprite,
-			const sf::Texture* textureSheet,
+			bool repeated,
 			float delay,
-			std::vector<sf::Vector2u> indexVector,
-			sf::Vector2u offset,
-			sf::Vector2u size,
-			sf::Vector2u spacing);
+			float duration,
+			sf::Sprite& sprite,
+			const sf::Texture* textureSheet = nullptr);
 	virtual ~Animation();
 
 	// Functions
-	virtual void play(const float& dt, float modifier);
-	virtual void reset();
+	virtual void update(const float& dt, float modifier) = 0;
+	virtual void render(sf::RenderTarget& target) = 0;
+
+	virtual void play();
+	virtual void pause();
+	virtual void stop();
+
+	virtual void reset() = 0;
 
 	// Getters / Setters
 	bool isDone() const;
@@ -37,19 +41,13 @@ protected:
 	// Resources
 	sf::Sprite& sprite;
 	const sf::Texture* textureSheet;
-	std::vector<sf::Vector2u> indexVector;
 
 	// Variables
-	sf::Vector2u offset;
-	sf::Vector2u size;
-	sf::Vector2u spacing;
-	unsigned currentIndex;
-
-	bool started;
 	bool done;
+	bool repeated;
 
 	float timer;
-	float animationTimer;
+	float duration;
 	float delay;
 	float delayTimer;
 };

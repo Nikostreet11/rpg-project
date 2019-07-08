@@ -10,7 +10,7 @@
 
 #include "pch.hpp"
 
-#include "..\Animations\Animation.hpp"
+#include "..\Animations\SpriteSequenceAnimation.hpp"
 
 class AnimationComponent
 {
@@ -18,21 +18,18 @@ public:
 	// Constructor / Destructor
 	explicit AnimationComponent(
 			sf::Sprite& sprite,
-			sf::Vector2u offset,
-			sf::Vector2u size,
-			sf::Vector2u spacing,
 			std::shared_ptr<sf::Texture> textureSheet = nullptr);
 	virtual ~AnimationComponent();
 
 	// Functions
-	void addAnimation(
+	/*void addAnimation(
 			const std::string key,
 			float animationTimer,
-			std::vector<sf::Vector2u>& indexVector);
+			std::vector<sf::Vector2u>& indexVector);*/
 
 	void addAnimation(
 			const std::string key,
-			std::shared_ptr<Animation> animation);
+			std::shared_ptr<SpriteSequenceAnimation> animation);
 
 	void play(const std::string key, const float& dt,
 			const bool priority = false);
@@ -46,18 +43,13 @@ public:
 private:
 	// Resources
 	sf::Sprite& sprite;
-	//sf::Texture textureSheet;
 	const sf::Texture* defaultTexture;
 	sf::IntRect defaultTextureRect;
 
-	std::map<std::string, std::shared_ptr<Animation>> animations;
-	std::shared_ptr<Animation> lastAnimation;
-	std::shared_ptr<Animation> priorityAnimation;
+	std::map<std::string, std::shared_ptr<SpriteSequenceAnimation>> animations;
 
-	// Variables
-	sf::Vector2u offset;
-	sf::Vector2u size;
-	sf::Vector2u spacing;
+	std::shared_ptr<SpriteSequenceAnimation> lastAnimation;
+	std::shared_ptr<SpriteSequenceAnimation> priorityAnimation;
 };
 
 #endif /* COMPONENTS_ANIMATIONCOMPONENT_HPP_ */

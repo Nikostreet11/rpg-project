@@ -50,8 +50,8 @@ void Player::render(sf::RenderTarget& target)
 void Player::updateAnimations(const float& dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) ||
-			!animationComponent->isDone("SPIN"))
-		animationComponent->play("SPIN", dt, true);
+			!animationComponent->isDone("WAVE"))
+		animationComponent->play("WAVE", dt, true);
 
 	if (movementComponent->isState(MovementComponent::IDLE))
 		animationComponent->play("IDLE", dt);
@@ -85,33 +85,78 @@ void Player::initVariables()
 void Player::initAnimations()
 {
 	std::vector<sf::Vector2u> indexVector = {{0, 0}, {9, 0}, {0, 0}, {10, 0}};
-
-	animationComponent->addAnimation("IDLE", 0.5f, indexVector);
+	animationComponent->addAnimation(
+			"IDLE",
+			std::move(std::make_shared<SpriteSequenceAnimation>(
+					true, 0.f, 2.f,
+					sprite, nullptr,
+					indexVector,
+					sf::Vector2u(2, 2),
+					sf::Vector2u(32, 32),
+					sf::Vector2u(4, 4))));
 
 	indexVector = {{7, 0}, {6, 0}};
+	animationComponent->addAnimation(
+			"WALK_LEFT",
+			std::move(std::make_shared<SpriteSequenceAnimation>(
+					true, 0.f, 0.4f,
+					sprite, nullptr,
+					indexVector,
+					sf::Vector2u(2, 2),
+					sf::Vector2u(32, 32),
+					sf::Vector2u(4, 4))));
 
-	animationComponent->addAnimation("WALK_LEFT", 0.2f, indexVector);
-
-	indexVector = {{5, 0}, {4, 0}};
-
-	animationComponent->addAnimation("WALK_RIGHT", 0.2f, indexVector);
+	indexVector = {{5, 0}, {4, 0}, {5, 0}, {4, 0}};
+	animationComponent->addAnimation(
+			"WALK_RIGHT",
+			std::move(std::make_shared<SpriteSequenceAnimation>(
+					true, 0.f, 0.8f,
+					sprite, nullptr,
+					indexVector,
+					sf::Vector2u(2, 2),
+					sf::Vector2u(32, 32),
+					sf::Vector2u(4, 4))));
 
 	indexVector = {{3, 0}, {2, 0}};
 
-	animationComponent->addAnimation("WALK_UP", 0.2f, indexVector);
+	animationComponent->addAnimation(
+			"WALK_UP",
+			std::move(std::make_shared<SpriteSequenceAnimation>(
+					true, 0.f, 0.4f,
+					sprite, nullptr,
+					indexVector,
+					sf::Vector2u(2, 2),
+					sf::Vector2u(32, 32),
+					sf::Vector2u(4, 4))));
 
 	indexVector = {{1, 0}, {0, 0}};
-
-	animationComponent->addAnimation("WALK_DOWN", 0.2f, indexVector);
+	animationComponent->addAnimation(
+			"WALK_DOWN",
+			std::move(std::make_shared<SpriteSequenceAnimation>(
+					true, 0.f, 0.4f,
+					sprite, nullptr,
+					indexVector,
+					sf::Vector2u(2, 2),
+					sf::Vector2u(32, 32),
+					sf::Vector2u(4, 4))));
 
 	indexVector = {{18, 0}, {19, 0}};
+	animationComponent->addAnimation(
+			"WAVE",
+			std::move(std::make_shared<SpriteSequenceAnimation>(
+					false, 0.f, 1.f,
+					sprite, nullptr,
+					indexVector,
+					sf::Vector2u(2, 2),
+					sf::Vector2u(32, 32),
+					sf::Vector2u(4, 4))));
 
-	animationComponent->addAnimation("WAVE", 0.5f, indexVector);
-
+	/*
 	indexVector = {	// 0 5 2 7 0 5 2 7 11 11 11 11 8 8
 			{0, 0}, {5, 0}, {2, 0}, {7, 0},
 			{0, 0}, {5, 0}, {2, 0}, {7, 0},
 			{11, 0}, {11, 0}, {11, 0}, {11, 0}, {8, 0}, {8, 0}};
 
 	animationComponent->addAnimation("SPIN", 0.2f, indexVector);
+	*/
 }

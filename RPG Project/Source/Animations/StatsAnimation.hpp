@@ -18,10 +18,10 @@ class StatsAnimation:
 public:
 	// Constructor / Destructor
 	explicit StatsAnimation(
+			float delay,
+			float duration,
 			sf::Sprite& sprite,
 			const sf::Texture* textureSheet,
-			float animationTimer,
-			float delay,
 			sf::Vector2u offset,
 			sf::Vector2u size,
 			sf::Vector2u spacing);
@@ -31,11 +31,13 @@ public:
 	virtual void update(const float& dt, float modifier);
 	virtual void render(sf::RenderTarget& target);
 
-	void play(
+	void init(
 			int value,
 			Stat stat = Health,
 			bool critical = false);
+
 	virtual void reset();
+
 private:
 	// Internal
 	sf::Vector2u getIndex(char digit);
@@ -44,16 +46,19 @@ private:
 	void initVariables();
 	void initScale();
 	void initPosition();
-	void initColor(Stat stat, bool critical, bool healing);
+	void initColor();
 
 	// Resources
 	std::vector<sf::Sprite> digits;
 
 	// Variables
-
 	Stat stat;
 	bool critical;
 	bool healing;
+
+	sf::Vector2u offset;
+	sf::Vector2u size;
+	sf::Vector2u spacing;
 };
 
 #endif /* ANIMATIONS_STATSANIMATION_HPP_ */

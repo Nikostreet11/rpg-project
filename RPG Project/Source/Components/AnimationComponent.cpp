@@ -12,23 +12,9 @@
 // Constructor / Destructor
 AnimationComponent::AnimationComponent(
 		sf::Sprite& sprite,
-		sf::Vector2u offset,
-		sf::Vector2u size,
-		sf::Vector2u spacing,
 		std::shared_ptr<sf::Texture> textureSheet) :
 sprite(sprite)
 {
-	this->offset = offset;
-	this->size = size;
-	this->spacing = spacing;
-
-	/*
-	if (!textureSheet)
-	{
-		this->textureSheet = *sprite.getTexture();
-	}
-	*/
-
 	// initVariables();
 	lastAnimation = nullptr;
 	priorityAnimation = nullptr;
@@ -50,25 +36,9 @@ AnimationComponent::~AnimationComponent()
 {
 }
 
-// Functions
 void AnimationComponent::addAnimation(
 		const std::string key,
-		float animationTimer,
-		std::vector<sf::Vector2u>& indexVector)
-{
-	animations[key] = std::make_shared<Animation>(
-			sprite,
-			defaultTexture,
-			animationTimer,
-			indexVector,
-			offset,
-			size,
-			spacing);
-}
-
-void AnimationComponent::addAnimation(
-		const std::string key,
-		std::shared_ptr<Animation> animation)
+		std::shared_ptr<SpriteSequenceAnimation> animation)
 {
 	animations[key] = animation;
 }
@@ -88,7 +58,8 @@ void AnimationComponent::play(const std::string key, const float& dt,
 		if (priorityAnimation == animations[key])
 		{
 			// This is the priority animation => Animate
-			animations[key]->play(dt, modifier);
+			animations[key]->play();
+			animations[key]->update(dt, modifier);
 
 			if (animations[key]->isDone())
 			{
@@ -113,11 +84,12 @@ void AnimationComponent::play(const std::string key, const float& dt,
 		if (animations[key] != lastAnimation)
 		{
 			// This animation is different from the last one
-			animations[key]->reset();
+			animations[key]->init();
 			lastAnimation = animations[key];
 		}
 
-		animations[key]->play(dt, modifier);
+		animations[key]->play();
+		animations[key]->update(dt, modifier);
 	}
 }
 

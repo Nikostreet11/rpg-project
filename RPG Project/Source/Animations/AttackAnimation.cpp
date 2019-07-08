@@ -8,22 +8,11 @@
 #include "AttackAnimation.hpp"
 
 AttackAnimation::AttackAnimation(
-		sf::Sprite& sprite,
-		float animationTimer,
-		float delay) :
-	Animation(
-			sprite,
-			nullptr,
-			animationTimer,
-			std::vector<sf::Vector2u>(),
-			sf::Vector2u(),
-			sf::Vector2u(),
-			sf::Vector2u())
+		float duration,
+		sf::Sprite& sprite) :
+	Animation(false, false, duration, sprite, nullptr)
 {
-	this->delay = delay;
-
-	// InitVariables()
-	this->target = nullptr;
+	initVariables();
 }
 
 AttackAnimation::~AttackAnimation()
@@ -34,34 +23,28 @@ void AttackAnimation::update(const float& dt, float modifier)
 {
 	if (!done)
 	{
-		//done = false;
-
-		// Set a minimum value for the modifier
-		if (modifier < 0.5f)
-			modifier = 0.5f;
-
-		// Update timer
 		if (delayTimer < delay)
 		{
-			delayTimer += dt * modifier;
+			delayTimer += dt;
 		}
 		else
 		{
-			started = true;
+			// TODO: Animate
+			// sprite.move( ... );
 
-			timer += dt * modifier;
-
-			if (timer > animationTimer)
+			// Set a minimum value for the modifier (optional)
+			if (modifier < 0.5f)
 			{
-				done = true;
-				//playing = false;
-				started = false;
-				// Reset timer
-				reset();
+				modifier = 0.5f;
 			}
 
-			// Animate
-			//sprite.move(0, -40 * dt * timer * modifier);
+			// Update timer
+			timer += dt * modifier;
+
+			if (timer > duration)
+			{
+				stop();
+			}
 		}
 	}
 }
@@ -70,20 +53,28 @@ void AttackAnimation::render(sf::RenderTarget& target)
 {
 }
 
-void AttackAnimation::play(std::shared_ptr<Character> target)
+void AttackAnimation::init(
+		sf::Vector2f targetPosition,
+		sf::Vector2f targetSize)
 {
-	this->target = target;
+	this->targetPosition = targetPosition;
+	this->targetSize = targetSize;
 
-	startingPosition = target->getPosition();
+	reset();
 
-	timer = 0;
 	delayTimer = 0;
-
-	done = false;
-	started = false;
 }
 
 void AttackAnimation::reset()
 {
 	timer = 0.f;
+
+	sprite.setPosition(startingPosition);
+
+	done = true;
+}
+
+void AttackAnimation::initVariables()
+{
+	startingPosition = sprite.getPosition();
 }

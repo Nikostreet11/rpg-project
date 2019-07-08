@@ -10,13 +10,13 @@
 
 #include "pch.hpp"
 
+#include "../Components/AnimationComponent.hpp"
 #include "..\Actions\Attack.hpp"
 #include "..\Actions\Magic.hpp"
 #include "..\Actions\Object.hpp"
 #include "..\Utilities\Randomizer.hpp"
 #include "..\Containers\ActionResults.hpp"
 #include "..\Strategies\NaiveStrategy.hpp"
-#include "..\Components\AnimationComponent.hpp"
 #include "..\Animations\StatsAnimation.hpp"
 
 #include "..\Stat.hpp"

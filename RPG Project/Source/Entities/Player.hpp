@@ -10,6 +10,8 @@
 
 #include "Entity.hpp"
 
+#include "..\Animations\SpriteSequenceAnimation.hpp"
+
 class Player:
 		public Entity
 {

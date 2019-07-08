@@ -9,6 +9,8 @@
 #define ENTITIES_HUMAN_HPP_
 
 #include "Character.hpp"
+
+#include "..\Animations\SpriteSequenceAnimation.hpp"
 //#include "..\Exclude\Chestplate.h"
 //#include "..\Exclude\Weapon.h"
 

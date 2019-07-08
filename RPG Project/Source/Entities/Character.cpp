@@ -312,13 +312,15 @@ void Character::initSprite(
 
 void Character::playStatsAnimation(int value, Stat stat, bool critical)
 {
-	statsAnimation->play(value, stat, critical);
+	statsAnimation->init(value, stat, critical);
+	statsAnimation->play();
 }
 
 void Character::initAnimations()
 {
 	statsAnimation = std::make_shared<StatsAnimation>(
-			sprite, textures["ICONS"].get(), 2.f, 1.3f,
+			1.3f, 2.f,
+			sprite, textures["ICONS"].get(),
 			sf::Vector2u(2, 2),
 			sf::Vector2u(16, 16),
 			sf::Vector2u(0, 0));
@@ -328,6 +330,7 @@ void Character::setStrategy(std::unique_ptr<Strategy> strategy)
 {
 	this->strategy = std::move(strategy);
 }
+
 /*
 bool Character::move(Direction direction) {
 	if (posX == NO_POSITION || posY == NO_POSITION) {

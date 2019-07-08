@@ -8,23 +8,18 @@
 #include "StatsAnimation.hpp"
 
 StatsAnimation::StatsAnimation(
+		float delay,
+		float duration,
 		sf::Sprite& sprite,
 		const sf::Texture* textureSheet,
-		float animationTimer,
-		float delay,
 		sf::Vector2u offset,
 		sf::Vector2u size,
 		sf::Vector2u spacing) :
-	Animation(
-			sprite,
-			textureSheet,
-			animationTimer,
-			std::vector<sf::Vector2u>(),
-			offset,
-			size,
-			spacing)
+	Animation(false, delay, duration, sprite, textureSheet)
 {
-	this->delay = delay;
+	this->offset = offset;
+	this->size = size;
+	this->spacing = spacing;
 
 	initVariables();
 }
@@ -37,32 +32,12 @@ void StatsAnimation::update(const float& dt, float modifier)
 {
 	if (!done)
 	{
-		//done = false;
-
-		// Set a minimum value for the modifier
-		if (modifier < 0.5f)
-			modifier = 0.5f;
-
-		// Update timer
 		if (delayTimer < delay)
 		{
-			delayTimer += dt * modifier;
+			delayTimer += dt;
 		}
 		else
 		{
-			started = true;
-
-			timer += dt * modifier;
-
-			if (timer > animationTimer)
-			{
-				done = true;
-				//playing = false;
-				started = false;
-				// Reset timer
-				reset();
-			}
-
 			// Animate
 			for (size_t index = 0; index < digits.size(); index++)
 			{
@@ -83,13 +58,27 @@ void StatsAnimation::update(const float& dt, float modifier)
 
 				digits[index].setColor(spriteColor);
 			}
+
+			// Set a minimum value for the modifier (optional)
+			if (modifier < 0.5f)
+			{
+				modifier = 0.5f;
+			}
+
+			// Update timer
+			timer += dt * modifier;
+
+			if (timer > duration)
+			{
+				stop();
+			}
 		}
 	}
 }
 
 void StatsAnimation::render(sf::RenderTarget& target)
 {
-	if (started && !done)
+	if (delayTimer > delay && !done)
 	{
 		for (auto &digit : digits)
 		{
@@ -98,7 +87,7 @@ void StatsAnimation::render(sf::RenderTarget& target)
 	}
 }
 
-void StatsAnimation::play(int value, Stat stat, bool critical)
+void StatsAnimation::init(int value, Stat stat, bool critical)
 {
 	this->stat = stat;
 	this->critical = critical;
@@ -135,23 +124,20 @@ void StatsAnimation::play(int value, Stat stat, bool critical)
 				size.y));
 	}
 
-	timer = 0;
-	delayTimer = 0;
+	reset();
 
-	initScale();
-	initPosition();
-	initColor(stat, critical, healing);
-
-	done = false;
-	started = false;
+	delayTimer = 0.f;
 }
 
 void StatsAnimation::reset()
 {
 	timer = 0.f;
 
+	initScale();
 	initPosition();
-	initColor(stat, critical, healing);
+	initColor();
+
+	done = true;
 }
 
 // Internal
@@ -240,7 +226,7 @@ void StatsAnimation::initPosition()
 	}
 }
 
-void StatsAnimation::initColor(Stat stat, bool critical, bool healing)
+void StatsAnimation::initColor()
 {
 	for (size_t index = 0; index < digits.size(); index++)
 	{

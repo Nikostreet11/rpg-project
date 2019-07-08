@@ -42,9 +42,8 @@ void Entity::createMovement(
 void Entity::createAnimationComponent(
 		std::shared_ptr<sf::Texture> textureSheet)
 {
-	animationComponent.reset(new AnimationComponent(sprite,
-			{2, 2}, {32, 32}, {4, 4},
-			std::move(textureSheet)));
+	animationComponent.reset(new AnimationComponent(
+			sprite, std::move(textureSheet)));
 }
 
 void Entity::createHitboxComponent(
