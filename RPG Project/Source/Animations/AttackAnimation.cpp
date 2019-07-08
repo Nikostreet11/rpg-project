@@ -40,6 +40,8 @@ void AttackAnimation::update(const float& dt, float modifier)
 			}
 			else if (timer > duration * secondThreshold)
 			{
+				sprite.setScale(-startingScale.x, startingScale.y);
+				sprite.setOrigin(sprite.getGlobalBounds().width / startingScale.x, 0);
 				sprite.move(
 						-distance.x / (duration * (1 - secondThreshold)) * dt * modifier,
 						-distance.y / (duration * (1 - secondThreshold)) * dt * modifier);
@@ -86,6 +88,7 @@ void AttackAnimation::init(
 			(sprite.getGlobalBounds().top + sprite.getGlobalBounds().height);
 
 	startingPosition = sprite.getPosition();
+	startingScale = sprite.getScale();
 
 	reset();
 
@@ -97,6 +100,8 @@ void AttackAnimation::reset()
 	timer = 0.f;
 
 	sprite.setPosition(startingPosition);
+	sprite.setScale(startingScale.x, startingScale.y);
+	sprite.setOrigin(0, 0);
 
 	done = true;
 }

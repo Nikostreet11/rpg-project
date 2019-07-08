@@ -33,6 +33,7 @@ protected:
 	sf::Vector2f distance;
 
 	sf::Vector2f startingPosition;
+	sf::Vector2f startingScale;
 };
 
 #endif /* ANIMATIONS_ATTACKANIMATION_HPP_ */
