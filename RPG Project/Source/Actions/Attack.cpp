@@ -49,6 +49,7 @@ std::shared_ptr<ActionResults> Attack::use(
 
 	results->compute(source, target);
 
+	source->playAttackAnimation(target->getPosition(), target->getSize());
 	target->playStatsAnimation(std::round(damage), Stat::Health, critical);
 
 	return std::move(results);

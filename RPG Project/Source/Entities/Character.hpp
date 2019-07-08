@@ -10,14 +10,16 @@
 
 #include "pch.hpp"
 
-#include "../Components/AnimationComponent.hpp"
 #include "..\Actions\Attack.hpp"
 #include "..\Actions\Magic.hpp"
 #include "..\Actions\Object.hpp"
 #include "..\Utilities\Randomizer.hpp"
 #include "..\Containers\ActionResults.hpp"
 #include "..\Strategies\NaiveStrategy.hpp"
+
+#include "..\Components\AnimationComponent.hpp"
 #include "..\Animations\StatsAnimation.hpp"
+#include "..\Animations\AttackAnimation.hpp"
 
 #include "..\Stat.hpp"
 
@@ -58,6 +60,10 @@ public:
 			int value,
 			Stat stat,
 			bool critical);
+
+	void playAttackAnimation(
+			sf::Vector2f targetPosition,
+			sf::Vector2f targetSize);
 
 	// Getters / Setters
 	void setState(State state);
@@ -121,6 +127,7 @@ protected:
 
 	std::shared_ptr<AnimationComponent> animationComponent;
 	std::shared_ptr<StatsAnimation> statsAnimation;
+	std::shared_ptr<AttackAnimation> attackAnimation;
 
 	// Variables
 	State state;

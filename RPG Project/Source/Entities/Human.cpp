@@ -331,7 +331,6 @@ void Human::initAnimations()
 			sf::Vector2u(16, 16),
 			sf::Vector2u(48, 48),
 			sf::Vector2u(16, 16));
-
 	animationComponent->addAnimation("ATTACK", std::move(animation));
 
 	indexVector = {

@@ -80,6 +80,7 @@ void Character::update(const float& dt)
 void Character::update(const float& dt)
 {
 	statsAnimation->update(dt, 1.f);
+	attackAnimation->update(dt, 1.f);
 }
 
 void Character::render(sf::RenderTarget& target)
@@ -316,6 +317,13 @@ void Character::playStatsAnimation(int value, Stat stat, bool critical)
 	statsAnimation->play();
 }
 
+void Character::playAttackAnimation(sf::Vector2f targetPosition,
+		sf::Vector2f targetSize)
+{
+	attackAnimation->init(targetPosition, targetSize);
+	attackAnimation->play();
+}
+
 void Character::initAnimations()
 {
 	statsAnimation = std::make_shared<StatsAnimation>(
@@ -324,6 +332,9 @@ void Character::initAnimations()
 			sf::Vector2u(2, 2),
 			sf::Vector2u(16, 16),
 			sf::Vector2u(0, 0));
+
+	attackAnimation = std::make_shared<AttackAnimation>(
+			3.f, sprite);
 }
 
 void Character::setStrategy(std::unique_ptr<Strategy> strategy)

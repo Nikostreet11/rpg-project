@@ -12,7 +12,6 @@ AttackAnimation::AttackAnimation(
 		sf::Sprite& sprite) :
 	Animation(false, false, duration, sprite, nullptr)
 {
-	initVariables();
 }
 
 AttackAnimation::~AttackAnimation()
@@ -29,8 +28,22 @@ void AttackAnimation::update(const float& dt, float modifier)
 		}
 		else
 		{
-			// TODO: Animate
-			// sprite.move( ... );
+			// Animate
+			float firstThreshold = 0.3f;
+			float secondThreshold = 0.7f;
+
+			if (timer < duration * firstThreshold)
+			{
+				sprite.move(
+						distance.x / (duration * firstThreshold) * dt * modifier,
+						distance.y / (duration * firstThreshold) * dt * modifier);
+			}
+			else if (timer > duration * secondThreshold)
+			{
+				sprite.move(
+						-distance.x / (duration * (1 - secondThreshold)) * dt * modifier,
+						-distance.y / (duration * (1 - secondThreshold)) * dt * modifier);
+			}
 
 			// Set a minimum value for the modifier (optional)
 			if (modifier < 0.5f)
@@ -57,8 +70,22 @@ void AttackAnimation::init(
 		sf::Vector2f targetPosition,
 		sf::Vector2f targetSize)
 {
-	this->targetPosition = targetPosition;
-	this->targetSize = targetSize;
+	if (targetPosition.x < sprite.getPosition().x)
+	{
+		distance.x = targetPosition.x + targetSize.x - sprite.getPosition().x;
+	}
+	else
+	{
+		distance.x = targetPosition.x - (sprite.getGlobalBounds().left +
+				sprite.getGlobalBounds().width);
+	}
+
+	distance.x *= 0.7f;
+
+	distance.y = targetPosition.y + targetSize.y -
+			(sprite.getGlobalBounds().top + sprite.getGlobalBounds().height);
+
+	startingPosition = sprite.getPosition();
 
 	reset();
 
@@ -72,9 +99,4 @@ void AttackAnimation::reset()
 	sprite.setPosition(startingPosition);
 
 	done = true;
-}
-
-void AttackAnimation::initVariables()
-{
-	startingPosition = sprite.getPosition();
 }

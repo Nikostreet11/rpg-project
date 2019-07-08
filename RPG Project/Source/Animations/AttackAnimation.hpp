@@ -10,15 +10,13 @@
 
 #include "Animation.hpp"
 
-#include "..\Entities\Character.hpp"
-
 class AttackAnimation:
 		public Animation
 {
 public:
 	AttackAnimation(
 			float duration,
-			sf::Sprite& source);
+			sf::Sprite& sprite);
 	virtual ~AttackAnimation();
 
 	// Functions
@@ -32,11 +30,7 @@ public:
 	virtual void reset();
 
 protected:
-	// Initialization
-	void initVariables();
-
-	sf::Vector2f targetPosition;
-	sf::Vector2f targetSize;
+	sf::Vector2f distance;
 
 	sf::Vector2f startingPosition;
 };
