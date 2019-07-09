@@ -68,7 +68,7 @@ protected:
 	// Initialization
 	virtual void initVariables() override;
 	virtual void initStats() override;
-	virtual void initAnimations();
+	virtual void initAnimations() override;
 
 	// Variables
 	Type type;

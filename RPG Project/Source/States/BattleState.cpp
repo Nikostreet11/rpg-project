@@ -310,9 +310,12 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 
 void BattleState::renderCharacters(sf::RenderTarget& target)
 {
-	std::vector<std::shared_ptr<Character>> renderList = activeQueue;
+	std::vector<std::shared_ptr<Character>> renderList;
 
-	std::sort(renderList.begin(), renderList.end(), compareToRender);
+	renderList.insert(renderList.end(), party.begin(), party.end());
+	renderList.insert(renderList.end(), enemies.begin(), enemies.end());
+
+	std::sort(renderList.begin(), renderList.end(), comparePositions);
 
 	for (auto& character : renderList)
 	{
@@ -374,6 +377,14 @@ void BattleState::changePhase(Phase phase)
 			targets.insert(targets.end(), party.begin(), party.end());
 		}
 
+		for (auto character = targets.begin(); character < targets.end(); character++)
+		{
+			if ((*character)->getHealth() < 0)
+			{
+				targets.erase(character);
+			}
+		}
+
 		initActionMenu(TargetMenu);
 
 		targetMarker.setPosition(targets[0]->getPosition());
@@ -396,6 +407,14 @@ void BattleState::changePhase(Phase phase)
 
 void BattleState::selectNextActive()
 {
+	for (auto character = activeQueue.begin(); character < activeQueue.end(); character++)
+	{
+		if ((*character)->getHealth() < 0)
+		{
+			activeQueue.erase(character);
+		}
+	}
+
 	if (activeIndex < activeQueue.size() - 1)
 	{
 		activeIndex++;
@@ -846,7 +865,7 @@ void BattleState::initPauseMenu()
 	pauseMenu->addButton("QUIT", 800.f, "Quit");
 }
 
-bool BattleState::compareToRender(
+bool BattleState::comparePositions(
 		std::shared_ptr<Character> first,
 		std::shared_ptr<Character> second)
 {

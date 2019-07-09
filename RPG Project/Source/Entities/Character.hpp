@@ -115,7 +115,7 @@ protected:
 			const sf::Texture& textureSheet,
 			sf::Vector2f position,
 			sf::Vector2f size);
-	void initAnimations();
+	virtual void initAnimations();
 
 	// Resources
 	sf::Sprite sprite;

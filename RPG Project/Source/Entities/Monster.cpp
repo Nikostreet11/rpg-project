@@ -19,6 +19,7 @@ Monster::Monster(
 	initVariables();
 	initStats();
 	initSprite(*textures["MONSTERS"], position, size);
+	initSpriteSequenceAnimations();
 }
 
 Monster::~Monster()
@@ -29,6 +30,39 @@ Monster::~Monster()
 void Monster::update(const float& dt)
 {
 	Character::update(dt);
+	updateSpriteSequenceAnimations(dt);
+}
+
+void Monster::updateSpriteSequenceAnimations(const float& dt)
+{
+	switch (state)
+	{
+
+	case Waiting:
+	case Ready:
+	case Attacking:
+	case CastingMagic:
+	case UsingObject:
+	case Hurt:
+
+		animationComponent->play("WAIT", dt);
+		break;
+
+	case Hit:
+
+		animationComponent->play("HIT", dt);
+
+		if (animationComponent->isDone("HIT"))
+		{
+			resetState();
+		}
+		break;
+
+	case Dead:
+
+		animationComponent->play("DEAD", dt);
+		break;
+	}
 }
 
 // Getters / Setters
@@ -154,4 +188,45 @@ void Monster::initStats()
 	default:
 		break;
 	}
+}
+
+void Monster::initSpriteSequenceAnimations()
+{
+	animationComponent.reset(new AnimationComponent(sprite));
+
+	std::vector<sf::Vector2u> indexVector;
+	std::shared_ptr<SpriteSequenceAnimation> animation;
+
+	indexVector = {spriteIndex};
+	animation =	std::make_shared<SpriteSequenceAnimation>(
+			true, 0.f, 0.3f,
+			sprite, nullptr,
+			indexVector,
+			spriteOffset,
+			spriteSize,
+			spriteSpacing);
+	animationComponent->addAnimation("WAIT", std::move(animation));
+
+	indexVector = {
+			{8, 8}, spriteIndex, {8, 8}, spriteIndex,
+			{8, 8}, spriteIndex, {8, 8}, spriteIndex,
+			{8, 8}, spriteIndex, {8, 8}, spriteIndex};
+	animation =	std::make_shared<SpriteSequenceAnimation>(
+			false, 1.5f, 1.f,
+			sprite, nullptr,
+			indexVector,
+			spriteOffset,
+			spriteSize,
+			spriteSpacing);
+	animationComponent->addAnimation("HIT", std::move(animation));
+
+	indexVector = {{8, 8}};
+	animation =	std::make_shared<SpriteSequenceAnimation>(
+			true, 0.f, 0.3f,
+			sprite, nullptr,
+			indexVector,
+			spriteOffset,
+			spriteSize,
+			spriteSpacing);
+	animationComponent->addAnimation("DEAD", std::move(animation));
 }

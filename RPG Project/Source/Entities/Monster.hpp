@@ -38,6 +38,7 @@ public:
 
 	// Functions
 	virtual void update(const float& dt);
+	void updateSpriteSequenceAnimations(const float& dt);
 
 	// Getters / Setters
 	virtual bool isWeakToFire() const;
@@ -48,6 +49,7 @@ private:
 	// Initialization
 	virtual void initVariables() override;
 	virtual void initStats() override;
+	virtual void initSpriteSequenceAnimations();
 
 	// Variables
 	Type type;
