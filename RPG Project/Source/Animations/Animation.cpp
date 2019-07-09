@@ -55,6 +55,18 @@ bool Animation::isDone() const
 	return done;
 }
 
+bool Animation::isStarted() const
+{
+	if (delayTimer > delay)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void Animation::initVariables()
 {
 	done = true;

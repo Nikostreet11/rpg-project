@@ -35,7 +35,7 @@ std::shared_ptr<ActionResults> Attack::use(
 
 	// TODO: rework with other character stats, weapons and armor
 	Randomizer& r = Randomizer::getInstance();
-	float damage = source->getStrenght() * 50.f + r.getBetween(1, 5);
+	float damage = source->getStrenght() * 110.f + r.getBetween(1, 5);
 
 	bool critical = r.percentageOn(20.f);
 	if (critical)

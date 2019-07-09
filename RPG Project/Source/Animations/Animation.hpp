@@ -33,6 +33,7 @@ public:
 
 	// Getters / Setters
 	bool isDone() const;
+	bool isStarted() const;
 
 protected:
 	// Initialization

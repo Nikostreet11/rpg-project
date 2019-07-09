@@ -144,6 +144,32 @@ std::shared_ptr<Character> Character::chooseTarget(
 		std::vector<std::shared_ptr<Character>> allies,
 		std::vector<std::shared_ptr<Character>> enemies)
 {
+
+	for (auto ally = allies.begin(); ally < allies.end();)
+	{
+		if ((*ally)->getHealth() < 0)
+		{
+			allies.erase(ally);
+		}
+		else
+		{
+			ally++;
+		}
+	}
+
+	for (auto enemy = enemies.begin(); enemy < enemies.end();)
+	{
+		if ((*enemy)->getHealth() < 0)
+		{
+			enemies.erase(enemy);
+		}
+		else
+		{
+			enemy++;
+		}
+	}
+
+
 	return strategy->chooseTarget(allies, enemies);
 }
 

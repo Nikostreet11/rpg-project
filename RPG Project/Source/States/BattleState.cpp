@@ -377,11 +377,15 @@ void BattleState::changePhase(Phase phase)
 			targets.insert(targets.end(), party.begin(), party.end());
 		}
 
-		for (auto character = targets.begin(); character < targets.end(); character++)
+		for (auto character = targets.begin(); character < targets.end();)
 		{
 			if ((*character)->getHealth() < 0)
 			{
 				targets.erase(character);
+			}
+			else
+			{
+				character++;
 			}
 		}
 
@@ -407,22 +411,29 @@ void BattleState::changePhase(Phase phase)
 
 void BattleState::selectNextActive()
 {
-	for (auto character = activeQueue.begin(); character < activeQueue.end(); character++)
+	for (auto character = activeQueue.begin(); character < activeQueue.end();
+			character++)
 	{
 		if ((*character)->getHealth() < 0)
 		{
 			activeQueue.erase(character);
+
+			if (character - activeQueue.begin() <=
+					static_cast<int>(activeIndex))
+			{
+				if (activeIndex > 0)
+				{
+					activeIndex--;
+				}
+				else
+				{
+					activeIndex = activeQueue.size() - 1;
+				}
+			}
 		}
 	}
 
-	if (activeIndex < activeQueue.size() - 1)
-	{
-		activeIndex++;
-	}
-	else
-	{
-		activeIndex = 0;
-	}
+	activeIndex = (activeIndex + 1) % activeQueue.size();
 
 	active = activeQueue[activeIndex];
 	active->setState(Character::Ready);
@@ -695,19 +706,19 @@ void BattleState::initDialogueMenu()
 		break;
 
 	case ActionSelection:
-			if (actionMenu->getSelectedEntry() == "ATTACK")
+			if (actionMenu->getSelectedEntry() == "Attack")
 			{
 				dialogue = {"Physical attack."};
 			}
-			else if (actionMenu->getSelectedEntry() == "MAGIC")
+			else if (actionMenu->getSelectedEntry() == "Magic")
 			{
 				dialogue = {"Mostly elemental attacks."};
 			}
-			else if (actionMenu->getSelectedEntry() == "OBJECT")
+			else if (actionMenu->getSelectedEntry() == "Object")
 			{
 				dialogue = {"Utility objects, various effects."};
 			}
-			else if (actionMenu->getSelectedEntry() == "FLEE")
+			else if (actionMenu->getSelectedEntry() == "Flee")
 			{
 				dialogue = {"Try to flee from the battlefield."};
 			}
