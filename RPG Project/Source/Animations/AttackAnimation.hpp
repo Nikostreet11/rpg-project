@@ -30,7 +30,8 @@ public:
 	virtual void reset();
 
 protected:
-	sf::Vector2f distance;
+	sf::Vector2f movementDistance;
+	sf::Vector2f attackDistance;
 
 	sf::Vector2f startingPosition;
 	sf::Vector2f startingScale;

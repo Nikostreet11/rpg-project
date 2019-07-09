@@ -108,11 +108,11 @@ void SpriteSequenceAnimation::reset()
 
 	sprite.setTexture(*textureSheet);
 
-	sprite.setTextureRect(sf::IntRect(
+	/*sprite.setTextureRect(sf::IntRect(
 			offset.x + (size.x + spacing.x) * indexVector[currentIndex].x,
 			offset.y + (size.y + spacing.y) * indexVector[currentIndex].y,
 			size.x,
-			size.y));
+			size.y));*/
 }
 
 // Initialization

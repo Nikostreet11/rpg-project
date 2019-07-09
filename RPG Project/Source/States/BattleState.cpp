@@ -310,6 +310,16 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 
 void BattleState::renderCharacters(sf::RenderTarget& target)
 {
+	std::vector<std::shared_ptr<Character>> renderList = activeQueue;
+
+	std::sort(renderList.begin(), renderList.end(), compareToRender);
+
+	for (auto& character : renderList)
+	{
+		character->render(target);
+	}
+
+	/*
 	for (auto &enemy : enemies)
 	{
 		enemy->render(target);
@@ -319,6 +329,7 @@ void BattleState::renderCharacters(sf::RenderTarget& target)
 	{
 		hero->render(target);
 	}
+	*/
 }
 
 // Internal
@@ -833,6 +844,14 @@ void BattleState::initPauseMenu()
 	pauseMenu.reset(new gui::PauseMenu(window, font));
 
 	pauseMenu->addButton("QUIT", 800.f, "Quit");
+}
+
+bool BattleState::compareToRender(
+		std::shared_ptr<Character> first,
+		std::shared_ptr<Character> second)
+{
+	return (first->getPosition().y + first->getSize().y <
+					second->getPosition().y + second->getSize().y);
 }
 
 void BattleState::initMarkers()

@@ -327,7 +327,7 @@ void Character::playAttackAnimation(sf::Vector2f targetPosition,
 void Character::initAnimations()
 {
 	statsAnimation = std::make_shared<StatsAnimation>(
-			1.3f, 2.f,
+			1.5f, 2.f,
 			sprite, textures["ICONS"].get(),
 			sf::Vector2u(2, 2),
 			sf::Vector2u(16, 16),

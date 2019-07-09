@@ -323,7 +323,7 @@ void Human::initAnimations()
 	indexVector = {
 			{2, 0}, {4, 0}, {2, 0}, {4, 0}, {2, 0}, {4, 0},
 			{4, 0}, {4, 0}, {3, 0}, {3, 0},
-			{2, 0}, {4, 0}, {2, 0}, {4, 0}, {2, 0}, {1, 0}, {1, 0}};
+			{2, 0}, {4, 0}, {2, 0}, {4, 0}, {2, 0}, {1, 0}};
 	animation = std::make_shared<SpriteSequenceAnimation>(
 			false, 0.f, 3.4f,
 			sprite, nullptr,
@@ -368,11 +368,9 @@ void Human::initAnimations()
 			sf::Vector2u(16, 16));
 	animationComponent->addAnimation("HURT", std::move(animation));
 
-	indexVector = {
-			{1, 0}, {1, 0}, {1, 0}, {1, 0},
-			{2, 1}, {2, 1}, {2, 1}, {2, 1}};
+	indexVector = {{2, 1}};
 	animation = std::make_shared<SpriteSequenceAnimation>(
-			false, 0.f, 2.4f,
+			false, 1.5f, 1.f,
 			sprite, nullptr,
 			indexVector,
 			sf::Vector2u(16, 16),

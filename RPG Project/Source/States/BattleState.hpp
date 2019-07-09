@@ -76,6 +76,9 @@ private:
 	void changePhase(Phase phase);
 	void selectNextActive();
 	std::string computeOutcome();
+	static bool compareToRender(
+			std::shared_ptr<Character> first,
+			std::shared_ptr<Character> second);
 
 	// Initialization
 	void initVariables();
