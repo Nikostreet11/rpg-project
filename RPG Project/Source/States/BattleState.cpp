@@ -80,15 +80,7 @@ void BattleState::updateBattleInput(const float& dt)
 
 	case Begin:
 
-		if (keybinds["CONFIRM"].isPressed())
-		{
-			dialogueMenu->setNextLine();
-
-			if (dialogueMenu->isEnded())
-			{
-				changePhase(ActionSelection);
-			}
-		}
+		updateBegin(dt);
 		break;
 
 	case ActionSelection:
@@ -106,11 +98,21 @@ void BattleState::updateBattleInput(const float& dt)
 
 	case End:
 
-		if (keybinds["CONFIRM"].isPressed())
-		{
-			endState();
-		}
+		updateEnd(dt);
 		break;
+	}
+}
+
+void BattleState::updateBegin(const float& dt)
+{
+	if (keybinds["CONFIRM"].isPressed())
+	{
+		dialogueMenu->setNextLine();
+
+		if (dialogueMenu->isEnded())
+		{
+			changePhase(ActionSelection);
+		}
 	}
 }
 
@@ -224,23 +226,27 @@ void BattleState::updateResults(const float& dt)
 
 		if (dialogueMenu->isEnded())
 		{
-			switch (outcome)
+			if (outcome == None)
 			{
-			case None:
-
 				changePhase(ActionSelection);
-				break;
-
-			case Lost:
-				quitToMenu();
-				break;
-
-			case Won:
-			case Fled:
-
-				endState();
-				break;
 			}
+			else
+			{
+				changePhase(End);
+			}
+		}
+	}
+}
+
+void BattleState::updateEnd(const float& dt)
+{
+	if (keybinds["CONFIRM"].isPressed())
+	{
+		dialogueMenu->setNextLine();
+
+		if (dialogueMenu->isEnded())
+		{
+			endState();
 		}
 	}
 }
@@ -452,7 +458,7 @@ void BattleState::changePhase(Phase phase)
 			{
 				outcome = Lost;
 			}
-			else if (getAliveOnesFrom(party).empty())
+			else if (getAliveOnesFrom(enemies).empty())
 			{
 				outcome = Won;
 			}
@@ -464,7 +470,19 @@ void BattleState::changePhase(Phase phase)
 		break;
 
 	case End:
-		endState();
+
+		if (outcome == Won)
+		{
+			for (auto& hero : party)
+			{
+				if (hero->isAlive())
+				{
+					hero->setState(Character::Victorious);
+				}
+			}
+		}
+
+		break;
 	}
 
 	this->phase = phase;
@@ -693,7 +711,7 @@ void BattleState::initCharacters()
 		enemies.push_back(std::move(monster));
 	}
 
-	for (unsigned index = 0; index < 2; index++)
+	/*for (unsigned index = 0; index < 2; index++)
 	{
 		std::shared_ptr<Character> monster =
 				std::make_shared<Monster>(
@@ -730,7 +748,7 @@ void BattleState::initCharacters()
 		monster->setStrategy(std::move(strategy));
 
 		enemies.push_back(std::move(monster));
-	}
+	}*/
 
 	// TODO: rework with the party getters
 	party.push_back(std::move(std::make_shared<Human>(
@@ -814,20 +832,16 @@ void BattleState::initDialogueMenu()
 		break;
 
 	case Results:
+
 		if (triedToFlee)
 		{
-			// TODO: switch statement
-			if (outcome == Fled)
+			stringStream
+					<< active->getName() << " tries to flee...";
+			dialogue.push_back(stringStream.str());
+
+			if (outcome == None)
 			{
-				stringStream
-						<< active->getName() << " successfully fled!";
-				dialogue.push_back(stringStream.str());
-			}
-			else
-			{
-				stringStream
-						<< active->getName() << " couldn't flee.";
-				dialogue.push_back(stringStream.str());
+				dialogue.push_back(" but fails.");
 			}
 		}
 		else if (results)
@@ -838,10 +852,30 @@ void BattleState::initDialogueMenu()
 			dialogue.push_back(stringStream.str());
 			dialogue.push_back(computeOutcome());
 		}
+
 		break;
 
 	case End:
-		dialogue = {"<< battle results >>"};
+
+		switch (outcome)
+		{
+		case None:
+			break;
+
+		case Won:
+			dialogue = {"All enemies defeated", "BATTLE WON!"};
+			break;
+
+		case Lost:
+			dialogue = {"The entire party is down", "GAME OVER"};
+			break;
+
+		case Fled:
+			stringStream
+					<< active->getName() << " successfully fled!";
+			dialogue.push_back(stringStream.str());
+			break;
+		}
 		break;
 
 	}

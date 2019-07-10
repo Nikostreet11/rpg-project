@@ -65,9 +65,11 @@ public:
 	virtual void update(const float& dt);
 	virtual void updateInput(const float& dt);
 	virtual void updateBattleInput(const float& dt);
+	virtual void updateBegin(const float& dt);
 	virtual void updateActionSelection(const float& dt);
 	virtual void updateTargetSelection(const float& dt);
 	virtual void updateResults(const float& dt);
+	virtual void updateEnd(const float& dt);
 	virtual void updateTargetMarkerPosition();
 	virtual void updateCharacters(const float& dt);
 	// virtual void updateDialogueMenu(const float& dt);

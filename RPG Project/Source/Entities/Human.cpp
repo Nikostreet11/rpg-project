@@ -100,6 +100,11 @@ void Human::updateAnimations(const float& dt)
 
 		animationComponent->play("DEAD", dt);
 		break;
+
+	case Victorious:
+
+		animationComponent->play("VICTORIOUS", dt);
+		break;
 	}
 
 	if (state != Hit && statsAnimation->isStarted())
@@ -108,6 +113,7 @@ void Human::updateAnimations(const float& dt)
 	}
 }
 
+// Getters / Setters
 bool Human::isWeakToFire() const
 {
 	return false;
@@ -399,4 +405,14 @@ void Human::initAnimations()
 			sf::Vector2u(48, 48),
 			sf::Vector2u(16, 16));
 	animationComponent->addAnimation("DEAD", std::move(animation));
+
+	indexVector = {{0, 1}, {0, 0}};
+	animation = std::make_shared<SpriteSequenceAnimation>(
+			true, 0.f, 1.f,
+			sprite, nullptr,
+			indexVector,
+			sf::Vector2u(16, 16),
+			sf::Vector2u(48, 48),
+			sf::Vector2u(16, 16));
+	animationComponent->addAnimation("VICTORIOUS", std::move(animation));
 }

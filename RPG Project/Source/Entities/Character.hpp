@@ -37,7 +37,8 @@ public:
 		UsingObject,
 		Hurt,
 		Hit,
-		Dead
+		Dead,
+		Victorious
 	};
 
 	// Constructor / Destructor

@@ -44,6 +44,7 @@ void Monster::updateSpriteSequenceAnimations(const float& dt)
 	case CastingMagic:
 	case UsingObject:
 	case Hurt:
+	case Victorious:
 
 		animationComponent->play("WAIT", dt);
 		break;
