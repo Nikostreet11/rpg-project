@@ -83,6 +83,8 @@ public:
 private:
 	// Internal
 	void changePhase(Phase phase);
+	std::vector<std::shared_ptr<Character>> getAliveOnesFrom(
+			std::vector<std::shared_ptr<Character>>& characters);
 	void selectNextActive();
 	std::string computeOutcome();
 	static bool comparePositions(

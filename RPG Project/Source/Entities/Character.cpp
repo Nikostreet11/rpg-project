@@ -203,6 +203,18 @@ std::shared_ptr<Action> Character::getAction(const std::string& name)
 	return nullptr;
 }
 
+bool Character::isAlive()
+{
+	if (health > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 const std::string& Character::getName() const
 {
 	return name;

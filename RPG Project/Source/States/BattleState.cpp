@@ -447,6 +447,15 @@ void BattleState::changePhase(Phase phase)
 		if (!triedToFlee)
 		{
 			results = active->use(action, target);
+
+			if (getAliveOnesFrom(party).empty())
+			{
+				outcome = Lost;
+			}
+			else if (getAliveOnesFrom(party).empty())
+			{
+				outcome = Won;
+			}
 		}
 		else if (active->flee())
 		{
@@ -460,6 +469,22 @@ void BattleState::changePhase(Phase phase)
 
 	this->phase = phase;
 	initDialogueMenu();
+}
+
+std::vector<std::shared_ptr<Character> > BattleState::getAliveOnesFrom(
+		std::vector<std::shared_ptr<Character>>& characters)
+{
+	std::vector<std::shared_ptr<Character>> aliveCharacters;
+
+	for (auto character : characters)
+	{
+		if (character->isAlive())
+		{
+			aliveCharacters.push_back(character);
+		}
+	}
+
+	return aliveCharacters;
 }
 
 void BattleState::selectNextActive()
@@ -791,6 +816,7 @@ void BattleState::initDialogueMenu()
 	case Results:
 		if (triedToFlee)
 		{
+			// TODO: switch statement
 			if (outcome == Fled)
 			{
 				stringStream

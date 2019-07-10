@@ -82,6 +82,7 @@ public:
 
 	std::vector<std::shared_ptr<Action>>& getActions();
 	std::shared_ptr<Action> getAction(const std::string& actionName);
+	bool isAlive();
 
 	const std::string& getName() const;
 	void setName(const std::string& name);
