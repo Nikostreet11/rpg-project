@@ -59,7 +59,7 @@ std::shared_ptr<ActionResults> Magic::use(
 	// TODO: rework with other character stats, weapons and armor
 	Randomizer& r = Randomizer::getInstance();
 
-	float damage = source->getIntelligence() * r.getBetween(1, 5);
+	float damage = source->getIntelligence() * 8.f + r.getBetween(1, 5);
 
 	bool critical =
 			(fireElement && target->isWeakToFire())

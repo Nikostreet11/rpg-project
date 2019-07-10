@@ -50,6 +50,7 @@ public:
 	virtual std::shared_ptr<ActionResults> use(
 			std::shared_ptr<Action> action,
 			std::shared_ptr<Character> target);
+	virtual bool flee();
 
 	virtual void update(const float& dt);
 	virtual void render(sf::RenderTarget& target);

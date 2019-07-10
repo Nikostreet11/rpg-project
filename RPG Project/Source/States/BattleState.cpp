@@ -101,15 +101,7 @@ void BattleState::updateBattleInput(const float& dt)
 
 	case Results:
 
-		if (keybinds["CONFIRM"].isPressed())
-		{
-			dialogueMenu->setNextLine();
-
-			if (dialogueMenu->isEnded())
-			{
-				changePhase(ActionSelection);
-			}
-		}
+		updateResults(dt);
 		break;
 
 	case End:
@@ -141,7 +133,8 @@ void BattleState::updateActionSelection(const float& dt)
 			}
 			else if (entry == "Flee")
 			{
-				endState();
+				triedToFlee = true;
+				changePhase(Results);
 			}
 			else
 			{
@@ -223,6 +216,35 @@ void BattleState::updateTargetSelection(const float& dt)
 	}
 }
 
+void BattleState::updateResults(const float& dt)
+{
+	if (keybinds["CONFIRM"].isPressed())
+	{
+		dialogueMenu->setNextLine();
+
+		if (dialogueMenu->isEnded())
+		{
+			switch (outcome)
+			{
+			case None:
+
+				changePhase(ActionSelection);
+				break;
+
+			case Lost:
+				quitToMenu();
+				break;
+
+			case Won:
+			case Fled:
+
+				endState();
+				break;
+			}
+		}
+	}
+}
+
 void BattleState::updateTargetMarkerPosition()
 {
 	size_t index = actionMenu->getIndex();
@@ -292,7 +314,7 @@ void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
 		activeMarker.render(renderTexture);
 	}
 
-	if (phase == TargetSelection || phase == Results)
+	if ((phase == TargetSelection || phase == Results) && !triedToFlee)
 	{
 		targetMarker.render(renderTexture);
 	}
@@ -335,6 +357,11 @@ void BattleState::renderCharacters(sf::RenderTarget& target)
 	*/
 }
 
+void BattleState::quitToMenu()
+{
+	endState();
+}
+
 // Internal
 void BattleState::changePhase(Phase phase)
 {
@@ -348,6 +375,8 @@ void BattleState::changePhase(Phase phase)
 
 	case ActionSelection:
 
+		triedToFlee = false;
+
 		if (this->phase == Begin)
 		{
 			active = activeQueue[0];
@@ -359,10 +388,19 @@ void BattleState::changePhase(Phase phase)
 		}
 
 		updateActiveMarker();
-		initActionMenu(MainActions);
+
+		if (active->hasStrategy())
+		{
+			initActionMenu(Empty);
+		}
+		else
+		{
+			initActionMenu(MainActions);
+		}
 		break;
 
 	case TargetSelection:
+
 		// TODO: put in a separate function
 		targets.clear();
 
@@ -389,7 +427,14 @@ void BattleState::changePhase(Phase phase)
 			}
 		}
 
-		initActionMenu(TargetMenu);
+		if (active->hasStrategy())
+		{
+			initActionMenu(Empty);
+		}
+		else
+		{
+			initActionMenu(TargetMenu);
+		}
 
 		targetMarker.setPosition(targets[0]->getPosition());
 		targetMarker.move(
@@ -398,7 +443,15 @@ void BattleState::changePhase(Phase phase)
 		break;
 
 	case Results:
-		results = active->use(action, target);
+
+		if (!triedToFlee)
+		{
+			results = active->use(action, target);
+		}
+		else if (active->flee())
+		{
+			outcome = Fled;
+		}
 		break;
 
 	case End:
@@ -477,8 +530,11 @@ std::string BattleState::computeOutcome()
 // Initialization
 void BattleState::initVariables()
 {
-	activeIndex = 0;
 	phase = BattleState::Begin;
+	outcome = None;
+
+	activeIndex = 0;
+	triedToFlee = false;
 }
 
 void BattleState::initDeferredRendering()
@@ -733,7 +789,22 @@ void BattleState::initDialogueMenu()
 		break;
 
 	case Results:
-		if (results)
+		if (triedToFlee)
+		{
+			if (outcome == Fled)
+			{
+				stringStream
+						<< active->getName() << " successfully fled!";
+				dialogue.push_back(stringStream.str());
+			}
+			else
+			{
+				stringStream
+						<< active->getName() << " couldn't flee.";
+				dialogue.push_back(stringStream.str());
+			}
+		}
+		else if (results)
 		{
 			stringStream
 					<< active->getName() << " uses " << action->getName()

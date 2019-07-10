@@ -368,6 +368,11 @@ void Character::setStrategy(std::unique_ptr<Strategy> strategy)
 	this->strategy = std::move(strategy);
 }
 
+bool Character::flee()
+{
+	Randomizer& rand = Randomizer::getInstance();
+	return rand.percentageOn(50.f + agility);
+}
 /*
 bool Character::move(Direction direction) {
 	if (posX == NO_POSITION || posY == NO_POSITION) {

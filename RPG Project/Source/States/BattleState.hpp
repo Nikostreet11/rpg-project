@@ -35,6 +35,14 @@ public:
 		End
 	};
 
+	enum Outcome
+	{
+		None,
+		Won,
+		Lost,
+		Fled
+	};
+
 	enum ActionMenu
 	{
 		Empty,
@@ -59,6 +67,7 @@ public:
 	virtual void updateBattleInput(const float& dt);
 	virtual void updateActionSelection(const float& dt);
 	virtual void updateTargetSelection(const float& dt);
+	virtual void updateResults(const float& dt);
 	virtual void updateTargetMarkerPosition();
 	virtual void updateCharacters(const float& dt);
 	// virtual void updateDialogueMenu(const float& dt);
@@ -69,7 +78,7 @@ public:
 			std::shared_ptr<sf::RenderTarget> target = nullptr);
 	virtual void renderCharacters(sf::RenderTarget& target);
 
-	// Getters / Setters
+	virtual void quitToMenu();
 
 private:
 	// Internal
@@ -117,8 +126,10 @@ private:
 
 	// Variables
 	Phase phase;
+	Outcome outcome;
 	ActionMenu menu;
 	size_t activeIndex;
+	bool triedToFlee;
 };
 
 #endif /* STATES_BATTLESTATE_HPP_ */

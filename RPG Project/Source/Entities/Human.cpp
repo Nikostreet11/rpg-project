@@ -101,6 +101,11 @@ void Human::updateAnimations(const float& dt)
 		animationComponent->play("DEAD", dt);
 		break;
 	}
+
+	if (state != Hit && statsAnimation->isStarted())
+	{
+		resetState();
+	}
 }
 
 bool Human::isWeakToFire() const
@@ -242,6 +247,7 @@ void Human::initStats()
 	{
 	case BlackMage:
 		name = "Black mage";
+		intelligence = 4;
 		break;
 
 	case BlackWizard:
@@ -274,14 +280,20 @@ void Human::initStats()
 
 	case Thief:
 		name = "Thief";
+		strenght = 2;
+		agility = 3;
 		break;
 
 	case Warrior:
 		name = "Warrior";
+		strenght = 3;
+		endurance = 2;
 		break;
 
 	case WhiteMage:
 		name = "White mage";
+		intelligence = 3;
+		agility = 2;
 		break;
 
 	case WhiteWizard:

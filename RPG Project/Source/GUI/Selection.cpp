@@ -265,8 +265,15 @@ void Selection::removeEntry()
 // Getters / Setters
 const std::string Selection::getSelectedEntry() const
 {
-	return entries[(viewIndex.y + markerIndex.y) * fieldSize.x
-				   + viewIndex.x + markerIndex.x].getString();
+	if (entries.size() > 0)
+	{
+		return entries[(viewIndex.y + markerIndex.y) * fieldSize.x
+					   + viewIndex.x + markerIndex.x].getString();
+	}
+	else
+	{
+		return "NULL";
+	}
 }
 
 /*
