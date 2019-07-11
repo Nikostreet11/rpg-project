@@ -152,6 +152,30 @@ void Entity::setSize(const sf::Vector2f& size)
 	}
 }
 
+sf::FloatRect Entity::getGlobalBounds() const
+{
+	sf::Vector2f position;
+	sf::Vector2f size;
+
+	if (hitboxComponent)
+	{
+		position = hitboxComponent->getPosition();
+		size = hitboxComponent->getSize();
+	}
+	else
+	{
+		position = sprite.getPosition();
+		size = {sprite.getGlobalBounds().width,
+				sprite.getGlobalBounds().height};
+	}
+
+	return sf::FloatRect(
+			position.x,
+			position.y,
+			size.x,
+			size.y);
+}
+
 sf::Vector2f Entity::getNextPosition(const float& dt) const
 {
 	if (movementComponent)

@@ -99,6 +99,7 @@ public:
 	void setStamina(float stamina);
 	int getStrenght() const;
 	int getIntelligence() const;
+	int getAgility() const;
 
 	virtual bool isWeakToFire() const = 0;
 	virtual bool isWeakToIce() const = 0;

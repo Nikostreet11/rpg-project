@@ -48,6 +48,7 @@ public:
 	const std::string getAsString() const;
 
 	// Getters / Setters
+	Type getType() const;
 	Closeness getCloseness() const;
 	bool isCrossable() const;
 	const sf::Vector2f& getPosition() const;

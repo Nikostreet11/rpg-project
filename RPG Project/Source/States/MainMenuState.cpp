@@ -58,8 +58,7 @@ void MainMenuState::updateButtons()
 	if (buttons["GAME_STATE"]->isReleased())
 	{
 		std::unique_ptr<State> explorationStatePtr(
-				// TODO: fix
-				new BattleState(stateData));
+				new ExplorationState(stateData));
 		states->push(move(explorationStatePtr));
 	}
 
@@ -75,7 +74,7 @@ void MainMenuState::updateButtons()
 	if (buttons["SETTINGS_STATE"]->isReleased())
 	{
 		std::unique_ptr<State> settingsStatePtr(
-				new ExplorationState(stateData));
+				new SettingsState(stateData));
 		states->push(move(settingsStatePtr));
 	}
 

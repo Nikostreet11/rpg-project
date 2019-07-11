@@ -21,6 +21,8 @@
 #include "..\GUI\PauseMenu.hpp"
 #include "..\Icons\Caret.hpp"
 
+class ExplorationState;
+
 class BattleState:
 		public State
 {
@@ -54,9 +56,9 @@ public:
 
 	// Constructor / Destructor
 	explicit BattleState(
-			StateData& stateData/*,
+			StateData& stateData,
 			std::vector<std::shared_ptr<Character>> party,
-			std::vector<std::shared_ptr<Character>> enemies*/);
+			std::vector<std::shared_ptr<Character>> enemies);
 	virtual ~BattleState();
 
 	// Functions
@@ -89,7 +91,11 @@ private:
 			std::vector<std::shared_ptr<Character>>& characters);
 	void selectNextActive();
 	std::string computeOutcome();
+
 	static bool comparePositions(
+			std::shared_ptr<Character> first,
+			std::shared_ptr<Character> second);
+	static bool compareAgility(
 			std::shared_ptr<Character> first,
 			std::shared_ptr<Character> second);
 

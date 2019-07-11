@@ -396,11 +396,12 @@ void EditorState::initBackground()
 
 void EditorState::initTileMap()
 {
-	tileMap.reset(new TileMap(
+	tileMap.reset(new DefaultMap(
 			sf::Vector2u(12, 8), 3,
 			stateData.gridSize,
 			"Villages.png",
-			32));
+			32,
+			textures));
 }
 
 void EditorState::initPauseMenu()

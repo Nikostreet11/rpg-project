@@ -13,6 +13,8 @@
 // Project
 #include "..\Tiles\Tile.hpp"
 #include "..\Entities\Entity.hpp"
+#include "..\Entities\Monster.hpp"
+#include "..\Entities\Human.hpp"
 #include "Axis.hpp"
 
 class TileMap
@@ -24,7 +26,8 @@ public:
 			unsigned maxLayers,
 			float gridSize,
 			const std::string& tilesetName,
-			unsigned spriteSize);
+			unsigned spriteSize,
+			std::map<std::string, std::shared_ptr<sf::Texture>> textures);
 	virtual ~TileMap();
 
 	// Functions
@@ -53,6 +56,7 @@ public:
 	void loadFromFile(const std::string& fileName);
 
 	// Getters / Setters
+	bool isDangerousAt(sf::FloatRect rectangle);
 	const sf::Texture& getTileset() const;
 	bool isActive() const;
 	const sf::Vector2u& getSize() const;
@@ -69,9 +73,9 @@ public:
 	 * should the Party find when encountering a battle. The reference to	 *
 	 * Party can be used to know where the party is, letting the concrete	 *
 	 * Map decide which enemies to create.									 *
-	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	virtual std::vector<Foe*> getFoes(Party& party) = 0;
-	virtual Battle::Background getBackground() = 0;
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	virtual std::vector<std::shared_ptr<Character>> getFoes() = 0;
+	/*virtual Battle::Background getBackground() = 0;
 
 	const Tile& at(int x, int y);
 
@@ -80,6 +84,9 @@ public:
 	bool setTile(int x, int y, Tile tile);
 	const Tile& getTile(int x, int y) const;
 	*/
+
+protected:
+	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
 
 private:
 	// Internal
@@ -100,6 +107,7 @@ private:
 
 	// Resources
 	std::vector< std::vector< std::unique_ptr<Tile> > > map;
+
 	sf::Texture tileset;
 	//sf::IntRect tileRect;
 	sf::RectangleShape border;

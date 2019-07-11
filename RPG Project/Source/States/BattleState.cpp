@@ -9,12 +9,12 @@
 
 // Constructor / Destructor
 BattleState::BattleState(
-		StateData& stateData/*,
+		StateData& stateData,
 		std::vector<std::shared_ptr<Character>> party,
-		std::vector<std::shared_ptr<Character>> enemies*/) :
-		State(stateData)/*,
-		party(party),
-		enemies(enemies)*/
+		std::vector<std::shared_ptr<Character>> enemies) :
+	State(stateData),
+	party(party),
+	enemies(enemies)
 {
 	initVariables();
 	initDeferredRendering();
@@ -696,64 +696,10 @@ void BattleState::initBackground()
 
 void BattleState::initCharacters()
 {
-	// TODO: rework with the map factory method
-	for (unsigned index = 0; index < 2; index++)
+	for (auto& enemy : enemies)
 	{
-		std::shared_ptr<Character> monster =
-				std::make_shared<Monster>(
-						Monster::Werewolf,
-						textures);
-
-		monster->setStrategy(std::move(NaiveStrategy::getInstance()));
-
-		enemies.push_back(std::move(monster));
+		enemy->setStrategy(std::move(NaiveStrategy::getInstance()));
 	}
-
-	for (unsigned index = 0; index < 2; index++)
-	{
-		std::shared_ptr<Character> monster =
-				std::make_shared<Monster>(
-						Monster::GigasWorm,
-						textures);
-
-		monster->setStrategy(std::move(NaiveStrategy::getInstance()));
-
-		enemies.push_back(std::move(monster));
-	}
-
-	for (unsigned index = 0; index < 2; index++)
-	{
-		std::shared_ptr<Character> monster =
-				std::make_shared<Monster>(
-						Monster::Skeleton,
-						textures);
-
-		monster->setStrategy(std::move(NaiveStrategy::getInstance()));
-
-		enemies.push_back(std::move(monster));
-	}
-
-	for (unsigned index = 0; index < 2; index++)
-	{
-		std::shared_ptr<Character> monster =
-				std::make_shared<Monster>(
-						Monster::Zombie,
-						textures);
-
-		monster->setStrategy(std::move(NaiveStrategy::getInstance()));
-
-		enemies.push_back(std::move(monster));
-	}
-
-	// TODO: rework with the party getters
-	party.push_back(std::move(std::make_shared<Human>(
-			Human::Warrior, textures)));
-	party.push_back(std::move(std::make_shared<Human>(
-			Human::Thief, textures)));
-	party.push_back(std::move(std::make_shared<Human>(
-			Human::WhiteMage, textures)));
-	party.push_back(std::move(std::make_shared<Human>(
-			Human::BlackMage, textures)));
 
 	sf::Vector2f leftStart(700.f, 180.f);
 	sf::Vector2f leftStep(-80.f, 100.f);
@@ -781,10 +727,11 @@ void BattleState::initCharacters()
 
 void BattleState::initActiveQueue()
 {
-	// TODO: rework based on Characters stats
 	activeQueue.clear();
 	activeQueue.insert(activeQueue.end(), party.begin(), party.end());
 	activeQueue.insert(activeQueue.end(), enemies.begin(), enemies.end());
+
+	std::sort(activeQueue.begin(), activeQueue.end(), compareAgility);
 }
 
 void BattleState::initDialogueMenu()
@@ -1008,6 +955,13 @@ bool BattleState::comparePositions(
 {
 	return (first->getPosition().y + first->getSize().y <
 					second->getPosition().y + second->getSize().y);
+}
+
+bool BattleState::compareAgility(
+		std::shared_ptr<Character> first,
+		std::shared_ptr<Character> second)
+{
+	return (first->getAgility() > second->getAgility());
 }
 
 void BattleState::initMarkers()

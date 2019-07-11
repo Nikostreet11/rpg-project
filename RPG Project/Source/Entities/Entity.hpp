@@ -8,7 +8,7 @@
 #ifndef ENTITIES_ENTITY_HPP_
 #define ENTITIES_ENTITY_HPP_
 
-#include "../Components/AnimationComponent.hpp"
+#include "..\Components\AnimationComponent.hpp"
 #include "..\Components\MovementComponent.hpp"
 #include "..\Components\HitboxComponent.hpp"
 #include "..\Map\Axis.hpp"
@@ -48,6 +48,7 @@ public:
 	void setPosition(const sf::Vector2f& position);
 	const sf::Vector2f getSize() const;
 	void setSize(const sf::Vector2f& size);
+	sf::FloatRect getGlobalBounds() const;
 	sf::Vector2f getNextPosition(const float& dt) const;
 	sf::FloatRect getNextGlobalBounds(const float& dt) const;
 

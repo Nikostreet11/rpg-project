@@ -12,7 +12,8 @@ TileMap::TileMap(
 		unsigned maxLayers,
 		float gridSize,
 		const std::string& tilesetName,
-		unsigned spriteSize)
+		unsigned spriteSize,
+		std::map<std::string, std::shared_ptr<sf::Texture>> textures)
 {
 	initVariables();
 
@@ -24,6 +25,8 @@ TileMap::TileMap(
 
 	this->tilesetName = tilesetName;
 	this->spriteSize = spriteSize;
+
+	this->textures = textures;
 	/*
 	tileRect.width = spriteSize;
 	tileRect.height = spriteSize;
@@ -405,6 +408,41 @@ void TileMap::loadFromFile(const std::string& fileName)
 }
 
 // Getters / Setters
+bool TileMap::isDangerousAt(sf::FloatRect rectangle)
+{
+	bool danger = false;
+
+	sf::Vector2u cullingStart =
+	{
+		static_cast<unsigned>(rectangle.left / gridSize),
+		static_cast<unsigned>(rectangle.top / gridSize)
+	};
+
+	sf::Vector2u cullingEnd =
+	{
+		static_cast<unsigned>(
+				(rectangle.left + rectangle.width) / gridSize) + 1,
+		static_cast<unsigned>(
+				(rectangle.top + rectangle.height) / gridSize) + 1
+	};
+
+	for (size_t y = cullingStart.y; y < cullingEnd.y; y++)
+	{
+		for (size_t x = cullingStart.x; x < cullingEnd.x; x++)
+		{
+			for (auto& layer : map[y * size.x + x])
+			{
+				if (layer->getType() == Tile::Dangerous)
+				{
+					danger = true;
+				}
+			}
+		}
+	}
+
+	return danger;
+}
+
 const sf::Texture& TileMap::getTileset() const
 {
 	return tileset;
@@ -596,7 +634,6 @@ void TileMap::initCollisionBox()
 	collisionBox.setSize(sf::Vector2f(gridSize, gridSize));
 	collisionBox.setFillColor(sf::Color(255, 0, 0, 50));
 }
-
 /*
 const Tile& TileMap::at(int x, int y) {
 	return getTile(x, y);

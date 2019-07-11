@@ -287,13 +287,14 @@ void Human::initStats()
 	case Thief:
 		name = "Thief";
 		strenght = 2;
-		agility = 3;
+		agility = 5;
 		break;
 
 	case Warrior:
 		name = "Warrior";
 		strenght = 3;
 		endurance = 2;
+		agility = 3;
 		break;
 
 	case WhiteMage:

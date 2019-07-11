@@ -10,9 +10,13 @@
 
 #include "State.hpp"
 
+#include "BattleState.hpp"
+
 #include "..\GUI\PauseMenu.hpp"
-#include "..\Map\TileMap.hpp"
+#include "..\Map\DefaultMap.hpp"
 #include "..\Entities\Player.hpp"
+#include "..\Entities\Human.hpp"
+#include "..\Utilities\Randomizer.hpp"
 
 class ExplorationState :
 		public State
@@ -32,25 +36,30 @@ public:
 	virtual void updatePauseMenu();
 	virtual void render(std::shared_ptr<sf::RenderTarget> target = nullptr);
 
-	// Getters / Setters
-
 private:
+	// Internal
+	void checkForBattle(const float& dt);
+
 	// Initialization functions
 	void initDeferredRendering();
 	void initCamera();
 	void initBindings();
 	void initFonts();
 	void initTextures();
+	void initParty();
 	void initPlayers();
 	void initTileMap();
 	void initPauseMenu();
 
 	// Resources
-	std::shared_ptr<sf::View> camera;
 	sf::RenderTexture renderTexture;
 	sf::Sprite renderSprite;
+	std::shared_ptr<sf::View> camera;
+
+	std::vector<std::shared_ptr<Character>> party;
 	std::shared_ptr<Player> player;
 	std::unique_ptr<TileMap> tileMap;
+
 	std::unique_ptr<gui::PauseMenu> pauseMenu;
 
 	std::shared_ptr<sf::Font> font;

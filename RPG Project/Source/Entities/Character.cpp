@@ -271,6 +271,11 @@ int Character::getIntelligence() const
 	return intelligence;
 }
 
+int Character::getAgility() const
+{
+	return agility;
+}
+
 /*
 int Character::getAgility() const
 {

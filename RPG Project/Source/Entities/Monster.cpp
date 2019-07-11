@@ -144,11 +144,13 @@ void Monster::initStats()
 	case Goblin:
 		name = "Goblin";
 		weakToLightning = true;
+		agility = 2;
 		break;
 
 	case Wolf:
 		name = "Wolf";
 		weakToFire = true;
+		agility = 4;
 		break;
 
 	case Piranha:
@@ -164,6 +166,7 @@ void Monster::initStats()
 	case BlackWidow:
 		name = "Black widow";
 		weakToIce = true;
+		agility = 3;
 		break;
 
 	case GigasWorm:
@@ -174,11 +177,13 @@ void Monster::initStats()
 	case WargWolf:
 		name = "Warg wolf";
 		weakToIce = true;
+		agility = 4;
 		break;
 
 	case Werewolf:
 		name = "Werewolf";
 		weakToLightning = true;
+		agility = 4;
 		break;
 
 	case Zombie:

@@ -64,6 +64,11 @@ const std::string Tile::getAsString() const
 }
 
 // Getters / Setters
+Tile::Type Tile::getType() const
+{
+	return type;
+}
+
 Tile::Closeness Tile::getCloseness() const
 {
 	return closeness;
@@ -109,7 +114,6 @@ const sf::IntRect& Tile::getTextureRect() const
 {
 	return sprite.getTextureRect();
 }
-
 /*
 Tile& Tile::operator=(const Tile& entry) {
 	if (this != &entry) {

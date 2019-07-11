@@ -17,6 +17,7 @@ ExplorationState::ExplorationState(StateData& stateData) :
 	initBindings();
 	initFonts();
 	initTextures();
+	initParty();
 	initPlayers();
 	initTileMap();
 	initPauseMenu();
@@ -47,6 +48,8 @@ void ExplorationState::update(const float& dt)
 		tileMap->updateTilesCollisions(player, dt);
 		player->update(dt);
 		updateCamera(dt);
+
+		checkForBattle(dt);
 	}
 	else
 	{
@@ -131,7 +134,21 @@ void ExplorationState::render(std::shared_ptr<sf::RenderTarget> target)
 	target->draw(renderSprite);
 }
 
-// Getters / Setters
+// Internal
+void ExplorationState::checkForBattle(const float& dt)
+{
+	if (true/*tileMap->isDangerousAt(player->getGlobalBounds())*/)
+	{
+		Randomizer& rand = Randomizer::getInstance();
+
+		if (rand.percentageOn(20.f * dt))
+		{
+			std::unique_ptr<State> battleStatePtr(
+					new BattleState(stateData, party, tileMap->getFoes()));
+			states->push(move(battleStatePtr));
+		}
+	}
+}
 
 // Initialization functions
 void ExplorationState::initDeferredRendering()
@@ -195,15 +212,72 @@ void ExplorationState::initTextures()
 			std::make_shared<sf::Texture>();
 
 	if (!textures["EXPLORATION_PLAYABLE_CHARACTERS"]->loadFromFile(
-			"Images/Exploration/Characters/PlayableCharacters.png"/*,
-			sf::IntRect(
-					sf::Vector2i(0, 0),
-					sf::Vector2i(36, 36)
-					)*/
-			))
+			"Images/Exploration/Characters/PlayableCharacters.png"))
 	{
 		throw "ERROR::GAMESTATE::UNABLE_TO_LOAD_PLAYER_TEXTURE";
 	}
+
+	textures["WARRIOR"] = std::make_shared<sf::Texture>();
+
+	if (!textures["WARRIOR"]->loadFromFile(
+			"Images/Battle/Characters/Warrior.png"))
+	{
+		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_WARRIOR_TEXTURE";
+	}
+
+	textures["THIEF"] = std::make_shared<sf::Texture>();
+
+	if (!textures["THIEF"]->loadFromFile(
+			"Images/Battle/Characters/Thief.png"))
+	{
+		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_THIEF_TEXTURE";
+	}
+
+	textures["BLACK_MAGE"] = std::make_shared<sf::Texture>();
+
+	if (!textures["BLACK_MAGE"]->loadFromFile(
+			"Images/Battle/Characters/BlackMage.png"))
+	{
+		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_BLACK_MAGE_TEXTURE";
+	}
+
+	textures["WHITE_MAGE"] = std::make_shared<sf::Texture>();
+
+	if (!textures["WHITE_MAGE"]->loadFromFile(
+			"Images/Battle/Characters/WhiteMage.png"))
+	{
+		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_WHITE_MAGE_TEXTURE";
+	}
+
+	textures["MONSTERS"] = std::make_shared<sf::Texture>();
+
+	if (!textures["MONSTERS"]->loadFromFile(
+			"Images/Battle/Enemies/Foes.png"))
+	{
+		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_FOES_TEXTURE";
+	}
+
+	textures["ICONS"] = std::make_shared<sf::Texture>();
+
+	if (!textures["ICONS"]->loadFromFile(
+			"Images/Battle/Icons/Icons.png"))
+	{
+		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_ICONS_TEXTURE";
+	}
+}
+
+void ExplorationState::initParty()
+{
+	party.clear();
+
+	party.push_back(std::move(std::make_shared<Human>(
+			Human::Warrior, textures)));
+	party.push_back(std::move(std::make_shared<Human>(
+			Human::Thief, textures)));
+	party.push_back(std::move(std::make_shared<Human>(
+			Human::WhiteMage, textures)));
+	party.push_back(std::move(std::make_shared<Human>(
+			Human::BlackMage, textures)));
 }
 
 void ExplorationState::initPlayers()
@@ -216,11 +290,12 @@ void ExplorationState::initPlayers()
 
 void ExplorationState::initTileMap()
 {
-	tileMap.reset(new TileMap(
+	tileMap.reset(new DefaultMap(
 			sf::Vector2u(15, 15), 3,
 			stateData.gridSize,
 			"Villages.png",
-			32));
+			32,
+			textures));
 	tileMap->loadFromFile("testTileMap.txt");
 }
 

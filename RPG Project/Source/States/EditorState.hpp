@@ -10,7 +10,7 @@
 
 #include "State.hpp"
 
-#include "..\Map\TileMap.hpp"
+#include "..\Map\DefaultMap.hpp"
 #include "..\GUI\Button.hpp"
 #include "..\GUI\PauseMenu.hpp"
 #include "..\GUI\TextureSelector.hpp"

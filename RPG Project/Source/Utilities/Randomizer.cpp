@@ -28,16 +28,31 @@ Randomizer& Randomizer::getInstance() {
 	return *instance;
 }
 
-float Randomizer::getBetween(int min, int max) {
-	return (static_cast<float>(rand() % 100) / 100) * (max - min) + min;
+float Randomizer::getBetween(int min, int max)
+{
+	double tmp1 = static_cast<double>(rand()) / RAND_MAX;
+
+	double tmp2 = tmp1 * (max - min) + min;
+
+	std::cout << "tmp1: " << tmp1 << std::endl;
+	std::cout << "tmp2: " << tmp2 << std::endl;
+	return tmp2;
 }
 
 bool Randomizer::percentageOn(float value) {
+	std::cout << "Value: " << value << std::endl;
 	if (value >= 100)
+	{
+		std::cout << std::endl;
 		return true;
-	else {
+	}
+	else
+	{
 		float testGetBetween = getBetween(0, 100);
-		if (testGetBetween < value) {
+		std::cout << std::endl;
+
+		if (testGetBetween < value)
+		{
 			return true;
 		}
 		else
