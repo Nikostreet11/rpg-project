@@ -1,16 +1,16 @@
 /*
- * NaiveStrategy.hpp
+ * DefensiveStrategy.hpp
  *
- *  Created on: Jul 6, 2019
+ *  Created on: Jul 11, 2019
  *      Author: nicop
  */
 
-#ifndef STRATEGIES_NAIVESTRATEGY_HPP_
-#define STRATEGIES_NAIVESTRATEGY_HPP_
+#ifndef STRATEGIES_DEFENSIVESTRATEGY_HPP_
+#define STRATEGIES_DEFENSIVESTRATEGY_HPP_
 
 #include "Strategy.hpp"
 
-class NaiveStrategy:
+class DefensiveStrategy:
 		public Strategy
 {
 public:
@@ -18,11 +18,11 @@ public:
     static std::shared_ptr<Strategy> getInstance();
 
 	// Destructor
-	virtual ~NaiveStrategy();
+	virtual ~DefensiveStrategy();
 
     // Deleted methods
-    NaiveStrategy(std::shared_ptr<NaiveStrategy>) = delete;
-    void operator=(std::shared_ptr<NaiveStrategy>)  = delete;
+	DefensiveStrategy(std::shared_ptr<DefensiveStrategy>) = delete;
+    void operator=(std::shared_ptr<DefensiveStrategy>)  = delete;
 
     // Functions
 	virtual std::shared_ptr<Action> chooseAction(
@@ -34,11 +34,11 @@ public:
 
 protected:
 	// Constructor
-	NaiveStrategy();
+	DefensiveStrategy();
 
 private:
 	// Static variables
 	static std::shared_ptr<Strategy> INSTANCE;
 };
 
-#endif /* STRATEGIES_NAIVESTRATEGY_HPP_ */
+#endif /* STRATEGIES_DEFENSIVESTRATEGY_HPP_ */

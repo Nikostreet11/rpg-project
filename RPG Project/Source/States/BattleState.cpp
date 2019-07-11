@@ -696,7 +696,6 @@ void BattleState::initBackground()
 
 void BattleState::initCharacters()
 {
-	std::unique_ptr<Strategy> strategy;
 	// TODO: rework with the map factory method
 	for (unsigned index = 0; index < 2; index++)
 	{
@@ -705,21 +704,19 @@ void BattleState::initCharacters()
 						Monster::Werewolf,
 						textures);
 
-		strategy.reset(new NaiveStrategy());
-		monster->setStrategy(std::move(strategy));
+		monster->setStrategy(std::move(NaiveStrategy::getInstance()));
 
 		enemies.push_back(std::move(monster));
 	}
 
-	/*for (unsigned index = 0; index < 2; index++)
+	for (unsigned index = 0; index < 2; index++)
 	{
 		std::shared_ptr<Character> monster =
 				std::make_shared<Monster>(
 						Monster::GigasWorm,
 						textures);
 
-		strategy.reset(new NaiveStrategy());
-		monster->setStrategy(std::move(strategy));
+		monster->setStrategy(std::move(NaiveStrategy::getInstance()));
 
 		enemies.push_back(std::move(monster));
 	}
@@ -731,8 +728,7 @@ void BattleState::initCharacters()
 						Monster::Skeleton,
 						textures);
 
-		strategy.reset(new NaiveStrategy());
-		monster->setStrategy(std::move(strategy));
+		monster->setStrategy(std::move(NaiveStrategy::getInstance()));
 
 		enemies.push_back(std::move(monster));
 	}
@@ -744,11 +740,10 @@ void BattleState::initCharacters()
 						Monster::Zombie,
 						textures);
 
-		strategy.reset(new NaiveStrategy());
-		monster->setStrategy(std::move(strategy));
+		monster->setStrategy(std::move(NaiveStrategy::getInstance()));
 
 		enemies.push_back(std::move(monster));
-	}*/
+	}
 
 	// TODO: rework with the party getters
 	party.push_back(std::move(std::make_shared<Human>(

@@ -16,6 +16,8 @@
 #include "..\Utilities\Randomizer.hpp"
 #include "..\Containers\ActionResults.hpp"
 #include "..\Strategies\NaiveStrategy.hpp"
+#include "..\Strategies\AggressiveStrategy.hpp"
+#include "..\Strategies\DefensiveStrategy.hpp"
 
 #include "..\Components\AnimationComponent.hpp"
 #include "..\Animations\StatsAnimation.hpp"
@@ -79,7 +81,7 @@ public:
 			std::vector<std::shared_ptr<Character>> allies,
 			std::vector<std::shared_ptr<Character>> enemies);
 	bool hasStrategy() const;
-	void setStrategy(std::unique_ptr<Strategy> strategy);
+	void setStrategy(std::shared_ptr<Strategy> strategy);
 
 	std::vector<std::shared_ptr<Action>>& getActions();
 	std::shared_ptr<Action> getAction(const std::string& actionName);
@@ -107,6 +109,7 @@ public:
 
 protected:
 	// Internal
+	virtual void updateStrategy();
 
 	//void updateStatistics();
 
@@ -114,6 +117,7 @@ protected:
 	virtual void initVariables();
 	virtual void initStats();
 	virtual void initActions();
+	virtual void initStrategy();
 	void initSprite(
 			const sf::Texture& textureSheet,
 			sf::Vector2f position,
@@ -126,7 +130,7 @@ protected:
 
 	std::vector<std::shared_ptr<Action>> actions;
 
-	std::unique_ptr<Strategy> strategy;
+	std::shared_ptr<Strategy> strategy;
 
 	std::shared_ptr<AnimationComponent> animationComponent;
 	std::shared_ptr<StatsAnimation> statsAnimation;

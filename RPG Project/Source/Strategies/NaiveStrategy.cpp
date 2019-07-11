@@ -10,14 +10,25 @@
 #include "..\Actions\Action.hpp"
 #include "..\Entities\Character.hpp"
 
-NaiveStrategy::NaiveStrategy()
+std::shared_ptr<Strategy> NaiveStrategy::INSTANCE = nullptr;
+
+// Static constructor
+std::shared_ptr<Strategy> NaiveStrategy::getInstance()
 {
+	if (!INSTANCE)
+	{
+		INSTANCE = std::shared_ptr<Strategy>(new NaiveStrategy());
+	}
+
+	return INSTANCE;
 }
 
+// Destructor
 NaiveStrategy::~NaiveStrategy()
 {
 }
 
+// Functions
 std::shared_ptr<Action> NaiveStrategy::chooseAction(
 		std::vector<std::shared_ptr<Action>> actions)
 {
@@ -43,4 +54,9 @@ std::shared_ptr<Character> NaiveStrategy::chooseTarget(
 	size_t index = static_cast<unsigned>(rand.getBetween(0, enemies.size()));
 
 	return enemies[index];
+}
+
+// Constructor / Destructor
+NaiveStrategy::NaiveStrategy()
+{
 }
