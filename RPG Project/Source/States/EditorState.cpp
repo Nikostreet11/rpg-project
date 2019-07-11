@@ -122,16 +122,33 @@ void EditorState::updateEditorInput(const float& dt)
 							tileMap->getSpriteSize()));
 		}
 	}
-	else if (tileMap->isActive())
+	else if (tileMap->isActive()
+			&& !sidebar.getGlobalBounds().contains(
+					static_cast<sf::Vector2f>(mousePosWindow)))
 	{
-		if (mousebinds.at("ADD_TILE").isPressed())
+		if (keybinds["ALTERNATE_INPUT"].isHold())
 		{
-			tileMap->addTile(mousePosGrid, type, closeness, crossable);
-		}
+			if (mousebinds.at("ADD_TILE").isHold())
+			{
+				tileMap->addBaseTile(mousePosGrid, type, closeness, crossable);
+			}
 
-		if (mousebinds.at("REMOVE_TILE").isPressed())
+			if (mousebinds.at("REMOVE_TILE").isHold())
+			{
+				tileMap->removeTile(mousePosGrid);
+			}
+		}
+		else
 		{
-			tileMap->removeTile(mousePosGrid);
+			if (mousebinds.at("ADD_TILE").isPressed())
+			{
+				tileMap->addTile(mousePosGrid, type, closeness, crossable);
+			}
+
+			if (mousebinds.at("REMOVE_TILE").isPressed())
+			{
+				tileMap->removeTile(mousePosGrid);
+			}
 		}
 	}
 
@@ -140,9 +157,9 @@ void EditorState::updateEditorInput(const float& dt)
 	{
 		type = static_cast<Tile::Type>(static_cast<short>(type) + 1);
 
-		if (type == Tile::Type::NumberOfTypes)
+		if (type == Tile::NumberOfTypes)
 		{
-			type = Tile::Type::Default;
+			type = Tile::Default;
 		}
 	}
 
@@ -152,10 +169,10 @@ void EditorState::updateEditorInput(const float& dt)
 		type = static_cast<Tile::Type>(
 				static_cast<short>(type) - 1);
 
-		if (type == Tile::Type::Invalid)
+		if (type == Tile::Invalid)
 		{
 			type = static_cast<Tile::Type>(
-					static_cast<short>(Tile::Type::NumberOfTypes) - 1);
+					static_cast<short>(Tile::NumberOfTypes) - 1);
 		}
 	}
 
@@ -318,7 +335,7 @@ void EditorState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
 // Initialization functions
 void EditorState::initVariables()
 {
-	cameraSpeed = 100.f;
+	cameraSpeed = 500.f;
 
 	type = Tile::Type::Default;
 	closeness = Tile::Closeness::Background;

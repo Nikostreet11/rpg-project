@@ -254,6 +254,37 @@ void TileMap::addTile(
 	}
 }
 
+void TileMap::addBaseTile(
+		sf::Vector2u index,
+		Tile::Type type,
+		Tile::Closeness closeness,
+		bool crossable)
+{
+	if (0 <= index.x && index.x < size.x &&
+		0 <= index.y && index.y < size.y)
+	{
+		/*if (map[index.y * size.x + index.x][layers] == nullptr)
+		{*/
+		sf::Vector2f tilePosition;
+		tilePosition.x = index.x * gridSize;
+		tilePosition.y = index.y * gridSize;
+
+		std::unique_ptr<Tile> tilePtr(new Tile(
+				static_cast<sf::Vector2i>(index),
+				gridSize,
+				tileset,
+				spriteIndex,
+				spriteSize,
+				type,
+				closeness,
+				crossable));
+
+		map[index.y * size.x + index.x].clear();
+		map[index.y * size.x + index.x].push_back(std::move(tilePtr));
+		//}
+	}
+}
+
 void TileMap::removeTile(sf::Vector2u index)
 {
 	if (0 <= index.x && index.x < size.x &&
@@ -579,8 +610,8 @@ void TileMap::initVariables()
 {
 	active = false;
 
-	maxSize.x = 20;
-	maxSize.y = 15;
+	maxSize.x = 100;
+	maxSize.y = 100;
 	//maxLayers = 3;
 	//layers = 0;
 	gridSize = 0;

@@ -140,7 +140,7 @@ void Player::initAnimations()
 					sf::Vector2u(32, 32),
 					sf::Vector2u(4, 4))));
 
-	indexVector = {{18, 0}, {19, 0}};
+	indexVector = {{18, 0}, {19, 0}, {18, 0}, {19, 0}, {18, 0}};
 	animationComponent->addAnimation(
 			"WAVE",
 			std::move(std::make_shared<SpriteSequenceAnimation>(

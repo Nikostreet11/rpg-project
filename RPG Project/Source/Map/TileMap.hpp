@@ -48,6 +48,11 @@ public:
 			Tile::Type type,
 			Tile::Closeness closeness,
 			bool crossable);
+	void addBaseTile(
+			sf::Vector2u index,
+			Tile::Type type,
+			Tile::Closeness closeness,
+			bool crossable);
 	void removeTile(
 			sf::Vector2u index);
 
