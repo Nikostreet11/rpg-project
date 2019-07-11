@@ -13,9 +13,21 @@
 class Tile
 {
 public:
-	enum Type {Invalid = -1, Default, Damaging, Dangerous, NumberOfTypes};
+	enum Type
+	{
+		Invalid = -1,
+		Default,
+		Damaging,
+		Dangerous,
+		NumberOfTypes
+	};
 
-	Tile();
+	enum Closeness
+	{
+		Background,
+		Foreground
+	};
+
 	explicit Tile(
 			sf::Vector2i index,
 			float size,
@@ -23,6 +35,7 @@ public:
 			sf::Vector2u spriteIndex,
 			unsigned spriteSize,
 			Type type = Type::Default,
+			Closeness closeness = Closeness::Foreground,
 			bool crossable = true);
 	virtual ~Tile();
 
@@ -35,6 +48,7 @@ public:
 	const std::string getAsString() const;
 
 	// Getters / Setters
+	Closeness getCloseness() const;
 	bool isCrossable() const;
 	const sf::Vector2f& getPosition() const;
 	sf::Vector2f getSize() const;
@@ -53,11 +67,13 @@ public:
 	*/
 
 protected:
+
 	// Resources
 	sf::Sprite sprite;
 
 	// Variables
 	Type type;
+	Closeness closeness;
 	bool crossable;
 
 private:

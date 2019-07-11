@@ -21,7 +21,8 @@ Game::Game()/* : state(MainMenu::getInstance())*/
 	initVariables();
 	initGraphicsSettings();
 	initWindow();
-	initKeys();
+	initKeyboardKeys();
+	initMouseButtons();
 	initStates();
 	initStateData();
 
@@ -140,7 +141,7 @@ void Game::initWindow()
 	window->setVerticalSyncEnabled(graphicsSettings->verticalSync);
 }
 
-void Game::initKeys()
+void Game::initKeyboardKeys()
 {
 	supportedKeys = std::make_shared<std::map<std::string, int>>();
 
@@ -160,7 +161,37 @@ void Game::initKeys()
 	ifs.close();
 
 	// TODO: remove later
+	std::cout << "Supported keyboard keys:" << std::endl;
+
 	for (auto i : *supportedKeys)
+	{
+		std::cout << i.first << " " << i.second << std::endl;
+	}
+}
+
+void Game::initMouseButtons()
+{
+	supportedMouseButtons = std::make_shared<std::map<std::string, int>>();
+
+	std::ifstream ifs("Config/SupportedMouseButtons.ini");
+
+	if (ifs.is_open())
+	{
+		std::string button;
+		int code;
+
+		while (ifs >> button >> code)
+		{
+			(*supportedMouseButtons)[button] = code;
+		}
+	}
+
+	ifs.close();
+
+	// TODO: remove later
+	std::cout << "Supported mouse buttons:" << std::endl;
+
+	for (auto i : *supportedMouseButtons)
 	{
 		std::cout << i.first << " " << i.second << std::endl;
 	}
@@ -176,6 +207,7 @@ void Game::initStateData()
 	stateData.graphicsSettings = graphicsSettings;
 	stateData.window = window;
 	stateData.supportedKeys = supportedKeys;
+	stateData.supportedMouseButtons = supportedMouseButtons;
 	stateData.states = states;
 	stateData.gridSize = gridSize;
 }

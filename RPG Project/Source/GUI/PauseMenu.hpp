@@ -13,7 +13,8 @@
 // Project
 #include "Button.hpp"
 
-namespace gui {
+namespace gui
+{
 
 class PauseMenu
 {

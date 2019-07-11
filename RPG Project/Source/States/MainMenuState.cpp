@@ -19,15 +19,10 @@ MainMenuState::MainMenuState(StateData& stateData) :
 		State(stateData)
 {
 	initVariables();
-	initKeybinds();
+	initBindings();
 	initFonts();
 	initBackground();
 	initButtons();
-
-	/*addEntry("New Game", Exploration::getInstance());
-	addEntry("Load Game");
-	addEntry("Options");
-	addEntry("Exit");*/
 }
 
 MainMenuState::~MainMenuState() {/*
@@ -62,9 +57,10 @@ void MainMenuState::updateButtons()
 	// New game
 	if (buttons["GAME_STATE"]->isReleased())
 	{
-		std::unique_ptr<State> gameStatePtr(
-				new GameState(stateData));
-		states->push(move(gameStatePtr));
+		std::unique_ptr<State> explorationStatePtr(
+				// TODO: fix
+				new BattleState(stateData));
+		states->push(move(explorationStatePtr));
 	}
 
 	// Editor
@@ -79,7 +75,7 @@ void MainMenuState::updateButtons()
 	if (buttons["SETTINGS_STATE"]->isReleased())
 	{
 		std::unique_ptr<State> settingsStatePtr(
-				new SettingsState(stateData));
+				new ExplorationState(stateData));
 		states->push(move(settingsStatePtr));
 	}
 
@@ -98,17 +94,6 @@ void MainMenuState::render(std::shared_ptr<sf::RenderTarget> target)
 	target->setView(target->getDefaultView());
 	target->draw(background);
 	renderButtons(target);
-
-	// TODO: remove later
-	/*sf::Text mouseText;
-	mouseText.setPosition(mousePosView.x, mousePosView.y - 12);
-	mouseText.setFont(*font);
-	mouseText.setCharacterSize(12);
-	std::stringstream ss;
-	ss << mousePosView.x << " " << mousePosView.y;
-	mouseText.setString(ss.str());
-
-	target->draw(mouseText);*/
 }
 
 void MainMenuState::renderButtons(std::shared_ptr<sf::RenderTarget> target)
@@ -127,7 +112,7 @@ void MainMenuState::initVariables()
 {
 }
 
-void MainMenuState::initKeybinds()
+void MainMenuState::initBindings()
 {
 	std::ifstream ifs("Config/Keybinds/MainMenuState.ini");
 
@@ -137,6 +122,7 @@ void MainMenuState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
+			keybinds[action].setType(InputButton::Type::keyboardKey);
 			keybinds[action].setCode((*supportedKeys)[key]);
 		}
 	}

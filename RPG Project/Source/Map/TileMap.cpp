@@ -9,6 +9,7 @@
 
 TileMap::TileMap(
 		sf::Vector2u size,
+		unsigned maxLayers,
 		float gridSize,
 		const std::string& tilesetName,
 		unsigned spriteSize)
@@ -17,7 +18,8 @@ TileMap::TileMap(
 
 	//this->position = position;
 	this->size = size;
-	this->layers = maxLayers;
+	this->maxLayers = maxLayers;
+	//this->layers = maxLayers;
 	this->gridSize = gridSize;
 
 	this->tilesetName = tilesetName;
@@ -124,7 +126,9 @@ void TileMap::updateTilesCollisions(
 	{
 		for (std::size_t y = cullingStart.y; y < cullingEnd.y; y++)
 		{
-			for (std::size_t layer = 0; layer < layers; layer++)
+			std::vector<std::unique_ptr<Tile>>& tileList = map[y * size.x + x];
+
+			for (std::size_t layer = 0; layer < tileList.size(); layer++)
 			{
 				Tile& tile = *map[y * size.x + x][layer];
 
@@ -188,7 +192,7 @@ void TileMap::updateTilesCollisions(
 	}
 }
 
-void TileMap::render(sf::RenderTarget& target, std::shared_ptr<Entity> entity)
+void TileMap::render(sf::RenderTarget& target, Tile::Closeness closeness)
 {
 	for (auto &tile : map)
 	{
@@ -196,57 +200,68 @@ void TileMap::render(sf::RenderTarget& target, std::shared_ptr<Entity> entity)
 		{
 			if (layer != nullptr)
 			{
-				layer->render(target);
-				if (!layer->isCrossable())
+				if (layer->getCloseness() == closeness)
 				{
-					collisionBox.setPosition(layer->getPosition());
-					target.draw(collisionBox);
+					layer->render(target);
+
+					if (!layer->isCrossable())
+					{
+						collisionBox.setPosition(layer->getPosition());
+						target.draw(collisionBox);
+					}
 				}
 			}
 		}
 	}
 
-	target.draw(border);
+	if (closeness == Tile::Background)
+	{
+		target.draw(border);
+	}
 }
 
 void TileMap::addTile(
 		sf::Vector2u index,
-		unsigned layer,
 		Tile::Type type,
+		Tile::Closeness closeness,
 		bool crossable)
 {
 	if (0 <= index.x && index.x < size.x &&
 		0 <= index.y && index.y < size.y &&
-		0 <= layer && layer < layers)
+		map[index.y * size.x + index.x].size() < maxLayers)
 	{
-		if (map[index.y * size.x + index.x][layer] == nullptr)
-		{
-			sf::Vector2f tilePosition;
-			tilePosition.x = index.x * gridSize;
-			tilePosition.y = index.y * gridSize;
+		/*if (map[index.y * size.x + index.x][layers] == nullptr)
+		{*/
+		sf::Vector2f tilePosition;
+		tilePosition.x = index.x * gridSize;
+		tilePosition.y = index.y * gridSize;
 
-			map[index.y * size.x + index.x][layer].reset(new Tile(
-					static_cast<sf::Vector2i>(index),
-					gridSize,
-					tileset,
-					spriteIndex,
-					spriteSize,
-					type,
-					crossable));
-		}
+		std::unique_ptr<Tile> tilePtr(new Tile(
+				static_cast<sf::Vector2i>(index),
+				gridSize,
+				tileset,
+				spriteIndex,
+				spriteSize,
+				type,
+				closeness,
+				crossable));
+
+		map[index.y * size.x + index.x].push_back(std::move(tilePtr));
+		//}
 	}
 }
 
-void TileMap::removeTile(sf::Vector2u index, unsigned layer)
+void TileMap::removeTile(sf::Vector2u index)
 {
 	if (0 <= index.x && index.x < size.x &&
 		0 <= index.y && index.y < size.y &&
-		0 <= layer && layer < layers)
+		map[index.y * size.x + index.x].size() > 0)
 	{
-		if (map[index.y * size.x + index.x][layer] != nullptr)
-		{
-			map[index.y * size.x + index.x][layer].reset();
-		}
+		/*if (map[index.y * size.x + index.x][layer] != nullptr)
+		{*/
+
+		map[index.y * size.x + index.x].pop_back();
+		//}
 	}
 }
 
@@ -259,7 +274,7 @@ void TileMap::saveToFile(const std::string& fileName)
 	 * textureName
 	 * spriteSize
 	 *
-	 * tileX tileY tileZ spriteX spriteY type collision
+	 * tileX tileY tileZ spriteX spriteY type closeness collision
 	 */
 
 	std::ofstream outFile;
@@ -269,23 +284,23 @@ void TileMap::saveToFile(const std::string& fileName)
 	if (outFile.is_open())
 	{
 		outFile <<
-				size.x << ' ' << size.y << ' ' << layers << '\n' <<
+				size.x << ' ' << size.y << ' ' << maxLayers << '\n' <<
 				tilesetName << '\n' <<
 				spriteSize << '\n';
 
 		for (std::size_t index = 0; index < size.x * size.y; index++)
 		{
-			for (std::size_t layer = 0; layer < layers; layer++)
+			for (std::size_t layer = 0; layer < map[index].size(); layer++)
 			{
-				if (map[index][layer] != nullptr)
-				{
-					outFile <<
-							index % size.x << ' ' <<
-							index / size.x << ' ' <<
-							layer << ' ';
+				/*if (map[index][layer] != nullptr)
+				{*/
+				outFile <<
+						index % size.x << ' ' <<
+						index / size.x << ' ' <<
+						layer << ' ';
 
-					outFile << map[index][layer]->getAsString();
-				}
+				outFile << map[index][layer]->getAsString();
+				//}
 			}
 		}
 	}
@@ -309,7 +324,7 @@ void TileMap::loadFromFile(const std::string& fileName)
 	if (inFile.is_open())
 	{
 		inFile >>
-				size.x >> size.y >> layers >>
+				size.x >> size.y >> maxLayers >>
 				tilesetName >>
 				spriteSize;
 
@@ -325,10 +340,10 @@ void TileMap::loadFromFile(const std::string& fileName)
 			size.y = maxSize.y;
 
 		map.resize(size.x * size.y);
-		for (std::size_t index = 0; index < size.x * size.y; index++)
+		/*for (std::size_t index = 0; index < size.x * size.y; index++)
 		{
 			map[index].resize(layers);
-		}
+		}*/
 
 		if (!tileset.loadFromFile(tilesetPath + tilesetName))
 		{
@@ -337,7 +352,7 @@ void TileMap::loadFromFile(const std::string& fileName)
 
 		std::size_t x, y, layer;
 		//sf::Vector2u spriteIndex;
-		short type;
+		short type, closeness;
 		bool crossable;
 
 		while (inFile
@@ -347,6 +362,7 @@ void TileMap::loadFromFile(const std::string& fileName)
 				>> spriteIndex.x
 				>> spriteIndex.y
 				>> type
+				>> closeness
 				>> crossable)
 		{
 			sf::Vector2f tilePosition;
@@ -365,8 +381,14 @@ void TileMap::loadFromFile(const std::string& fileName)
 					spriteIndex,
 					spriteSize,
 					static_cast<Tile::Type>(type),
+					static_cast<Tile::Closeness>(closeness),
 					crossable));
-			map[y * size.x + x][layer] = std::move(tilePtr);
+
+			if (layer == map[y * size.x + x].size()
+				&& layer < maxLayers)
+			{
+				map[y * size.x + x].push_back(std::move(tilePtr));
+			}
 		}
 
 		border.setSize(sf::Vector2f(
@@ -444,7 +466,7 @@ void TileMap::clear()
 	{
 		for (std::size_t layer = 0; layer < map[index].size(); layer++)
 		{
-			map[index][layer] = nullptr;
+			map[index].clear();
 		}
 	}
 }
@@ -521,7 +543,8 @@ void TileMap::initVariables()
 
 	maxSize.x = 20;
 	maxSize.y = 15;
-	maxLayers = 1;
+	//maxLayers = 3;
+	//layers = 0;
 	gridSize = 0;
 
 	tilesetPath = "Images/Exploration/Tilesets/";
@@ -534,6 +557,7 @@ void TileMap::initVariables()
 void TileMap::initMap()
 {
 	map.resize(size.x * size.y);
+	/*
 	sf::Vector2f tilePosition;
 
 	for (std::size_t index = 0; index < size.x * size.y; index++)
@@ -545,6 +569,7 @@ void TileMap::initMap()
 			map[index][layer] = nullptr;
 		}
 	}
+	*/
 }
 
 void TileMap::initTileset()

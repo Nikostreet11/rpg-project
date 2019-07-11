@@ -8,7 +8,9 @@
 #ifndef COMPONENTS_ANIMATIONCOMPONENT_HPP_
 #define COMPONENTS_ANIMATIONCOMPONENT_HPP_
 
-#include "..\PCH\pch.hpp"
+#include "pch.hpp"
+
+#include "..\Animations\SpriteSequenceAnimation.hpp"
 
 class AnimationComponent
 {
@@ -16,62 +18,38 @@ public:
 	// Constructor / Destructor
 	explicit AnimationComponent(
 			sf::Sprite& sprite,
-			std::shared_ptr<sf::Texture> textureSheet
-			);
+			std::shared_ptr<sf::Texture> textureSheet = nullptr);
 	virtual ~AnimationComponent();
 
 	// Functions
-	void addAnimation(
+	/*void addAnimation(
 			const std::string key,
 			float animationTimer,
-			std::vector<sf::IntRect>& rectVector
-			);
+			std::vector<sf::Vector2u>& indexVector);*/
+
+	void addAnimation(
+			const std::string key,
+			std::shared_ptr<SpriteSequenceAnimation> animation);
 
 	void play(const std::string key, const float& dt,
 			const bool priority = false);
 	void play(const std::string key, const float& dt,
 			const float modifier, const bool priority = false);
+	void stop();
 
 	// Getters / Setters
 	bool isDone(std::string key);
 
 private:
-	class Animation
-	{
-	public:
-		explicit Animation(
-				sf::Sprite& sprite,
-				std::shared_ptr<sf::Texture> textureSheet,
-				float animationTimer,
-				const std::vector<sf::IntRect>& rectVector
-				);
-		virtual ~Animation();
-
-		// Functions
-		void play(const float& dt);
-		void play(const float& dt, float modifier);
-		void reset();
-
-		// Getters / Setters
-		bool isDone() const;
-
-		// Resources
-		sf::Sprite& sprite;
-		std::shared_ptr<sf::Texture> textureSheet;
-		std::vector<sf::IntRect> rectVector;
-
-		// Variables
-		std::size_t currentRect;
-		float animationTimer;
-		float timer;
-		bool done;
-	};
-
+	// Resources
 	sf::Sprite& sprite;
-	std::shared_ptr<sf::Texture> textureSheet;
-	std::map<std::string, std::shared_ptr<Animation>> animations;
-	std::shared_ptr<Animation> lastAnimation;
-	std::shared_ptr<Animation> priorityAnimation;
+	const sf::Texture* defaultTexture;
+	sf::IntRect defaultTextureRect;
+
+	std::map<std::string, std::shared_ptr<SpriteSequenceAnimation>> animations;
+
+	std::shared_ptr<SpriteSequenceAnimation> lastAnimation;
+	std::shared_ptr<SpriteSequenceAnimation> priorityAnimation;
 };
 
 #endif /* COMPONENTS_ANIMATIONCOMPONENT_HPP_ */

@@ -11,7 +11,7 @@ SettingsState::SettingsState(StateData& stateData) :
 		State(stateData)
 {
 	initVariables();
-	initKeybinds();
+	initBindings();
 	initFonts();
 	initBackground();
 	initGUI();
@@ -124,7 +124,7 @@ void SettingsState::initVariables()
 	videoModes = sf::VideoMode::getFullscreenModes();
 }
 
-void SettingsState::initKeybinds()
+void SettingsState::initBindings()
 {
 	std::ifstream ifs("Config/Keybinds/MainMenuState.ini");
 
@@ -134,6 +134,7 @@ void SettingsState::initKeybinds()
 
 		while (ifs >> action >> key)
 		{
+			keybinds[action].setType(InputButton::Type::keyboardKey);
 			keybinds[action].setCode((*supportedKeys)[key]);
 		}
 	}

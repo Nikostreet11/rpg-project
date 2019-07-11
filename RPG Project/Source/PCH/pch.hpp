@@ -7,6 +7,7 @@
 #include <utility>
 #include <thread>
 #include <algorithm>
+#include <typeinfo>
 
 // Legacy
 #include <cstdlib>

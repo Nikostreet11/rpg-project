@@ -7,7 +7,8 @@
 
 #include "PauseMenu.hpp"
 
-namespace gui {
+namespace gui
+{
 
 PauseMenu::PauseMenu(
 		std::shared_ptr<sf::RenderWindow> window,

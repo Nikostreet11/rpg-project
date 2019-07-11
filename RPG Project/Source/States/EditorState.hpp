@@ -44,7 +44,7 @@ protected:
 	// Initialization functions
 	void initVariables();
 	void initView();
-	virtual void initKeybinds();
+	virtual void initBindings();
 	void initFonts();
 	void initText();
 	void initBackground();
@@ -69,8 +69,10 @@ protected:
 
 	float cameraSpeed;
 
-	bool crossable;
 	Tile::Type type;
+	Tile::Closeness closeness;
+	bool crossable;
+
 };
 
 #endif /* STATES_EDITORSTATE_HPP_ */

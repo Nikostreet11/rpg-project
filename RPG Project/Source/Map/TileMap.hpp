@@ -21,6 +21,7 @@ public:
 	// Constructor / Destructor
 	explicit TileMap(
 			sf::Vector2u size,
+			unsigned maxLayers,
 			float gridSize,
 			const std::string& tilesetName,
 			unsigned spriteSize);
@@ -37,16 +38,15 @@ public:
 
 	void render(
 			sf::RenderTarget& target,
-			std::shared_ptr<Entity> entity = nullptr);
+			Tile::Closeness closeness);
 
 	void addTile(
 			sf::Vector2u index,
-			unsigned layer,
 			Tile::Type type,
+			Tile::Closeness closeness,
 			bool crossable);
 	void removeTile(
-			sf::Vector2u index,
-			unsigned layer);
+			sf::Vector2u index);
 
 	// Input / Output
 	void saveToFile(const std::string& fileName);
@@ -112,7 +112,7 @@ private:
 
 	sf::Vector2u size;
 	sf::Vector2u maxSize;
-	unsigned layers;
+	//unsigned layers;
 	unsigned maxLayers;
 	float gridSize;
 

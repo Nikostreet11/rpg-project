@@ -23,6 +23,7 @@ public:
 	std::shared_ptr<GraphicsSettings> graphicsSettings;
 	std::shared_ptr<sf::RenderWindow> window;
 	std::shared_ptr<std::map<std::string, int>> supportedKeys;
+	std::shared_ptr<std::map<std::string, int>> supportedMouseButtons;
 	std::shared_ptr<std::stack<std::unique_ptr<State>>> states;
 
 	// Variables

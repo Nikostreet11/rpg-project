@@ -9,8 +9,9 @@
 #define STATES_MAINMENUSTATE_HPP_
 
 #include "../GUI/Button.hpp"
-#include "GameState.hpp"
 #include "EditorState.hpp"
+#include "ExplorationState.hpp"
+#include "BattleState.hpp"
 #include "SettingsState.hpp"
 
 class MainMenuState:
@@ -35,7 +36,7 @@ public:
 protected:
 	// Initialization functions
 	void initVariables();
-	virtual void initKeybinds();
+	virtual void initBindings();
 	void initFonts();
 	void initBackground();
 	void initButtons();

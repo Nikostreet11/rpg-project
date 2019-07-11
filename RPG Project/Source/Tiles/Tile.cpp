@@ -7,12 +7,6 @@
 
 #include "Tile.hpp"
 
-Tile::Tile()
-{
-	type = Type::Default;
-	crossable = false;
-}
-
 Tile::Tile(
 		sf::Vector2i index,
 		float size,
@@ -20,9 +14,11 @@ Tile::Tile(
 		sf::Vector2u spriteIndex,
 		unsigned spriteSize,
 		Type type,
-		bool crossable) : Tile()
+		Closeness closeness,
+		bool crossable)
 {
 	this->type = type;
+	this->closeness = closeness;
 	this->crossable = crossable;
 
 	sprite.setPosition(sf::Vector2f(
@@ -61,9 +57,16 @@ const std::string Tile::getAsString() const
 			getSpriteIndex().x << ' ' <<
 			getSpriteIndex().y << ' ' <<
 			type << ' ' <<
+			closeness << ' ' <<
 			crossable << '\n';
 
 	return stringStream.str();
+}
+
+// Getters / Setters
+Tile::Closeness Tile::getCloseness() const
+{
+	return closeness;
 }
 
 bool Tile::isCrossable() const

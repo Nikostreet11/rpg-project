@@ -39,7 +39,8 @@ private:
 	void initVariables();
 	void initGraphicsSettings();
 	void initWindow();
-	void initKeys();
+	void initKeyboardKeys();
+	void initMouseButtons();
 	void initStates();
 	void initStateData();
 
@@ -51,11 +52,11 @@ private:
 	std::shared_ptr<GraphicsSettings> graphicsSettings;
 	std::shared_ptr<sf::RenderWindow> window;
 	std::shared_ptr<std::map<std::string, int>> supportedKeys;
+	std::shared_ptr<std::map<std::string, int>> supportedMouseButtons;
 	std::shared_ptr<std::stack<std::unique_ptr<State>>> states;
 
 	sf::Event sfEvent;
 	sf::Clock dtClock;
-
 
 	// Variables
 	float dt;
