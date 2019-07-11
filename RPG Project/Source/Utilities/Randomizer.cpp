@@ -22,7 +22,8 @@ Randomizer::~Randomizer() {
 }
 
 Randomizer& Randomizer::getInstance() {
-	if (instance == nullptr) {
+	if (instance == nullptr)
+	{
 		instance = new Randomizer();
 	}
 	return *instance;
@@ -30,17 +31,11 @@ Randomizer& Randomizer::getInstance() {
 
 float Randomizer::getBetween(int min, int max)
 {
-	double tmp1 = static_cast<double>(rand()) / RAND_MAX;
-
-	double tmp2 = tmp1 * (max - min) + min;
-
-	std::cout << "tmp1: " << tmp1 << std::endl;
-	std::cout << "tmp2: " << tmp2 << std::endl;
-	return tmp2;
+	return static_cast<double>(rand()) / RAND_MAX * (max - min) + min;
 }
 
-bool Randomizer::percentageOn(float value) {
-	std::cout << "Value: " << value << std::endl;
+bool Randomizer::percentageOn(float value)
+{
 	if (value >= 100)
 	{
 		std::cout << std::endl;
@@ -49,7 +44,6 @@ bool Randomizer::percentageOn(float value) {
 	else
 	{
 		float testGetBetween = getBetween(0, 100);
-		std::cout << std::endl;
 
 		if (testGetBetween < value)
 		{
