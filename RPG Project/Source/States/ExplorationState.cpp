@@ -141,7 +141,7 @@ void ExplorationState::checkForBattle(const float& dt)
 	{
 		Randomizer& rand = Randomizer::getInstance();
 
-		if (rand.percentageOn(20.f * dt))
+		if (rand.percentageOn(10.f * dt))
 		{
 			std::unique_ptr<State> battleStatePtr(
 					new BattleState(stateData, party, tileMap->getFoes()));

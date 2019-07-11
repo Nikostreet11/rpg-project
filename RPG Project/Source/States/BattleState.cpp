@@ -783,7 +783,8 @@ void BattleState::initDialogueMenu()
 
 			if (outcome == None)
 			{
-				dialogue.push_back(" but fails.");
+				stringStream << " but fails.";
+				dialogue.push_back(stringStream.str());
 			}
 		}
 		else if (results)
