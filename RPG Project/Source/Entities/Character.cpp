@@ -403,7 +403,7 @@ void Character::updateStrategy()
 
 	if (health < maxHealth * 0.3f)
 	{
-		if (rand.percentageOn(10.f))
+		if (rand.percentageOn(50.f))
 		{
 			strategy = DefensiveStrategy::getInstance();
 		}
