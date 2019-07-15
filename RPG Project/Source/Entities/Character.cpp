@@ -38,6 +38,12 @@ std::shared_ptr<ActionResults> Character::use(
 	return nullptr;
 }
 
+bool Character::flee()
+{
+	Randomizer& rand = Randomizer::getInstance();
+	return rand.percentageOn(50.f + agility);
+}
+
 /*
 float Character::attack(Character& target) {
 	Randomizer& randomizer = Randomizer::getInstance();
@@ -186,6 +192,11 @@ bool Character::hasStrategy() const
 	}
 }
 
+void Character::setStrategy(std::shared_ptr<Strategy> strategy)
+{
+	this->strategy = std::move(strategy);
+}
+
 std::vector<std::shared_ptr<Action>>& Character::getActions()
 {
 	return actions;
@@ -226,6 +237,21 @@ void Character::setName(const std::string& name)
 	this->name = name;
 }
 
+float Character::getMaxHealth() const
+{
+	return maxHealth;
+}
+
+float Character::getMaxMana() const
+{
+	return maxMana;
+}
+
+float Character::getMaxStamina() const
+{
+	return maxStamina;
+}
+
 float Character::getHealth() const
 {
 	return health;
@@ -239,6 +265,8 @@ void Character::setHealth(float health)
 	{
 		updateStrategy();
 	}
+
+	notify();
 }
 
 float Character::getMana() const
@@ -249,6 +277,8 @@ float Character::getMana() const
 void Character::setMana(float mana)
 {
 	this->mana = mana;
+
+	notify();
 }
 
 float Character::getStamina() const
@@ -259,6 +289,8 @@ float Character::getStamina() const
 void Character::setStamina(float stamina)
 {
 	this->stamina = stamina;
+
+	notify();
 }
 
 int Character::getStrenght() const
@@ -274,6 +306,32 @@ int Character::getIntelligence() const
 int Character::getAgility() const
 {
 	return agility;
+}
+
+const sf::Texture& Character::getTexture()
+{
+	return *sprite.getTexture();
+}
+
+void Character::updateStrategy()
+{
+	Randomizer& rand = Randomizer::getInstance();
+
+	if (health < maxHealth * 0.3f)
+	{
+		if (rand.percentageOn(50.f))
+		{
+			strategy = DefensiveStrategy::getInstance();
+		}
+		else
+		{
+			strategy = AggressiveStrategy::getInstance();
+		}
+	}
+	else
+	{
+		strategy = NaiveStrategy::getInstance();
+	}
 }
 
 /*
@@ -391,37 +449,6 @@ void Character::initAnimations()
 			3.f, sprite);
 }
 
-void Character::setStrategy(std::shared_ptr<Strategy> strategy)
-{
-	this->strategy = std::move(strategy);
-}
-
-bool Character::flee()
-{
-	Randomizer& rand = Randomizer::getInstance();
-	return rand.percentageOn(50.f + agility);
-}
-
-void Character::updateStrategy()
-{
-	Randomizer& rand = Randomizer::getInstance();
-
-	if (health < maxHealth * 0.3f)
-	{
-		if (rand.percentageOn(50.f))
-		{
-			strategy = DefensiveStrategy::getInstance();
-		}
-		else
-		{
-			strategy = AggressiveStrategy::getInstance();
-		}
-	}
-	else
-	{
-		strategy = NaiveStrategy::getInstance();
-	}
-}
 /*
 bool Character::move(Direction direction) {
 	if (posX == NO_POSITION || posY == NO_POSITION) {

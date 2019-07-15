@@ -244,8 +244,8 @@ void EditorState::updateGUI()
 			mousePosView.x << ' ' << mousePosView.y << '\n' <<
 			mousePosGrid.x << ' ' <<
 			mousePosGrid.y << '\n' <<
-			"Type: " << type << '\n' <<
-			"Closeness: " << closeness << '\n' <<
+			"Type: " << Tile::to_string(type) << '\n' <<
+			"Closeness: " << Tile::to_string(closeness) << '\n' <<
 			"Crossable: " << std::boolalpha << crossable << '\n';
 
 	cursorText.setString(cursorString.str());
@@ -418,7 +418,10 @@ void EditorState::initTileMap()
 			stateData.gridSize,
 			"Villages.png",
 			32,
-			textures));
+			textures,
+			font));
+
+	tileMap->setEditorMode(true);
 }
 
 void EditorState::initPauseMenu()

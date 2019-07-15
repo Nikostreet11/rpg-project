@@ -21,7 +21,8 @@ public:
 			float gridSize,
 			const std::string& tilesetName,
 			unsigned spriteSize,
-			std::map<std::string, std::shared_ptr<sf::Texture>> textures);
+			std::map<std::string, std::shared_ptr<sf::Texture>> textures,
+			std::shared_ptr<sf::Font> font);
 	virtual ~DefaultMap();
 
 	virtual std::vector<std::shared_ptr<Character>> getFoes();

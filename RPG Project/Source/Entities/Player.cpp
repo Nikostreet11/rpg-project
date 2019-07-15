@@ -15,7 +15,7 @@ Player::Player(sf::Vector2f position, std::shared_ptr<sf::Texture> textureSheet)
 	setTexture(textureSheet);
 	setPosition(position);
 
-	createMovement(350.f, 1500.f, 500.f);
+	createMovement(450.f, 4000.f, 2000.f);
 
 	createAnimationComponent(textureSheet);
 	initAnimations();

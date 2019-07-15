@@ -27,7 +27,8 @@ public:
 			float gridSize,
 			const std::string& tilesetName,
 			unsigned spriteSize,
-			std::map<std::string, std::shared_ptr<sf::Texture>> textures);
+			std::map<std::string, std::shared_ptr<sf::Texture>> textures,
+			std::shared_ptr<sf::Font> font);
 	virtual ~TileMap();
 
 	// Functions
@@ -64,6 +65,7 @@ public:
 	bool isDangerousAt(sf::FloatRect rectangle);
 	const sf::Texture& getTileset() const;
 	bool isActive() const;
+	void setEditorMode(bool editorMode);
 	const sf::Vector2u& getSize() const;
 
 	const sf::Vector2u& getSpriteIndex() const;
@@ -80,6 +82,7 @@ public:
 	 * Map decide which enemies to create.									 *
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	virtual std::vector<std::shared_ptr<Character>> getFoes() = 0;
+
 	/*virtual Battle::Background getBackground() = 0;
 
 	const Tile& at(int x, int y);
@@ -109,17 +112,21 @@ private:
 	void initTileset();
 	void initBorder();
 	void initCollisionBox();
+	void initTilesCounter();
 
 	// Resources
 	std::vector< std::vector< std::unique_ptr<Tile> > > map;
 
 	sf::Texture tileset;
+	std::shared_ptr<sf::Font> font;
 	//sf::IntRect tileRect;
 	sf::RectangleShape border;
 	sf::RectangleShape collisionBox;
+	sf::Text tilesCounter;
 
 	// Variables
 	bool active;
+	bool editorMode;
 
 	//sf::Vector2f position;
 

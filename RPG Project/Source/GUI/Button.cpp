@@ -49,9 +49,9 @@ font(move(font))
 	this->fillActiveColor = fillActiveColor;
 
 	// TODO: modify later
-	this->outlineIdleColor = sf::Color::Green; //outlineIdleColor;
-	this->outlineHoverColor = sf::Color::Green; //outlineHoverColor;
-	this->outlineActiveColor = sf::Color::Green; //outlineActiveColor;
+	this->outlineIdleColor = outlineIdleColor;
+	this->outlineHoverColor = outlineHoverColor;
+	this->outlineActiveColor = outlineActiveColor;
 }
 
 Button::~Button()

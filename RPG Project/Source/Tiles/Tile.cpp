@@ -114,6 +114,44 @@ const sf::IntRect& Tile::getTextureRect() const
 {
 	return sprite.getTextureRect();
 }
+
+std::string Tile::to_string(Type type)
+{
+	switch (type)
+	{
+	case 0:
+		return "Default";
+		break;
+
+	case 1:
+		return "Damaging";
+		break;
+
+	case 2:
+		return "Dangerous";
+		break;
+
+	default:
+		return std::to_string(type);
+	}
+}
+
+std::string Tile::to_string(Closeness closeness)
+{
+	switch (closeness)
+	{
+	case 0:
+		return "Background";
+		break;
+
+	case 1:
+		return "Foreground";
+		break;
+
+	default:
+		return std::to_string(closeness);
+	}
+}
 /*
 Tile& Tile::operator=(const Tile& entry) {
 	if (this != &entry) {

@@ -10,6 +10,8 @@
 
 #include "pch.hpp"
 
+#include "..\Utilities\Subject.hpp"
+
 #include "..\Actions\Attack.hpp"
 #include "..\Actions\Magic.hpp"
 #include "..\Actions\Object.hpp"
@@ -26,6 +28,7 @@
 #include "..\Stat.hpp"
 
 class Character:
+		public Subject,
 		public std::enable_shared_from_this<Character>
 {
 public:
@@ -89,8 +92,9 @@ public:
 
 	const std::string& getName() const;
 	void setName(const std::string& name);
-	//int getAgility() const;
-	//int getEndurance() const;
+	float getMaxHealth() const;
+	float getMaxMana() const;
+	float getMaxStamina() const;
 	float getHealth() const;
 	void setHealth(float health);
 	float getMana() const;
@@ -105,8 +109,7 @@ public:
 	virtual bool isWeakToIce() const = 0;
 	virtual bool isWeakToLightning() const = 0;
 
-	//int getPosX() const;
-	//int getPosY() const;
+	const sf::Texture& getTexture();
 
 protected:
 	// Internal

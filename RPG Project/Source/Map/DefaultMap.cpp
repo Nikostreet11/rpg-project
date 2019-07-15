@@ -13,8 +13,9 @@ DefaultMap::DefaultMap(
 		float gridSize,
 		const std::string& tilesetName,
 		unsigned spriteSize,
-		std::map<std::string, std::shared_ptr<sf::Texture>> textures) :
-	TileMap(size, maxLayers, gridSize, tilesetName, spriteSize, textures)
+		std::map<std::string, std::shared_ptr<sf::Texture>> textures,
+		std::shared_ptr<sf::Font> font) :
+	TileMap(size, maxLayers, gridSize, tilesetName, spriteSize, textures, font)
 {
 }
 

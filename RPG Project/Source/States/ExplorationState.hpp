@@ -13,6 +13,7 @@
 #include "BattleState.hpp"
 
 #include "..\GUI\PauseMenu.hpp"
+#include "..\GUI\StatsMenu.hpp"
 #include "..\Map\DefaultMap.hpp"
 #include "..\Entities\Player.hpp"
 #include "..\Entities\Human.hpp"
@@ -41,6 +42,7 @@ private:
 	void checkForBattle(const float& dt);
 
 	// Initialization functions
+	void initVariables();
 	void initDeferredRendering();
 	void initCamera();
 	void initBindings();
@@ -49,6 +51,7 @@ private:
 	void initParty();
 	void initPlayers();
 	void initTileMap();
+	void initStatsMenu();
 	void initPauseMenu();
 
 	// Resources
@@ -60,9 +63,14 @@ private:
 	std::shared_ptr<Player> player;
 	std::unique_ptr<TileMap> tileMap;
 
+	std::shared_ptr<gui::StatsMenu> statsMenu;
 	std::unique_ptr<gui::PauseMenu> pauseMenu;
 
 	std::shared_ptr<sf::Font> font;
+
+	// Variables
+	float battleImmunityTimer;
+	float battleImmunity;
 
 };
 

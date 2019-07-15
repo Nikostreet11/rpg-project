@@ -58,6 +58,9 @@ public:
 	sf::Vector2u getSpriteSize() const;
 	const sf::IntRect& getTextureRect() const;
 
+	static std::string to_string(Type type);
+	static std::string to_string(Closeness closeness);
+
 	/*
 	virtual Tile& operator=(const Tile& right);
 

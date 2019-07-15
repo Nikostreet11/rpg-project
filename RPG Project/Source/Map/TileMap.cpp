@@ -13,7 +13,8 @@ TileMap::TileMap(
 		float gridSize,
 		const std::string& tilesetName,
 		unsigned spriteSize,
-		std::map<std::string, std::shared_ptr<sf::Texture>> textures)
+		std::map<std::string, std::shared_ptr<sf::Texture>> textures,
+		std::shared_ptr<sf::Font> font)
 {
 	initVariables();
 
@@ -27,10 +28,7 @@ TileMap::TileMap(
 	this->spriteSize = spriteSize;
 
 	this->textures = textures;
-	/*
-	tileRect.width = spriteSize;
-	tileRect.height = spriteSize;
-	*/
+	this->font = font;
 
 	checkMaxValues();
 
@@ -38,6 +36,7 @@ TileMap::TileMap(
 	initTileset();
 	initBorder();
 	initCollisionBox();
+	initTilesCounter();
 }
 
 TileMap::~TileMap()
@@ -199,18 +198,30 @@ void TileMap::render(sf::RenderTarget& target, Tile::Closeness closeness)
 {
 	for (auto &tile : map)
 	{
-		for (auto &layer : tile)
+		for (auto layer = tile.begin(); layer < tile.end(); layer++)//auto &layer : tile)
 		{
-			if (layer != nullptr)
+			if (*layer != nullptr)
 			{
-				if (layer->getCloseness() == closeness)
+				if ((*layer)->getCloseness() == closeness)
 				{
-					layer->render(target);
+					(*layer)->render(target);
 
-					if (!layer->isCrossable())
+					if (editorMode)
 					{
-						collisionBox.setPosition(layer->getPosition());
-						target.draw(collisionBox);
+						if (!(*layer)->isCrossable())
+						{
+							collisionBox.setPosition((*layer)->getPosition());
+							target.draw(collisionBox);
+						}
+
+						/*
+						if (layer == tile.end() - 1)
+						{
+							tilesCounter.setPosition((*layer)->getPosition());
+							tilesCounter.setString(std::to_string(tile.size()));
+							target.draw(tilesCounter);
+						}
+						*/
 					}
 				}
 			}
@@ -484,34 +495,15 @@ bool TileMap::isActive() const
 	return active;
 }
 
-/*
-const sf::Vector2f& TileMap::getPosition() const
+void TileMap::setEditorMode(bool editorMode)
 {
-	return position;
+	this->editorMode = editorMode;
 }
-*/
 
 const sf::Vector2u& TileMap::getSize() const
 {
 	return size;
 }
-
-/*
-sf::IntRect TileMap::getTileRect() const
-{
-	return sf::IntRect(
-			spriteIndex.x * spriteSize,
-			spriteIndex.y * spriteSize,
-			spriteSize,
-			spriteSize);
-}
-
-void TileMap::setTileRect(const sf::IntRect& tileRect)
-{
-	spriteIndex.x = tileRect.left / spriteSize;
-	spriteIndex.y = tileRect.top / spriteSize;
-}
-*/
 
 const sf::Vector2u& TileMap::getSpriteIndex() const
 {
@@ -609,6 +601,7 @@ bool TileMap::isOutOfBounds(sf::Vector2u index, Axis axis) const
 void TileMap::initVariables()
 {
 	active = false;
+	editorMode = false;
 
 	maxSize.x = 100;
 	maxSize.y = 100;
@@ -665,6 +658,16 @@ void TileMap::initCollisionBox()
 	collisionBox.setSize(sf::Vector2f(gridSize, gridSize));
 	collisionBox.setFillColor(sf::Color(255, 0, 0, 50));
 }
+
+void TileMap::initTilesCounter()
+{
+	tilesCounter.setFont(*font);
+	tilesCounter.setCharacterSize(30);
+	tilesCounter.setFillColor(sf::Color::White);
+	tilesCounter.setOutlineThickness(1.f);
+	tilesCounter.setOutlineColor(sf::Color::Black);
+}
+
 /*
 const Tile& TileMap::at(int x, int y) {
 	return getTile(x, y);

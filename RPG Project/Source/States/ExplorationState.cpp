@@ -12,6 +12,7 @@
 ExplorationState::ExplorationState(StateData& stateData) :
 		State(stateData)
 {
+	initVariables();
 	initDeferredRendering();
 	initCamera();
 	initBindings();
@@ -20,6 +21,7 @@ ExplorationState::ExplorationState(StateData& stateData) :
 	initParty();
 	initPlayers();
 	initTileMap();
+	initStatsMenu();
 	initPauseMenu();
 }
 
@@ -122,10 +124,12 @@ void ExplorationState::render(std::shared_ptr<sf::RenderTarget> target)
 	player->render(renderTexture);
 	tileMap->render(renderTexture, Tile::Closeness::Foreground);
 
+	renderTexture.setView(renderTexture.getDefaultView());
+	statsMenu->render(renderTexture);
+
 	if (paused)
 	{
 		// Pause menu render
-		renderTexture.setView(renderTexture.getDefaultView());
 		pauseMenu->render(renderTexture);
 	}
 
@@ -137,20 +141,32 @@ void ExplorationState::render(std::shared_ptr<sf::RenderTarget> target)
 // Internal
 void ExplorationState::checkForBattle(const float& dt)
 {
-	if (true/*tileMap->isDangerousAt(player->getGlobalBounds())*/)
+	if (battleImmunityTimer < battleImmunity)
+	{
+		battleImmunityTimer += dt;
+	}
+	else if (tileMap->isDangerousAt(player->getGlobalBounds()))
 	{
 		Randomizer& rand = Randomizer::getInstance();
 
-		if (rand.percentageOn(10.f * dt))
+		if (rand.percentageOn(20.f * dt))
 		{
 			std::unique_ptr<State> battleStatePtr(
 					new BattleState(stateData, party, tileMap->getFoes()));
 			states->push(move(battleStatePtr));
+
+			battleImmunityTimer = 0.f;
 		}
 	}
 }
 
 // Initialization functions
+void ExplorationState::initVariables()
+{
+	battleImmunityTimer = 0.f;
+	battleImmunity = 3.f;
+}
+
 void ExplorationState::initDeferredRendering()
 {
 	renderTexture.create(
@@ -282,7 +298,7 @@ void ExplorationState::initParty()
 
 void ExplorationState::initPlayers()
 {
-	sf::Vector2f position = {0, 0};
+	sf::Vector2f position = {2300, 2500};
 	player = std::make_shared<Player>(
 			position,
 			textures["EXPLORATION_PLAYABLE_CHARACTERS"]);
@@ -295,8 +311,22 @@ void ExplorationState::initTileMap()
 			stateData.gridSize,
 			"Villages.png",
 			32,
-			textures));
+			textures,
+			font));
 	tileMap->loadFromFile("testTileMap.txt");
+}
+
+void ExplorationState::initStatsMenu()
+{
+	statsMenu = std::make_shared<gui::StatsMenu>(
+			sf::Vector2f(1000.f, 100.f),
+			textures,
+			font);
+
+	for (auto& hero : party)
+	{
+		statsMenu->addSubject(hero);
+	}
 }
 
 void ExplorationState::initPauseMenu()
