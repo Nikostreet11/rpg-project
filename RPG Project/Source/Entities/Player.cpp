@@ -88,7 +88,7 @@ void Player::initAnimations()
 	animationComponent->addAnimation(
 			"IDLE",
 			std::move(std::make_shared<SpriteSequenceAnimation>(
-					true, 0.f, 2.f,
+					true, 0.f, 4.f,
 					sprite, nullptr,
 					indexVector,
 					sf::Vector2u(2, 2),

@@ -34,15 +34,21 @@ void StatsMenu::update()
 		CharacterInfo& subjectInfo = subjectsInfo[index];
 
 		std::stringstream healthString;
-		healthString << subject.getHealth() << " / " << subject.getMaxHealth();
+		healthString <<
+				std::round(subject.getHealth()) << "/" <<
+				std::round(subject.getMaxHealth());
 		subjectInfo.healthText.setString(healthString.str());
 
 		std::stringstream manaString;
-		manaString << subject.getMana() << " / " << subject.getMaxMana();
+		manaString <<
+				std::round(subject.getMana()) << "/" <<
+				std::round(subject.getMaxMana());
 		subjectInfo.manaText.setString(manaString.str());
 
 		std::stringstream staminaString;
-		staminaString << subject.getStamina() << " / " << subject.getMaxStamina();
+		staminaString <<
+				std::round(subject.getStamina()) << "/" <<
+				std::round(subject.getMaxStamina());
 		subjectInfo.staminaText.setString(staminaString.str());
 	}
 }
@@ -53,11 +59,11 @@ void StatsMenu::render(sf::RenderTarget& target)
 
 	for (auto& subjectInfo : subjectsInfo)
 	{
-		// target.draw(subjectInfo.healthSprite);
+		target.draw(subjectInfo.healthSprite);
 		target.draw(subjectInfo.healthText);
-		// target.draw(subjectInfo.manaSprite);
+		target.draw(subjectInfo.manaSprite);
 		target.draw(subjectInfo.manaText);
-		// target.draw(subjectInfo.staminaSprite);
+		target.draw(subjectInfo.staminaSprite);
 		target.draw(subjectInfo.staminaText);
 		target.draw(subjectInfo.characterSprite);
 	}
@@ -72,62 +78,43 @@ void StatsMenu::addSubject(std::shared_ptr<Character> subject)
 	CharacterInfo& subjectInfo = subjectsInfo[subjectsInfo.size() - 1];
 	unsigned index = subjectsInfo.size() - 1;
 
-	subjectInfo.characterSprite.setTexture(subject->getTexture());
-	subjectInfo.characterSprite.setTextureRect(sf::IntRect(16, 16, 48, 48));
-	// subjectInfo.healthSprite.setScale(x, x);
-	subjectInfo.characterSprite.setPosition(position);
-	subjectInfo.characterSprite.move(600.f, 10.f + 40.f * index);
-
-	// TODO: add STAT_ICONS texture to textures
-	// subjectInfo.healthSprite.setTexture(textures["STATS_ICONS"]);
-	// subjectInfo.healthSprite.setTextureRect(sf::IntRect(x, x, x, x));
-	// subjectInfo.healthSprite.setScale(x, x);
+	subjectInfo.healthSprite.setTexture(*textures["STATS"]);
+	subjectInfo.healthSprite.setTextureRect(sf::IntRect(0, 0, 50, 50));
 	subjectInfo.healthSprite.setPosition(position);
-	subjectInfo.healthSprite.move(50.f, 10.f + 40.f * index);
-
-	// TODO: add STAT_ICONS texture to textures
-	// subjectInfo.manaSprite.setTexture(textures["STATS_ICONS"]);
-	// subjectInfo.manaSprite.setTextureRect(sf::IntRect(x, x, x, x));
-	// subjectInfo.manaSprite.setScale(x, x);
-	subjectInfo.manaSprite.setPosition(position);
-	subjectInfo.manaSprite.move(200.f, 10.f + 40.f * index);
-
-	// TODO: add STAT_ICONS texture to textures
-	// subjectInfo.staminaSprite.setTexture(textures["STATS_ICONS"]);
-	// subjectInfo.staminaSprite.setTextureRect(sf::IntRect(x, x, x, x));
-	// subjectInfo.staminaSprite.setScale(x, x);
-	subjectInfo.staminaSprite.setPosition(position);
-	subjectInfo.staminaSprite.move(350.f, 10.f + 40.f * index);
+	subjectInfo.healthSprite.move(10.f, 10.f + 50.f * index);
 
 	subjectInfo.healthText.setPosition(position);
-	subjectInfo.healthText.move(100.f, 10.f + 40.f * index);
+	subjectInfo.healthText.move(60.f, 10.f + 50.f * index);
 	subjectInfo.healthText.setFont(*font);
-	subjectInfo.healthText.setCharacterSize(20);
+	subjectInfo.healthText.setCharacterSize(40);
 	subjectInfo.healthText.setFillColor(sf::Color::White);
 
-	std::stringstream healthString;
-	healthString << subject->getHealth() << " / " << subject->getMaxHealth();
-	subjectInfo.healthText.setString(healthString.str());
+	subjectInfo.manaSprite.setTexture(*textures["STATS"]);
+	subjectInfo.manaSprite.setTextureRect(sf::IntRect(50, 0, 50, 50));
+	subjectInfo.manaSprite.setPosition(position);
+	subjectInfo.manaSprite.move(210.f, 10.f + 50.f * index);
 
 	subjectInfo.manaText.setPosition(position);
-	subjectInfo.manaText.move(250.f, 10.f + 40.f * index);
+	subjectInfo.manaText.move(260.f, 10.f + 50.f * index);
 	subjectInfo.manaText.setFont(*font);
-	subjectInfo.manaText.setCharacterSize(20);
+	subjectInfo.manaText.setCharacterSize(40);
 	subjectInfo.manaText.setFillColor(sf::Color::White);
 
-	std::stringstream manaString;
-	manaString << subject->getMana() << " / " << subject->getMaxMana();
-	subjectInfo.manaText.setString(manaString.str());
+	subjectInfo.staminaSprite.setTexture(*textures["STATS"]);
+	subjectInfo.staminaSprite.setTextureRect(sf::IntRect(100, 0, 50, 50));
+	subjectInfo.staminaSprite.setPosition(position);
+	subjectInfo.staminaSprite.move(410.f, 10.f + 50.f * index);
 
 	subjectInfo.staminaText.setPosition(position);
-	subjectInfo.staminaText.move(400.f, 10.f + 40.f * index);
+	subjectInfo.staminaText.move(460.f, 10.f + 50.f * index);
 	subjectInfo.staminaText.setFont(*font);
-	subjectInfo.staminaText.setCharacterSize(20);
+	subjectInfo.staminaText.setCharacterSize(40);
 	subjectInfo.staminaText.setFillColor(sf::Color::White);
 
-	std::stringstream staminaString;
-	staminaString << subject->getStamina() << " / " << subject->getMaxStamina();
-	subjectInfo.staminaText.setString(staminaString.str());
+	subjectInfo.characterSprite.setTexture(subject->getTexture());
+	subjectInfo.characterSprite.setTextureRect(sf::IntRect(16, 16, 48, 48));
+	subjectInfo.characterSprite.setPosition(position);
+	subjectInfo.characterSprite.move(620.f, 10.f + 50.f * index);
 
 	subject->attach(shared_from_this());
 }
@@ -141,7 +128,7 @@ void StatsMenu::removeSubject(std::shared_ptr<Character> subject)
 void StatsMenu::initBackground()
 {
 	background.setPosition(position);
-	background.setSize(sf::Vector2f(600.f, 300.f));
+	background.setSize(sf::Vector2f(680.f, 220.f));
 	background.setFillColor(sf::Color(0, 0, 0, 150));
 }
 

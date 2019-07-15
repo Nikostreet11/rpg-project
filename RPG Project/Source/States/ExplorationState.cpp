@@ -280,6 +280,14 @@ void ExplorationState::initTextures()
 	{
 		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_ICONS_TEXTURE";
 	}
+
+	textures["STATS"] = std::make_shared<sf::Texture>();
+
+	if (!textures["STATS"]->loadFromFile(
+			"Images/Battle/Icons/Stats.png"))
+	{
+		throw "ERROR::BATTLESTATE::UNABLE_TO_LOAD_STATS_TEXTURE";
+	}
 }
 
 void ExplorationState::initParty()
@@ -319,7 +327,7 @@ void ExplorationState::initTileMap()
 void ExplorationState::initStatsMenu()
 {
 	statsMenu = std::make_shared<gui::StatsMenu>(
-			sf::Vector2f(1000.f, 100.f),
+			sf::Vector2f(1200.f, 20.f),
 			textures,
 			font);
 
@@ -327,6 +335,8 @@ void ExplorationState::initStatsMenu()
 	{
 		statsMenu->addSubject(hero);
 	}
+
+	statsMenu->update();
 }
 
 void ExplorationState::initPauseMenu()
