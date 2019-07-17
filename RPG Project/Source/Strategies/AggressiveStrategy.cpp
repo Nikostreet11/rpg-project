@@ -53,7 +53,8 @@ std::shared_ptr<Character> AggressiveStrategy::chooseTarget(
 
 	for (auto& enemy : enemies)
 	{
-		if (!target || enemy->getHealth() < target->getHealth())
+		if (enemy->isAlive() &&
+			(!target || enemy->getHealth() < target->getHealth()))
 		{
 			target = enemy;
 		}

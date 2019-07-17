@@ -50,8 +50,13 @@ std::shared_ptr<Character> NaiveStrategy::chooseTarget(
 		std::vector<std::shared_ptr<Character>> enemies)
 {
 	Randomizer& rand = Randomizer::getInstance();
+	size_t index;
 
-	size_t index = static_cast<unsigned>(rand.getBetween(0, enemies.size()));
+	do
+	{
+		index = static_cast<unsigned>(rand.getBetween(0, enemies.size()));
+	}
+	while (!enemies[index]->isAlive());
 
 	return enemies[index];
 }

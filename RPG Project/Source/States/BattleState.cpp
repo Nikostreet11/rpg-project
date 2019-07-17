@@ -804,7 +804,16 @@ void BattleState::initDialogueMenu()
 		{
 			stringStream
 					<< active->getName() << " uses " << action->getName()
-					<< " on " << target->getName() << "!";
+					<< " on ";
+
+			if (active == target)
+			{
+				stringStream << "himself!";
+			}
+			else
+			{
+				stringStream << target->getName() << "!";
+			}
 			dialogue.push_back(stringStream.str());
 			dialogue.push_back(computeOutcome());
 		}
