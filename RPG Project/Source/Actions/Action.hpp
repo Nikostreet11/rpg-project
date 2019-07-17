@@ -10,10 +10,10 @@
 
 #include "pch.hpp"
 
+#include "../Utilities/Stat.hpp"
 #include "..\Containers\ActionResults.hpp"
 #include "..\Utilities\Randomizer.hpp"
 
-#include "..\Stat.hpp"
 
 // Forward declarations
 class Character;

@@ -53,7 +53,8 @@ std::shared_ptr<Character> DefensiveStrategy::chooseTarget(
 
 	for (auto& ally : allies)
 	{
-		if (!target || ally->getHealth() < target->getHealth())
+		if (ally->isAlive() &&
+			(!target || ally->getHealth() < target->getHealth()))
 		{
 			target = ally;
 		}

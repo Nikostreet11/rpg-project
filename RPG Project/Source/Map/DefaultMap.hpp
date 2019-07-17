@@ -26,6 +26,7 @@ public:
 	virtual ~DefaultMap();
 
 	virtual std::vector<std::shared_ptr<Character>> getFoes();
+	virtual sf::Vector2u getBackground();
 };
 
 #endif /* MAP_DEFAULTMAP_HPP_ */

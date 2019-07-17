@@ -40,6 +40,7 @@ public:
 private:
 	// Internal
 	void checkForBattle(const float& dt);
+	bool isGameOver();
 
 	// Initialization functions
 	void initVariables();

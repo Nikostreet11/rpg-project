@@ -10,7 +10,7 @@
 
 #include "pch.hpp"
 
-#include "..\Direction.hpp"
+#include "../Utilities/Direction.hpp"
 #include "..\Icons\Caret.hpp"
 #include "..\Icons\Angle.hpp"
 //#include "../Exclude/Graphics/Angle.hpp"

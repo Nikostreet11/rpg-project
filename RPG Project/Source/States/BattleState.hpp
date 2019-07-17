@@ -58,7 +58,8 @@ public:
 	explicit BattleState(
 			StateData& stateData,
 			std::vector<std::shared_ptr<Character>> party,
-			std::vector<std::shared_ptr<Character>> enemies);
+			std::vector<std::shared_ptr<Character>> enemies,
+			sf::Vector2u backgroundIndex);
 	virtual ~BattleState();
 
 	// Functions
@@ -105,7 +106,7 @@ private:
 	void initBindings();
 	void initFonts();
 	void initTextures();
-	void initBackground();
+	void initBackground(sf::Vector2u backgroundIndex);
 	void initCharacters();
 	void initActiveQueue();
 	void initDialogueMenu();

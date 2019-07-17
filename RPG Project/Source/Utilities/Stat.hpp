@@ -5,11 +5,11 @@
  *      Author: nicop
  */
 
-#ifndef STAT_HPP_
-#define STAT_HPP_
+#ifndef UTILITIES_STAT_HPP_
+#define UTILITIES_STAT_HPP_
 
 enum Stat {Health, Mana, Stamina};
 
 
 
-#endif /* STAT_HPP_ */
+#endif /* UTILITIES_STAT_HPP_ */

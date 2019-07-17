@@ -69,6 +69,11 @@ Tile::Type Tile::getType() const
 	return type;
 }
 
+void Tile::setType(Type type)
+{
+	this->type = type;
+}
+
 Tile::Closeness Tile::getCloseness() const
 {
 	return closeness;

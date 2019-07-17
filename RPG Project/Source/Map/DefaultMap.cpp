@@ -50,7 +50,6 @@ std::vector<std::shared_ptr<Character>> DefaultMap::getFoes()
 
 		foes.push_back(std::move(monster));
 	}
-
 	for (unsigned index = 0; index < 2; index++)
 	{
 		std::shared_ptr<Character> monster =
@@ -76,4 +75,9 @@ std::vector<std::shared_ptr<Character>> DefaultMap::getFoes()
 	}
 
 	return foes;
+}
+
+sf::Vector2u DefaultMap::getBackground()
+{
+	return sf::Vector2u(0, 7);
 }

@@ -11,7 +11,8 @@
 BattleState::BattleState(
 		StateData& stateData,
 		std::vector<std::shared_ptr<Character>> party,
-		std::vector<std::shared_ptr<Character>> enemies) :
+		std::vector<std::shared_ptr<Character>> enemies,
+		sf::Vector2u backgroundIndex) :
 	State(stateData),
 	party(party),
 	enemies(enemies)
@@ -21,7 +22,7 @@ BattleState::BattleState(
 	initBindings();
 	initFonts();
 	initTextures();
-	initBackground();
+	initBackground(backgroundIndex);
 	initCharacters();
 	initActiveQueue();
 	initDialogueMenu();
@@ -246,6 +247,16 @@ void BattleState::updateEnd(const float& dt)
 
 		if (dialogueMenu->isEnded())
 		{
+			for (auto& hero : party)
+			{
+				hero->resetState();
+			}
+
+			for (auto& enemy : enemies)
+			{
+				enemy->resetState();
+			}
+
 			endState();
 		}
 	}
@@ -297,8 +308,10 @@ void BattleState::updatePauseMenu()
 {
 	pauseMenu->update(mousePosWindow);
 
+	/*
 	if (pauseMenu->isButtonPressed("QUIT"))
 		endState();
+	*/
 }
 
 void BattleState::render(std::shared_ptr<sf::RenderTarget> target)
@@ -423,7 +436,7 @@ void BattleState::changePhase(Phase phase)
 
 		for (auto character = targets.begin(); character < targets.end();)
 		{
-			if ((*character)->getHealth() < 0)
+			if ((*character)->getHealth() <= 0)
 			{
 				targets.erase(character);
 			}
@@ -510,7 +523,7 @@ void BattleState::selectNextActive()
 	for (auto character = activeQueue.begin(); character < activeQueue.end();
 			character++)
 	{
-		if ((*character)->getHealth() < 0)
+		if ((*character)->getHealth() <= 0)
 		{
 			activeQueue.erase(character);
 
@@ -681,12 +694,12 @@ void BattleState::initTextures()
 	}
 }
 
-void BattleState::initBackground()
+void BattleState::initBackground(sf::Vector2u backgroundIndex)
 {
 	background.setTexture(*textures["BACKGROUNDS"]);
 	background.setTextureRect(sf::IntRect(
-			2,
-			2 * 15 + 312 * 7,
+			2 + (4 + 512) * backgroundIndex.x,
+			2 + (4 + 312) * backgroundIndex.y,
 			512,
 			312));
 	background.setScale(
@@ -947,7 +960,7 @@ void BattleState::initPauseMenu()
 {
 	pauseMenu.reset(new gui::PauseMenu(window, font));
 
-	pauseMenu->addButton("QUIT", 800.f, "Quit");
+	//pauseMenu->addButton("QUIT", 800.f, "Quit");
 }
 
 bool BattleState::comparePositions(

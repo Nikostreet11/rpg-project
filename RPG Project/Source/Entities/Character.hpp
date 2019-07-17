@@ -10,6 +10,7 @@
 
 #include "pch.hpp"
 
+#include "../Utilities/Stat.hpp"
 #include "..\Utilities\Subject.hpp"
 
 #include "..\Actions\Attack.hpp"
@@ -25,7 +26,6 @@
 #include "..\Animations\StatsAnimation.hpp"
 #include "..\Animations\AttackAnimation.hpp"
 
-#include "..\Stat.hpp"
 
 class Character:
 		public Subject,

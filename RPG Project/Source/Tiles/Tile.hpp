@@ -49,6 +49,7 @@ public:
 
 	// Getters / Setters
 	Type getType() const;
+	void setType(Type type);
 	Closeness getCloseness() const;
 	bool isCrossable() const;
 	const sf::Vector2f& getPosition() const;

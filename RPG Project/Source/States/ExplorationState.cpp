@@ -52,6 +52,11 @@ void ExplorationState::update(const float& dt)
 		updateCamera(dt);
 
 		checkForBattle(dt);
+
+		if (isGameOver())
+		{
+			endState();
+		}
 	}
 	else
 	{
@@ -152,12 +157,29 @@ void ExplorationState::checkForBattle(const float& dt)
 		if (rand.percentageOn(20.f * dt))
 		{
 			std::unique_ptr<State> battleStatePtr(
-					new BattleState(stateData, party, tileMap->getFoes()));
+					new BattleState(stateData, party,
+							tileMap->getFoes(),
+							tileMap->getBackground()));
 			states->push(move(battleStatePtr));
 
 			battleImmunityTimer = 0.f;
 		}
 	}
+}
+
+bool ExplorationState::isGameOver()
+{
+	bool gameOver = true;
+
+	for (auto& hero : party)
+	{
+		if (hero->getHealth() > 0)
+		{
+			gameOver = false;
+		}
+	}
+
+	return gameOver;
 }
 
 // Initialization functions
@@ -306,7 +328,7 @@ void ExplorationState::initParty()
 
 void ExplorationState::initPlayers()
 {
-	sf::Vector2f position = {2300, 2500};
+	sf::Vector2f position = {2425, 2500};
 	player = std::make_shared<Player>(
 			position,
 			textures["EXPLORATION_PLAYABLE_CHARACTERS"]);

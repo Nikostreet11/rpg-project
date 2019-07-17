@@ -36,6 +36,7 @@ TileMap::TileMap(
 	initTileset();
 	initBorder();
 	initCollisionBox();
+	initDangerBox();
 	initTilesCounter();
 }
 
@@ -214,6 +215,12 @@ void TileMap::render(sf::RenderTarget& target, Tile::Closeness closeness)
 							target.draw(collisionBox);
 						}
 
+						if ((*layer)->getType() == Tile::Dangerous)
+						{
+							dangerBox.setPosition((*layer)->getPosition());
+							target.draw(dangerBox);
+						}
+
 						/*
 						if (layer == tile.end() - 1)
 						{
@@ -293,6 +300,23 @@ void TileMap::addBaseTile(
 		map[index.y * size.x + index.x].clear();
 		map[index.y * size.x + index.x].push_back(std::move(tilePtr));
 		//}
+	}
+}
+
+void TileMap::setBaseTileDangerous(sf::Vector2u index)
+{
+	if (map[index.y * size.x + index.x].size() > 0)
+	{
+		Tile& tile = *map[index.y * size.x + index.x][0];
+
+		if (tile.getType() != Tile::Dangerous)
+		{
+			tile.setType(Tile::Dangerous);
+		}
+		else
+		{
+			tile.setType(Tile::Default);
+		}
 	}
 }
 
@@ -656,7 +680,13 @@ void TileMap::initBorder()
 void TileMap::initCollisionBox()
 {
 	collisionBox.setSize(sf::Vector2f(gridSize, gridSize));
-	collisionBox.setFillColor(sf::Color(255, 0, 0, 50));
+	collisionBox.setFillColor(sf::Color(0, 0, 0, 100));
+}
+
+void TileMap::initDangerBox()
+{
+	dangerBox.setSize(sf::Vector2f(gridSize, gridSize));
+	dangerBox.setFillColor(sf::Color(255, 0, 0, 100));
 }
 
 void TileMap::initTilesCounter()
@@ -667,7 +697,6 @@ void TileMap::initTilesCounter()
 	tilesCounter.setOutlineThickness(1.f);
 	tilesCounter.setOutlineColor(sf::Color::Black);
 }
-
 /*
 const Tile& TileMap::at(int x, int y) {
 	return getTile(x, y);

@@ -54,6 +54,7 @@ public:
 			Tile::Type type,
 			Tile::Closeness closeness,
 			bool crossable);
+	void setBaseTileDangerous(sf::Vector2u index);
 	void removeTile(
 			sf::Vector2u index);
 
@@ -82,6 +83,7 @@ public:
 	 * Map decide which enemies to create.									 *
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	virtual std::vector<std::shared_ptr<Character>> getFoes() = 0;
+	virtual sf::Vector2u getBackground() = 0;
 
 	/*virtual Battle::Background getBackground() = 0;
 
@@ -112,6 +114,7 @@ private:
 	void initTileset();
 	void initBorder();
 	void initCollisionBox();
+	void initDangerBox();
 	void initTilesCounter();
 
 	// Resources
@@ -122,6 +125,7 @@ private:
 	//sf::IntRect tileRect;
 	sf::RectangleShape border;
 	sf::RectangleShape collisionBox;
+	sf::RectangleShape dangerBox;
 	sf::Text tilesCounter;
 
 	// Variables

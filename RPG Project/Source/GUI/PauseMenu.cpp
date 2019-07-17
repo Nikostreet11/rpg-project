@@ -28,7 +28,7 @@ font(std::move(font))
 	container.setSize(
 		sf::Vector2f(
 			static_cast<float>(window->getSize().x) / 4.f,
-			static_cast<float>(window->getSize().y) - 60.f
+			static_cast<float>(window->getSize().y)
 		)
 	);
 	container.setFillColor(sf::Color(20, 20, 20, 100));
@@ -36,7 +36,7 @@ font(std::move(font))
 		sf::Vector2f(
 			static_cast<float>(window->getSize().x) / 2.f -
 					container.getSize().x / 2.f,
-			30.f
+			0.f
 		)
 	);
 

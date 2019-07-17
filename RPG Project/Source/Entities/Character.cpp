@@ -259,7 +259,18 @@ float Character::getHealth() const
 
 void Character::setHealth(float health)
 {
-	this->health = health;
+	if (health < 0)
+	{
+		this->health = 0;
+	}
+	else if (health > maxHealth)
+	{
+		this->health = maxHealth;
+	}
+	else
+	{
+		this->health = health;
+	}
 
 	if (strategy)
 	{
@@ -276,7 +287,18 @@ float Character::getMana() const
 
 void Character::setMana(float mana)
 {
-	this->mana = mana;
+	if (mana < 0)
+	{
+		this->mana = 0;
+	}
+	else if (mana > maxMana)
+	{
+		this->mana = maxMana;
+	}
+	else
+	{
+		this->mana = mana;
+	}
 
 	notify();
 }
@@ -288,7 +310,18 @@ float Character::getStamina() const
 
 void Character::setStamina(float stamina)
 {
-	this->stamina = stamina;
+	if (stamina < 0)
+	{
+		this->stamina = 0;
+	}
+	else if (stamina > maxStamina)
+	{
+		this->stamina = maxStamina;
+	}
+	else
+	{
+		this->stamina = stamina;
+	}
 
 	notify();
 }
@@ -317,7 +350,7 @@ void Character::updateStrategy()
 {
 	Randomizer& rand = Randomizer::getInstance();
 
-	if (health < maxHealth * 0.3f)
+	if (health < maxHealth * 0.5f)
 	{
 		if (rand.percentageOn(50.f))
 		{
@@ -381,22 +414,25 @@ void Character::initActions()
 {
 	actions.push_back(std::move(std::make_shared<Attack>()));
 
-	std::vector<Magic::Type> magicList = {Magic::Fire, Magic::Blizzard, Magic::Thunder};
+	std::vector<Magic::Type> magicList = {
+			Magic::Fire,
+			Magic::Blizzard,
+			Magic::Thunder};
 
 	for (auto& magic : magicList)
 	{
 		actions.push_back(std::move(std::make_shared<Magic>(magic)));
 	}
 
-	//actions.push_back(std::move(std::make_shared<Magic>(Magic::Blizzard)));
+	std::vector<Object::Type> objectList = {
+			Object::Potion,
+			Object::Ether,
+			Object::Energizer};
 
-	//actions.push_back(std::move(std::make_shared<Magic>(Magic::Thunder)));
-
-	actions.push_back(std::move(std::make_shared<Object>(Object::Potion)));
-
-	actions.push_back(std::move(std::make_shared<Object>(Object::Ether)));
-
-	actions.push_back(std::move(std::make_shared<Object>(Object::Energizer)));
+	for (auto& object : objectList)
+	{
+		actions.push_back(std::move(std::make_shared<Object>(object)));
+	}
 }
 
 void Character::initStrategy()

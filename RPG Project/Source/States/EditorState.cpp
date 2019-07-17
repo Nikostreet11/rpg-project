@@ -137,6 +137,11 @@ void EditorState::updateEditorInput(const float& dt)
 			{
 				tileMap->removeTile(mousePosGrid);
 			}
+
+			if (keybinds.at("NEXT_TYPE").isPressed())
+			{
+				tileMap->setBaseTileDangerous(mousePosGrid);
+			}
 		}
 		else
 		{
@@ -149,20 +154,20 @@ void EditorState::updateEditorInput(const float& dt)
 			{
 				tileMap->removeTile(mousePosGrid);
 			}
+
+			if (keybinds.at("NEXT_TYPE").isPressed())
+			{
+				type = static_cast<Tile::Type>(static_cast<short>(type) + 1);
+
+				if (type == Tile::NumberOfTypes)
+				{
+					type = Tile::Default;
+				}
+			}
 		}
 	}
 
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) &&
-		keybinds.at("NEXT_TYPE").isPressed())
-	{
-		type = static_cast<Tile::Type>(static_cast<short>(type) + 1);
-
-		if (type == Tile::NumberOfTypes)
-		{
-			type = Tile::Default;
-		}
-	}
-
+	/*
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) &&
 		keybinds.at("NEXT_TYPE").isPressed())
 	{
@@ -175,6 +180,7 @@ void EditorState::updateEditorInput(const float& dt)
 					static_cast<short>(Tile::NumberOfTypes) - 1);
 		}
 	}
+	*/
 
 	if (keybinds.at("NEXT_CLOSENESS").isPressed())
 	{

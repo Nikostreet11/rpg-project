@@ -8,9 +8,9 @@
 #ifndef ANIMATIONS_STATSANIMATION_HPP_
 #define ANIMATIONS_STATSANIMATION_HPP_
 
+#include "../Utilities/Stat.hpp"
 #include "Animation.hpp"
 
-#include "..\Stat.hpp"
 
 class StatsAnimation:
 		public Animation
